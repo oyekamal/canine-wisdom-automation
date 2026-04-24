@@ -1,0 +1,14 @@
+.env
+token.json
+client_secrets.json
+*.pyc
+__pycache__/
+.DS_Store
+outputs/
+archive/
+run_logs/
+venv/
+*.mp3
+*.mp4
+script.txt
+metadata.json
