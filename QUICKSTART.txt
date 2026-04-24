@@ -1,0 +1,42 @@
+CANINE WISDOM — YOUTUBE SHORTS AUTOMATION
+==========================================
+
+ONE COMMAND TO RUN:
+  python main.py
+
+THAT'S IT! A new YouTube Short will post within 5 minutes.
+
+
+SETUP (one-time only):
+  1. Follow SETUP.md to create your API keys and configure accounts
+  2. Add dog videos to the dog_footage/ folder
+  3. Run: python main.py
+
+
+TO ADD NEW DOG VIDEOS:
+  1. Copy .mp4 or .mov video files to the dog_footage/ folder
+  2. The next time you run python main.py, it will randomly pick a new video
+  3. You can add as many videos as you want
+
+
+TO POST AUTOMATICALLY EVERY DAY:
+  See "Optional: Automate Daily Posts" in SETUP.md
+  (Easiest: set a scheduled task on your computer)
+
+
+WHAT HAPPENS WHEN YOU RUN IT:
+  1. The system picks a random dog video from your dog_footage/ folder
+  2. It adds a fun fact, captions, and music
+  3. It uploads to YouTube Shorts automatically
+  4. A new post appears on your channel
+
+
+TROUBLESHOOTING:
+  - Check the run_logs/ folder for error messages
+  - See FAQ section in README.md for common questions
+  - If something doesn't work, error messages will tell you what to fix
+
+
+THAT'S ALL YOU NEED TO KNOW!
+  Your automation is ready to go. Just run python main.py whenever you want
+  a new YouTube Short to post. Easy as that.
