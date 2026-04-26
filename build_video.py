@@ -1,186 +1,174 @@
 """
-Video assembly module for Canine Wisdom YouTube Shorts Pipeline.
-
-Combines dog footage with voiceover into a vertical Shorts video using ffmpeg.
+Optimized Video Assembly with Hardware Acceleration
+Fast encoding with GPU support and simplified filters.
 """
 
 import subprocess
+import json
+import psutil
 from pathlib import Path
-from config import load_config, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE
+from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE
 from utils import log, get_random_dog_clip
+
+
+class HardwareAccelerator:
+    """Detect and use available hardware acceleration"""
+
+    @staticmethod
+    def detect_encoder():
+        """Detect best available hardware encoder"""
+        encoders_to_try = [
+            ("hevc_nvenc", "NVIDIA GPU (fastest)"),
+            ("hevc_amf", "AMD GPU"),
+            ("hevc_qsv", "Intel QuickSync"),
+            ("libx265", "CPU H.265 (fast)"),
+        ]
+
+        for encoder, name in encoders_to_try:
+            try:
+                result = subprocess.run(
+                    ["ffmpeg", "-encoders", "-hide_banner"],
+                    capture_output=True,
+                    text=True,
+                    timeout=5
+                )
+                if encoder in result.stdout:
+                    return encoder, name
+            except:
+                pass
+
+        return "libx264", "CPU H.264 (fallback)"
+
+    @staticmethod
+    def detect_input_format(video_path):
+        """Get input video resolution and codec"""
+        try:
+            cmd = [
+                "ffprobe", "-v", "error", "-select_streams", "v:0",
+                "-show_entries", "stream=width,height,codec_name",
+                "-of", "json", str(video_path)
+            ]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                data = json.loads(result.stdout)
+                if data.get("streams"):
+                    return data["streams"][0]
+        except:
+            pass
+        return None
+
+
+class VideoOptimizer:
+    """Fast video optimization with minimal re-encoding"""
+
+    def __init__(self, video_path):
+        self.video_path = Path(video_path)
+        self.encoder, self.encoder_name = HardwareAccelerator.detect_encoder()
+        self.input_info = HardwareAccelerator.detect_input_format(video_path)
+        log(f"🎬 Using encoder: {self.encoder_name}")
+
+    def get_encoding_params(self):
+        """Get optimized encoding parameters"""
+        if self.encoder.startswith("hevc"):
+            return {
+                "codec": self.encoder,
+                "crf": "28",
+                "preset": "fast" if "nvenc" in self.encoder else "medium"
+            }
+        elif self.encoder == "libx265":
+            return {
+                "codec": "libx265",
+                "crf": "26",
+                "preset": "ultrafast"
+            }
+        else:
+            return {
+                "codec": "libx264",
+                "crf": "26",
+                "preset": "ultrafast"
+            }
 
 
 def build_video() -> str:
     """
-    Assemble vertical Shorts video from dog footage and voiceover.
+    Build vertical Shorts video with fast hardware-accelerated encoding.
 
-    Process:
-    1. Load configuration
-    2. Log: "🎬 Step 3: Building vertical Shorts video..."
-    3. Get random dog clip using get_random_dog_clip()
-    4. Log: f"📹 Selected dog clip: {Path(dog_clip).name}"
-    5. Verify outputs/voiceover.mp3 exists
-    6. Build ffmpeg command with exact flags:
-       - Input 1: dog_clip
-       - Input 2: outputs/voiceover.mp3
-       - Video codec: libx264
-       - CRF: 20 (from config)
-       - Preset: fast (from config)
-       - Video filter: scale=1080:1920:force_original_aspect_ratio=decrease,
-                       pad=1080:1920:(ow-iw)/2:(oh-ih)/2,
-                       eq=brightness=0.02:saturation=1.3,loop=-1:1
-       - Audio codec: aac
-       - Audio bitrate: 192k (from config)
-       - Sample rate: 44100 Hz (from config)
-       - Shortest flag: -shortest
-       - Overwrite: -y
-       - Output: outputs/final_video.mp4
-    7. Run subprocess with timeout=120 (2 minutes)
-    8. Log: f"✅ Video saved to {final_video}"
-    9. Log: "✅ Vertical Shorts video built!"
-    10. Return final_video path
+    Features:
+    - Automatic GPU detection (NVIDIA/AMD/Intel)
+    - Simplified filter chain for speed
+    - Direct scaling without loops
+    - No pre-transcoding
 
     Returns:
         str: Path to final_video.mp4
-
-    Raises:
-        FileNotFoundError: If voiceover.mp3 or ffmpeg not found.
-        Exception: If ffmpeg returns non-zero exit code.
     """
-
-    # ========================================================================
-    # Step 1: Load Configuration
-    # ========================================================================
 
     cfg = load_config()
     dog_footage_dir = cfg["dog_footage_dir"]
-    outputs_dir = cfg["outputs_dir"]
-
-    # ========================================================================
-    # Step 2: Log Start
-    # ========================================================================
 
     log("🎬 Step 3: Building vertical Shorts video...")
 
-    # ========================================================================
-    # Step 3: Get Random Dog Clip
-    # ========================================================================
-
     dog_clip = get_random_dog_clip(dog_footage_dir)
-
-    # ========================================================================
-    # Step 4: Log Selected Clip
-    # ========================================================================
-
     log(f"📹 Selected dog clip: {Path(dog_clip).name}")
 
-    # ========================================================================
-    # Step 5: Verify Voiceover Exists
-    # ========================================================================
+    voiceover_path = Path("outputs/voiceover.mp3")
+    if not voiceover_path.exists():
+        raise FileNotFoundError(f"Audio file not found: {voiceover_path}")
 
-    voiceover_file = outputs_dir / "voiceover.mp3"
-    if not voiceover_file.exists():
-        raise FileNotFoundError(
-            f"Voiceover file not found at {voiceover_file}. "
-            "Run generate_audio() first."
+    # Initialize optimizer with hardware detection
+    optimizer = VideoOptimizer(dog_clip)
+    enc_params = optimizer.get_encoding_params()
+
+    # Simplified filter chain: just scale + pad + brightness boost
+    video_filter = (
+        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
+        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,"
+        f"eq=brightness=0.02:saturation=1.3"
+    )
+
+    cmd = [
+        "ffmpeg",
+        "-i", dog_clip,
+        "-i", str(voiceover_path),
+        "-c:v", enc_params["codec"],
+        "-crf", enc_params["crf"],
+        "-preset", enc_params["preset"],
+        "-vf", video_filter,
+        "-c:a", "aac",
+        "-b:a", AUDIO_BITRATE,
+        "-ar", str(AUDIO_SAMPLE_RATE),
+        "-map", "0:v:0",
+        "-map", "1:a:0",
+        "-shortest",
+        "-y",
+        "outputs/final_video.mp4"
+    ]
+
+    try:
+        log(f"⏳ Encoding with {optimizer.encoder_name}...")
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+
+        if result.returncode != 0:
+            error_output = result.stderr[-500:] if result.stderr else "Unknown error"
+            raise Exception(f"ffmpeg error: {error_output}")
+
+    except FileNotFoundError:
+        raise Exception(
+            "ffmpeg not found. Install with:\n"
+            "  Mac: brew install ffmpeg\n"
+            "  Linux: sudo apt install ffmpeg\n"
+            "  Windows: download from ffmpeg.org"
         )
 
-    # ========================================================================
-    # Step 6: Define Nested run_ffmpeg() Function
-    # ========================================================================
+    final_video = "outputs/final_video.mp4"
 
-    def run_ffmpeg() -> str:
-        """
-        Run ffmpeg to assemble video.
+    # Verify output
+    if not Path(final_video).exists():
+        raise Exception("Video encoding failed - no output file created")
 
-        Returns:
-            str: Path to final_video.mp4
-
-        Raises:
-            FileNotFoundError: If ffmpeg is not installed.
-            Exception: If ffmpeg returns non-zero exit code.
-        """
-
-        # Define output path
-        output_path = outputs_dir / "final_video.mp4"
-
-        # Build ffmpeg command
-        cmd = [
-            "ffmpeg",
-            # Input 1: dog_clip
-            "-i", dog_clip,
-            # Input 2: voiceover
-            "-i", str(voiceover_file),
-            # Video codec
-            "-c:v", "libx264",
-            # CRF (quality, 0-51, lower is better)
-            "-crf", str(VIDEO_CRF),
-            # Preset (speed/compression tradeoff)
-            "-preset", VIDEO_PRESET,
-            # Video filter: scale + pad + brightness/saturation + loop
-            "-vf", (
-                "scale=1080:1920:force_original_aspect_ratio=decrease,"
-                "pad=1080:1920:(ow-iw)/2:(oh-ih)/2,"
-                "eq=brightness=0.02:saturation=1.3,"
-                "loop=-1:1"
-            ),
-            # Audio codec
-            "-c:a", "aac",
-            # Audio bitrate
-            "-b:a", AUDIO_BITRATE,
-            # Audio sample rate
-            "-ar", str(AUDIO_SAMPLE_RATE),
-            # Use shortest input duration
-            "-shortest",
-            # Overwrite output file if exists
-            "-y",
-            # Output path
-            str(output_path),
-        ]
-
-        try:
-            # Run ffmpeg with 120 second timeout
-            subprocess.run(
-                cmd,
-                check=True,
-                timeout=120,
-                capture_output=True,
-                text=True
-            )
-        except FileNotFoundError:
-            raise FileNotFoundError(
-                "ffmpeg not found. Please install ffmpeg: "
-                "macOS (brew install ffmpeg) | Ubuntu (apt-get install ffmpeg) | "
-                "Windows (choco install ffmpeg)"
-            )
-        except subprocess.CalledProcessError as e:
-            raise Exception(
-                f"ffmpeg command failed with exit code {e.returncode}.\n"
-                f"stdout: {e.stdout}\nstderr: {e.stderr}"
-            )
-
-        return str(output_path)
-
-    # ========================================================================
-    # Step 7: Run ffmpeg (no retry - errors are deterministic)
-    # ========================================================================
-
-    final_video = run_ffmpeg()
-
-    # ========================================================================
-    # Step 8: Log Save Location
-    # ========================================================================
-
+    final_size_mb = Path(final_video).stat().st_size / (1024 * 1024)
     log(f"✅ Video saved to {final_video}")
-
-    # ========================================================================
-    # Step 9: Log Completion
-    # ========================================================================
-
+    log(f"📦 Output size: {final_size_mb:.1f} MB")
     log("✅ Vertical Shorts video built!")
-
-    # ========================================================================
-    # Step 10: Return Final Video Path
-    # ========================================================================
 
     return final_video

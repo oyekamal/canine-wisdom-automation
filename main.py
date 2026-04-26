@@ -55,9 +55,18 @@ def main():
         log("")
         video_path = build_video()
 
-        # Step 4: Upload to YouTube
+        # Step 4: Upload to YouTube (optional)
         log("")
-        video_url = upload_youtube()
+        try:
+            video_url = upload_youtube()
+            log("")
+            log("🎉 Your Short is LIVE! Go check your channel!")
+            log(f"📺 Watch here: {video_url}")
+        except FileNotFoundError:
+            log("⏭️  YouTube upload skipped (client_secrets.json not found)")
+            log("   To enable YouTube upload later, add your OAuth2 credentials")
+            log("")
+            log("✅ Video ready at: outputs/final_video.mp4")
 
         # ====================================================================
         # ARCHIVAL & CLEANUP PHASE
@@ -65,14 +74,6 @@ def main():
 
         log("")
         move_outputs_to_archive(run_id)
-
-        # ====================================================================
-        # SUCCESS
-        # ====================================================================
-
-        log("")
-        log("🎉 Your Short is LIVE! Go check your channel!")
-        log(f"📺 Watch here: {video_url}")
 
         return 0
 

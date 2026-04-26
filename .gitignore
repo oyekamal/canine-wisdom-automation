@@ -12,3 +12,7 @@ venv/
 *.mp4
 script.txt
 metadata.json
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
