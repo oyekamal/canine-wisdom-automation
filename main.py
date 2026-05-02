@@ -53,7 +53,7 @@ def main():
 
         # Step 3: Build video
         log("")
-        video_path = build_video()
+        video_path = build_video(audio_duration)
 
         # Step 4: Upload to YouTube (optional)
         log("")

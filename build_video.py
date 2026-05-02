@@ -6,6 +6,8 @@ Fast encoding with GPU support and simplified filters.
 import subprocess
 import json
 import psutil
+import random
+import tempfile
 from pathlib import Path
 from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE
 from utils import log, get_random_dog_clip
@@ -57,6 +59,22 @@ class HardwareAccelerator:
             pass
         return None
 
+    @staticmethod
+    def get_video_duration(video_path):
+        """Get video duration in seconds"""
+        try:
+            cmd = [
+                "ffprobe", "-v", "error", "-show_entries", "format=duration",
+                "-of", "csv=p=0",
+                str(video_path)
+            ]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                return float(result.stdout.strip())
+        except:
+            pass
+        return None
+
 
 class VideoOptimizer:
     """Fast video optimization with minimal re-encoding"""
@@ -65,6 +83,7 @@ class VideoOptimizer:
         self.video_path = Path(video_path)
         self.encoder, self.encoder_name = HardwareAccelerator.detect_encoder()
         self.input_info = HardwareAccelerator.detect_input_format(video_path)
+        self.duration = HardwareAccelerator.get_video_duration(video_path)
         log(f"🎬 Using encoder: {self.encoder_name}")
 
     def get_encoding_params(self):
@@ -88,16 +107,71 @@ class VideoOptimizer:
                 "preset": "ultrafast"
             }
 
+    def trim_video_segment(self, audio_duration: float) -> str:
+        """
+        Trim video to match audio duration from random start position.
 
-def build_video() -> str:
+        Args:
+            audio_duration: Duration of audio in seconds
+
+        Returns:
+            Path to trimmed video segment
+        """
+        if not self.duration:
+            log(f"⚠️  Could not detect video duration, using full video")
+            return str(self.video_path)
+
+        if self.duration < audio_duration:
+            log(f"⚠️  Video shorter than audio ({self.duration:.1f}s < {audio_duration:.1f}s), using full video")
+            return str(self.video_path)
+
+        # Calculate random start position
+        max_start = self.duration - audio_duration
+        start_pos = random.uniform(0, max_start)
+
+        # Create temp file for trimmed segment
+        temp_dir = Path(tempfile.gettempdir())
+        trimmed_video = temp_dir / f"canine_segment_{self.video_path.stem}.mp4"
+
+        try:
+            cmd = [
+                "ffmpeg",
+                "-i", str(self.video_path),
+                "-ss", str(start_pos),
+                "-t", str(audio_duration),
+                "-c:v", "copy",
+                "-c:a", "copy",
+                "-y",
+                str(trimmed_video)
+            ]
+
+            log(f"✂️  Trimming video: {start_pos:.1f}s to {start_pos + audio_duration:.1f}s")
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+
+            if result.returncode == 0 and trimmed_video.exists():
+                return str(trimmed_video)
+            else:
+                log(f"⚠️  Trim failed, using full video")
+                return str(self.video_path)
+
+        except Exception as e:
+            log(f"⚠️  Trim error: {e}, using full video")
+            return str(self.video_path)
+
+
+def build_video(audio_duration: float) -> str:
     """
     Build vertical Shorts video with fast hardware-accelerated encoding.
 
     Features:
     - Automatic GPU detection (NVIDIA/AMD/Intel)
+    - Random video segment matching audio duration
     - Simplified filter chain for speed
     - Direct scaling without loops
     - No pre-transcoding
+
+    Args:
+        audio_duration: Duration of audio track in seconds
 
     Returns:
         str: Path to final_video.mp4
@@ -119,6 +193,9 @@ def build_video() -> str:
     optimizer = VideoOptimizer(dog_clip)
     enc_params = optimizer.get_encoding_params()
 
+    # Trim video to match audio duration from random start position
+    actual_video_path = optimizer.trim_video_segment(audio_duration)
+
     # Simplified filter chain: just scale + pad + brightness boost
     video_filter = (
         f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
@@ -128,7 +205,7 @@ def build_video() -> str:
 
     cmd = [
         "ffmpeg",
-        "-i", dog_clip,
+        "-i", actual_video_path,
         "-i", str(voiceover_path),
         "-c:v", enc_params["codec"],
         "-crf", enc_params["crf"],
