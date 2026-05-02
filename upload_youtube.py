@@ -190,10 +190,27 @@ def upload_youtube() -> str:
     # ========================================================================
 
     script = metadata.get("script", "")
+    title = metadata.get("title", "Dog Fact")
     hashtags = metadata.get("hashtags", [])
     hashtags_str = " ".join(f"#{tag}" for tag in hashtags)
 
-    description = f"""{script}
+    # Load YouTube settings (description template, affiliate links, etc.)
+    base_dir = Path(__file__).parent
+    youtube_settings_file = base_dir / "youtube_settings.json"
+
+    if youtube_settings_file.exists():
+        with open(youtube_settings_file, "r") as f:
+            yt_settings = json.load(f)
+        # Use template from settings
+        description_template = yt_settings.get("description_template", "{video_script}")
+        description = description_template.format(
+            video_title=title,
+            video_script=script,
+            hashtags=hashtags_str
+        )
+    else:
+        # Fallback to simple description
+        description = f"""{script}
 
 {hashtags_str}
 
