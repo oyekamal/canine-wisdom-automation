@@ -83,3 +83,39 @@ def test_lock_state_is_context_manager(tmp_path, monkeypatch):
     atomic_write(tmp_path / "state.json", {"locked": False})
     with lock_state() as state:
         assert isinstance(state, dict)
+
+
+def test_lock_state_persists_mutations(tmp_path, monkeypatch):
+    """Mutations to state inside lock_state are written back to disk."""
+    state_path = tmp_path / "state.json"
+    monkeypatch.setattr("harness.storage.STATE_PATH", state_path)
+    atomic_write(state_path, {"count": 0})
+    with lock_state() as state:
+        state["count"] = 42
+    data = json.loads(state_path.read_text())
+    assert data["count"] == 42
+
+
+def test_lock_state_concurrent_mutations_are_serialized(tmp_path, monkeypatch):
+    """Two threads incrementing a counter under lock_state should not lose updates."""
+    state_path = tmp_path / "state.json"
+    monkeypatch.setattr("harness.storage.STATE_PATH", state_path)
+    atomic_write(state_path, {"count": 0})
+    errors = []
+
+    def increment():
+        try:
+            for _ in range(10):
+                with lock_state() as s:
+                    s["count"] = s["count"] + 1
+        except Exception as e:
+            errors.append(e)
+
+    t1 = threading.Thread(target=increment)
+    t2 = threading.Thread(target=increment)
+    t1.start(); t2.start()
+    t1.join(); t2.join()
+
+    assert not errors
+    data = json.loads(state_path.read_text())
+    assert data["count"] == 20

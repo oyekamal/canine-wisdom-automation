@@ -41,20 +41,17 @@ def atomic_read(path: Path) -> Any:
 
 @contextmanager
 def lock_state():
-    """Context manager: acquire exclusive flock on state.json, yield parsed state."""
+    """Context manager: acquire exclusive flock on a lock file, yield parsed state, atomically persist on exit."""
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
     if not STATE_PATH.exists():
         atomic_write(STATE_PATH, {})
-    with open(STATE_PATH, "r+", encoding="utf-8") as f:
-        fcntl.flock(f, fcntl.LOCK_EX)
+
+    lock_file = STATE_PATH.with_suffix(".lock")
+    with open(lock_file, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
         try:
-            f.seek(0)
-            state = json.loads(f.read() or "{}")
+            state = json.loads(STATE_PATH.read_text(encoding="utf-8") if STATE_PATH.exists() else "{}")
             yield state
-            f.seek(0)
-            f.truncate()
-            f.write(json.dumps(state, indent=2, sort_keys=True))
-            f.flush()
-            os.fsync(f.fileno())
         finally:
-            fcntl.flock(f, fcntl.LOCK_UN)
+            atomic_write(STATE_PATH, state)
+            fcntl.flock(lf, fcntl.LOCK_UN)
