@@ -52,42 +52,44 @@ def should_refresh(channel_json_path: Path, max_age_hours: int = DAILY_TTL_HOURS
     return datetime.now() - datetime.fromisoformat(last) > timedelta(hours=max_age_hours)
 
 
-def _score_channel(youtube, channel_id: str, title: str, description: str,
-                   sub_count: int, video_count: int) -> float:
+def _score_channel(sub_count: int, avg_views: float, video_count: int, niche_score: float) -> float:
     """Compute ranking score for a candidate channel."""
-    search_resp = youtube.search().list(
-        channelId=channel_id, part="id", type="video",
-        order="date", maxResults=10
-    ).execute()
-    video_ids = [i["id"]["videoId"] for i in search_resp.get("items", []) if "videoId" in i.get("id", {})]
-    avg_views = 0.0
-    if video_ids:
-        stats = youtube.videos().list(
-            id=",".join(video_ids), part="statistics"
-        ).execute()
-        view_counts = [int(v["statistics"].get("viewCount", 0)) for v in stats.get("items", [])]
-        avg_views = sum(view_counts) / len(view_counts) if view_counts else 0.0
-
-    client = Anthropic()
-    msg = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=100,
-        messages=[{"role": "user", "content": (
-            f"Rate 0.0–1.0 how closely this YouTube channel matches the dog-facts Shorts niche.\n"
-            f"Title: {title}\nDescription: {description[:200]}\n"
-            f'Respond ONLY with JSON: {{"score": <float>, "reasoning": "<one sentence>"}}'
-        )}],
-    )
-    try:
-        raw = msg.content[0].text
-        parsed = json.loads(raw)
-        niche_score = float(parsed.get("score", 0.5))
-        niche_score = min(max(niche_score, 0.0), 1.0)
-    except Exception:
-        niche_score = 0.5
-
     upload_velocity = min(video_count / 30, 10)
     return (sub_count * 0.3) + (avg_views * 0.4) + (upload_velocity * 0.2) + (niche_score * 0.1)
+
+
+def _batch_niche_scores(candidates: list) -> dict:
+    """
+    Score all candidate channels' niche match in a single Anthropic call.
+    Returns dict mapping channel_id -> float score (0.0–1.0).
+    """
+    if not candidates:
+        return {}
+
+    lines = []
+    for i, c in enumerate(candidates):
+        lines.append(f'{i+1}. ID={c["channel_id"]} Title="{c.get("title","")}" Desc="{c.get("description","")[:100]}"')
+
+    prompt = (
+        "Rate each YouTube channel 0.0–1.0 on how closely it matches the dog-facts Shorts niche.\n"
+        "Channels:\n" + "\n".join(lines) + "\n\n"
+        'Respond ONLY with JSON: {"scores": {"<channel_id>": <float>, ...}}'
+    )
+
+    try:
+        client = Anthropic()
+        msg = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=300,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = msg.content[0].text.strip()
+        if text.startswith("```"):
+            text = "\n".join(text.splitlines()[1:-1])
+        data = json.loads(text)
+        return {k: float(v) for k, v in data.get("scores", {}).items()}
+    except Exception:
+        return {c["channel_id"]: 0.5 for c in candidates}
 
 
 def discover_channels(youtube, seeds: list = None) -> list:
@@ -121,6 +123,21 @@ def discover_channels(youtube, seeds: list = None) -> list:
     ).execute()
     stats_map = {i["id"]: i for i in stats_resp.get("items", [])}
 
+    # Build candidate info list for batch niche scoring
+    candidate_info = []
+    for c in candidates:
+        info = stats_map.get(c["channel_id"])
+        if not info:
+            continue
+        snippet = info.get("snippet", {})
+        candidate_info.append({
+            "channel_id": c["channel_id"],
+            "title": snippet.get("title", ""),
+            "description": snippet.get("description", ""),
+        })
+
+    niche_scores = _batch_niche_scores(candidate_info)
+
     scored = []
     for c in candidates:
         info = stats_map.get(c["channel_id"])
@@ -130,11 +147,24 @@ def discover_channels(youtube, seeds: list = None) -> list:
         snippet = info.get("snippet", {})
         sub_count = int(stats.get("subscriberCount", 0))
         video_count = int(stats.get("videoCount", 0))
-        score = _score_channel(
-            youtube, c["channel_id"],
-            snippet.get("title", ""), snippet.get("description", ""),
-            sub_count, video_count,
-        )
+
+        # Get avg_views from a quick search (last 10 uploads)
+        try:
+            search_resp = youtube.search().list(
+                channelId=c["channel_id"], part="id", type="video",
+                order="date", maxResults=10
+            ).execute()
+            video_ids = [i["id"]["videoId"] for i in search_resp.get("items", []) if "videoId" in i.get("id", {})]
+            avg_views = 0.0
+            if video_ids:
+                vresp = youtube.videos().list(id=",".join(video_ids), part="statistics").execute()
+                view_counts = [int(v["statistics"].get("viewCount", 0)) for v in vresp.get("items", [])]
+                avg_views = sum(view_counts) / len(view_counts) if view_counts else 0.0
+        except Exception:
+            avg_views = 0.0
+
+        niche_score = niche_scores.get(c["channel_id"], 0.5)
+        score = _score_channel(sub_count, avg_views, video_count, niche_score)
         scored.append({
             "channel_id": c["channel_id"],
             "channel_name": snippet.get("title", ""),
@@ -197,8 +227,11 @@ def refresh_channel(youtube, channel_id: str, subscriber_count: int) -> dict:
             transcript_text = " ".join(s["text"] for s in segments)
             transcript_status = "available"
             (trans_dir / f"{vid_id}.txt").write_text(transcript_text, encoding="utf-8")
-        except (TranscriptsDisabled, NoTranscriptFound, Exception):
+        except (TranscriptsDisabled, NoTranscriptFound):
             pass
+        except Exception as e:
+            # Unexpected error — log but don't halt the pipeline
+            print(f"[competitor] transcript fetch unexpected error for {vid_id}: {e}")
 
         hook = extract_hook(transcript_text)
 
@@ -275,7 +308,7 @@ def run_daily_refresh(channel_ids: list = None) -> dict:
             continue
 
         ch_data = json.loads(ch_file.read_text()) if ch_file.exists() else {}
-        sub_count = ch_data.get("subscriber_count", 1)
+        sub_count = ch_data.get("subscriber_count", 0)
         summary = refresh_channel(youtube, cid, sub_count)
         results[cid] = f"pulled {summary['videos_pulled']} videos"
         all_videos.extend(summary.get("video_data", []))
