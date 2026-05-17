@@ -20,13 +20,14 @@ class EvalResult:
 
 def save_eval_result(result: EvalResult, video_id: str) -> None:
     """Persist eval result to data/eval_runs/{date}/{video_id}/{eval_name}.json."""
-    date_str = datetime.now().strftime("%Y-%m-%d")
+    now = datetime.now()
+    date_str = now.strftime("%Y-%m-%d")
     out_dir = DATA_DIR / "eval_runs" / date_str / video_id
     out_dir.mkdir(parents=True, exist_ok=True)
     record = {
         "eval": result.eval_name,
         "video_id": video_id,
-        "run_at": datetime.now().isoformat(),
+        "run_at": now.isoformat(),
         "score": result.score,
         "passed": result.passed,
         "threshold": result.threshold,

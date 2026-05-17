@@ -41,6 +41,7 @@ BAD_DESCRIPTION = "dog video"
 def make_claude_response(score: float, reasoning: str = "test reasoning"):
     mock_msg = MagicMock()
     mock_msg.content = [MagicMock()]
+    mock_msg.content[0].type = "text"
     mock_msg.content[0].text = json.dumps({"score": score, "reasoning": reasoning})
     return mock_msg
 

@@ -24,8 +24,10 @@ def title_eval(title: str) -> EvalResult:
     client = Anthropic()
     msg = client.messages.create(
         model="claude-haiku-4-5-20251001",
-        max_tokens=200,
+        max_tokens=400,
         messages=[{"role": "user", "content": PROMPT.format(title=title)}],
     )
+    if not msg.content or msg.content[0].type != "text":
+        raise ValueError(f"{EVAL_NAME}: unexpected response content: {msg.content}")
     score, reasoning = _parse_llm_score(msg.content[0].text, EVAL_NAME)
     return EvalResult(eval_name=EVAL_NAME, score=score, threshold=THRESHOLD, reasoning=reasoning)

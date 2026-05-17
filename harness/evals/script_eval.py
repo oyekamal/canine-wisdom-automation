@@ -25,10 +25,12 @@ def script_eval(script_text: str, recent_topics: list) -> EvalResult:
     topics_str = ", ".join(recent_topics) if recent_topics else "none"
     msg = client.messages.create(
         model="claude-haiku-4-5-20251001",
-        max_tokens=200,
+        max_tokens=400,
         messages=[{"role": "user", "content": PROMPT.format(
             script=script_text, recent_topics=topics_str
         )}],
     )
+    if not msg.content or msg.content[0].type != "text":
+        raise ValueError(f"{EVAL_NAME}: unexpected response content: {msg.content}")
     score, reasoning = _parse_llm_score(msg.content[0].text, EVAL_NAME)
     return EvalResult(eval_name=EVAL_NAME, score=score, threshold=THRESHOLD, reasoning=reasoning)
