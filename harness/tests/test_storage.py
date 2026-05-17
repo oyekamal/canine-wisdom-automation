@@ -35,8 +35,8 @@ def test_atomic_write_is_pretty_printed(tmp_json):
 
 def test_atomic_write_no_tmp_file_left(tmp_json):
     atomic_write(tmp_json, {"x": 1})
-    tmp_file = tmp_json.with_suffix(".tmp")
-    assert not tmp_file.exists()
+    leftover = list(tmp_json.parent.glob("*.tmp"))
+    assert leftover == []
 
 
 def test_atomic_read_returns_dict(tmp_json):
