@@ -221,7 +221,7 @@ def update_from_analytics(video_id: str, video_data: dict) -> None:
     _write_learnings(data)
 
 
-def rebuild_from_week(all_performance: list) -> None:
+def rebuild_from_week(all_performance: list) -> list:
     """
     Full weekly rebuild from a week's worth of performance dicts.
     Groups by hook_pattern_used and title_formula_used, recomputes averages,
@@ -236,18 +236,42 @@ def rebuild_from_week(all_performance: list) -> None:
         if hp:
             hook_groups.setdefault(hp, []).append(v)
 
+    # Load prior own_analytics hooks to preserve history across weeks
+    prior_own_hooks = {
+        h["pattern"]: h for h in data.get("hook_patterns", [])
+        if h.get("source") == "own_analytics"
+    }
+
     new_hooks = []
     for pattern, vids in hook_groups.items():
         retentions = [v.get("avg_view_duration_sec_latest", 0) for v in vids]
-        n = len(vids)
-        new_hooks.append({
-            "pattern": pattern,
-            "avg_3sec_retention_proxy": sum(retentions) / n / 60,
-            "sample_size": n,
-            "confidence": _confidence_for(n),
-            "source": "own_analytics",
-            "last_seen": today,
-        })
+        n_new = len(vids)
+        if pattern in prior_own_hooks:
+            old = prior_own_hooks[pattern]
+            n_total = old["sample_size"] + n_new
+            new_retention = (old["avg_3sec_retention_proxy"] * old["sample_size"] + sum(retentions) / 60) / n_total
+            new_hooks.append({
+                **old,
+                "avg_3sec_retention_proxy": new_retention,
+                "sample_size": n_total,
+                "confidence": _confidence_for(n_total),
+                "last_seen": today,
+            })
+        else:
+            new_hooks.append({
+                "pattern": pattern,
+                "avg_3sec_retention_proxy": sum(retentions) / n_new / 60,
+                "sample_size": n_new,
+                "confidence": _confidence_for(n_new),
+                "source": "own_analytics",
+                "last_seen": today,
+            })
+
+    # Preserve prior own_analytics hooks that had no videos this week
+    rebuilt_patterns = {h["pattern"] for h in new_hooks}
+    for pattern, h in prior_own_hooks.items():
+        if pattern not in rebuilt_patterns:
+            new_hooks.append(h)
 
     formula_groups: dict[str, list] = {}
     for v in all_performance:
@@ -292,7 +316,9 @@ def rebuild_from_week(all_performance: list) -> None:
     data["hook_patterns"] = new_hooks + kept_competitor_hooks
     data["title_formulas"] = new_formulas + kept_competitor_formulas
     data["anti_patterns"] = anti_patterns
+    result_hooks = data["hook_patterns"]
     _write_learnings(data)
+    return result_hooks
 
 
 def bootstrap_from_competitors(competitor_videos: list) -> None:

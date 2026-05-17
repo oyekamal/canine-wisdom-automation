@@ -347,3 +347,38 @@ def test_bootstrap_skips_if_learnings_already_has_own_analytics(patch_learnings_
     own = [p for p in data["hook_patterns"] if p["source"] == "own_analytics"]
     assert len(own) == 1  # original untouched
     assert own[0]["pattern"] == "existing"
+
+
+def test_rebuild_from_week_preserves_hooks_not_in_current_week(patch_learnings_path):
+    """Prior own_analytics hooks absent from this week should be preserved, not deleted."""
+    import harness.tools.learnings as lm
+    prior_hook = {
+        "pattern": "prior hook from last week",
+        "avg_3sec_retention_proxy": 0.75,
+        "sample_size": 8,
+        "confidence": "medium",
+        "source": "own_analytics",
+        "last_seen": "2026-05-10",
+    }
+    lm._cache = {**EMPTY_LEARNINGS, "hook_patterns": [prior_hook]}
+    lm._cache_time = datetime.now()
+    patch_learnings_path.write_text(json.dumps(lm._cache))
+
+    # This week has a DIFFERENT hook — prior hook is absent
+    week_data = [
+        {
+            "hook_pattern_used": "New hook this week",
+            "title_formula_used": "Some formula",
+            "avg_ctr_latest": 0.07,
+            "avg_view_duration_sec_latest": 35,
+            "topic": "topic A",
+            "topic_cluster": "dog health",
+            "avg_views_latest": 3000,
+        }
+    ]
+    rebuild_from_week(week_data)
+
+    data = json.loads(patch_learnings_path.read_text())
+    patterns = [h["pattern"] for h in data["hook_patterns"]]
+    assert "prior hook from last week" in patterns  # must survive
+    assert "New hook this week" in patterns           # must also appear
