@@ -1,3 +1,11 @@
+> **New entry point (harness):** The harness orchestrator replaces `main.py`. Run with:
+> ```bash
+> python -m harness.orchestrator
+> ```
+> See [`harness/README.md`](harness/README.md) for full documentation, eval table, and cron setup.
+
+---
+
 # Canine Wisdom by King — YouTube Shorts Automation Pipeline
 
 **Automatically generate viral dog fact YouTube Shorts and publish them with a single command.**
