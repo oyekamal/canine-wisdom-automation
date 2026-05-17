@@ -129,7 +129,8 @@ def pull_daily_snapshots() -> dict:
             atomic_write(perf_file, perf)
             pulled += 1
 
-        except Exception:
+        except Exception as exc:
+            print(f"[analytics] snapshot pull failed for {vid_id}: {exc}")
             continue
 
     return {"pulled": pulled}

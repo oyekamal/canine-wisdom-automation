@@ -144,7 +144,10 @@ def get_analytics_service():
         creds.refresh(Request())
         with open(token_file, "w") as f:
             f.write(creds.to_json())
-
+    if not creds.valid:
+        raise RuntimeError(
+            "Analytics credentials are invalid or expired. Re-run the pipeline once to re-authenticate."
+        )
     return build("youtubeAnalytics", "v2", credentials=creds)
 
 
