@@ -86,7 +86,16 @@ mkdir -p dog_footage
 ```
 
 ### 3. Run
+
+**With the harness (recommended — eval-gated, self-improving):**
 ```bash
+source venv/bin/activate
+python -m harness.orchestrator
+```
+
+**Legacy (raw pipeline, no evals):**
+```bash
+source venv/bin/activate
 python main.py
 ```
 
@@ -173,19 +182,28 @@ AUDIO_BITRATE = "192k"  # 192k is high quality
 
 ### Schedule Daily Posts
 
-Run the pipeline daily without manual interaction:
+Run the harness automatically every day via cron. The harness handles everything:
+topic selection → script → audio → video → evals → upload → incident logging.
 
 **Mac/Linux (Cron):**
 ```bash
 crontab -e
-# Add line:
-0 9 * * * cd /path/to/canine-wisdom-automation && python main.py >> run_logs/cron.log 2>&1
+# Add this line (adjust path):
+0 9 * * * cd /path/to/canine-wisdom-automation && source venv/bin/activate && python -m harness.orchestrator >> run_logs/cron.log 2>&1
 ```
+
+**What happens each day at 9am:**
+1. Script is generated and scored (hook, script quality, title CTR)
+2. Audio is generated and validated (duration check)
+3. Video is built and validated (resolution check)
+4. Short is uploaded to YouTube
+5. Eval scores are saved to `harness/data/eval_runs/`
+6. If anything fails after 3 retries → incident written to `harness/data/incidents/`
 
 **Windows (Task Scheduler):**
 1. Open Task Scheduler
 2. Create Basic Task → Daily at 9:00 AM
-3. Action: Run `python main.py` in project folder
+3. Action: Run `python -m harness.orchestrator` in project folder (with venv activated)
 
 ---
 
@@ -193,28 +211,39 @@ crontab -e
 
 ```
 canine-wisdom-automation/
-├── main.py                  # Master runner — execute this
-├── config.py                # Load API keys & validate setup
-├── generate_script.py       # Step 1: Claude generates dog fact
-├── generate_audio.py        # Step 2: ElevenLabs creates narration
-├── build_video.py           # Step 3: ffmpeg edits video + audio
-├── upload_youtube.py        # Step 4: Google OAuth uploads to YouTube
-├── utils.py                 # Helpers (logging, file ops)
 │
-├── .env.example             # Template for API keys
-├── .env                     # Your actual API keys (DO NOT commit)
-├── client_secrets.json      # Google OAuth (DO NOT commit)
-├── token.pickle             # YouTube auth token (DO NOT commit)
+├── harness/                     # ← NEW: autonomous harness layer
+│   ├── orchestrator.py          #   Daily entry point (replaces main.py)
+│   ├── storage.py               #   Atomic JSON read/write
+│   ├── evals/                   #   8 eval modules (LLM + deterministic)
+│   ├── tests/                   #   Full test suite (39 tests)
+│   └── data/                    #   All persistent state (JSON)
+│       ├── eval_runs/           #     Scores per video per eval
+│       ├── incidents/           #     Failure reports
+│       ├── state.json           #     Global KPIs + config
+│       └── ...                  #     (competitors, topics, etc. — Sessions 2–4)
 │
-├── dog_footage/             # Your dog video clips (.mp4/.mov)
-├── outputs/                 # Temp files during current run
-├── archive/                 # Completed videos (timestamped folders)
-├── run_logs/                # Detailed logs for each execution
+├── main.py                      # Legacy runner (no evals — use harness instead)
+├── config.py                    # Load API keys & validate setup
+├── generate_script.py           # Step 1: Claude generates dog fact
+├── generate_audio.py            # Step 2: ElevenLabs creates narration
+├── build_video.py               # Step 3: ffmpeg edits video + audio
+├── upload_youtube.py            # Step 4: Google OAuth uploads to YouTube
+├── utils.py                     # Helpers (logging, file ops)
 │
-├── requirements.txt         # Python dependencies
-├── SETUP.md                 # Detailed setup guide (~15 min)
-├── README.md                # This file
-└── .git/                    # Version control
+├── .env.example                 # Template for API keys
+├── .env                         # Your actual API keys (DO NOT commit)
+├── client_secrets.json          # Google OAuth (DO NOT commit)
+├── token.json                   # YouTube auth token (DO NOT commit)
+│
+├── dog_footage/                 # Your dog video clips (.mp4/.mov)
+├── outputs/                     # Temp files during current run
+├── archive/                     # Completed videos (timestamped folders)
+├── run_logs/                    # Detailed logs for each execution
+│
+├── requirements.txt             # Python dependencies
+├── SETUP.md                     # Detailed setup guide (~15 min)
+└── README.md                    # This file
 ```
 
 ---

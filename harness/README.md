@@ -5,18 +5,55 @@ competitor intelligence, trend research, comment replies, and self-healing.
 
 ## Running
 
-**Daily run (replaces main.py):**
+### One-off run
+
 ```bash
+cd /path/to/canine-wisdom-automation
+source venv/bin/activate
 python -m harness.orchestrator
 ```
 
-**Cron (9am daily):**
+The orchestrator runs the full pipeline and exits. It prints progress to stdout and writes structured logs to `run_logs/`. If any eval fails after retries, an incident report is written to `harness/data/incidents/` and the process exits non-zero.
+
+### Daily cron (recommended)
+
+Edit your crontab (`crontab -e`) and add:
+
 ```
-0 9 * * * cd /path/to/canine-wisdom-automation && python -m harness.orchestrator >> run_logs/cron.log 2>&1
+0 9 * * * cd /path/to/canine-wisdom-automation && source venv/bin/activate && python -m harness.orchestrator >> run_logs/cron.log 2>&1
 ```
 
-**Run tests:**
+Replace `/path/to/canine-wisdom-automation` with the actual absolute path on your machine. The `>> run_logs/cron.log` appends every run's output to a single log file you can tail.
+
+**What runs at 9am:**
+1. `generate_script()` — Claude writes a dog fact script
+2. `hook_eval` + `script_eval` + `title_eval` — LLM scores the script; retries up to 3× if any fail
+3. `description_eval` — scores the description (non-blocking; logs incident but continues)
+4. `generate_audio()` — ElevenLabs TTS
+5. `audio_eval` — ffprobe checks duration (10–90s); halts pipeline if fails
+6. `build_video()` — ffmpeg builds 1080×1920 Short
+7. `video_eval` — ffprobe checks resolution; halts pipeline if fails
+8. `upload_youtube()` — publishes to YouTube
+9. Eval scores saved to `harness/data/eval_runs/YYYY-MM-DD/{run_id}/`
+10. Outputs archived to `archive/{run_id}/`
+
+### Check what happened
+
 ```bash
+# Last run's log
+tail -50 run_logs/cron.log
+
+# Any incidents (eval failures)
+ls harness/data/incidents/
+
+# Eval scores for a specific run
+ls harness/data/eval_runs/$(date +%Y-%m-%d)/
+```
+
+### Run tests
+
+```bash
+source venv/bin/activate
 python -m pytest harness/tests/ -v
 ```
 
