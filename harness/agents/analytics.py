@@ -115,7 +115,7 @@ def pull_daily_snapshots() -> dict:
                 ids="channel==MINE",
                 startDate=(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
                 endDate=today,
-                metrics="views,watchTimeMinutes,averageViewDuration,estimatedMinutesWatched,subscribersGained,likes,comments,impressions,impressionClickThroughRate",
+                metrics="views,watchTimeMinutes,averageViewDuration,subscribersGained,likes,comments,impressions,impressionClickThroughRate",
                 filters=f"video=={vid_id}",
             ).execute()
 

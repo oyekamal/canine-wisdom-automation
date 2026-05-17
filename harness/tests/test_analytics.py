@@ -86,12 +86,11 @@ def test_pull_daily_snapshots_appends_snapshot(patch_data_dir):
 
     mock_analytics = MagicMock()
     mock_analytics.reports().query().execute.return_value = {
-        "rows": [[1240, 620, 30, 620, 4, 88, 12, 20000, 0.062]],
+        "rows": [[1240, 620, 30, 4, 88, 12, 20000, 0.062]],
         "columnHeaders": [
             {"name": "views"}, {"name": "watchTimeMinutes"}, {"name": "averageViewDuration"},
-            {"name": "estimatedMinutesWatched"}, {"name": "subscribersGained"},
-            {"name": "likes"}, {"name": "comments"}, {"name": "impressions"},
-            {"name": "impressionClickThroughRate"},
+            {"name": "subscribersGained"}, {"name": "likes"}, {"name": "comments"},
+            {"name": "impressions"}, {"name": "impressionClickThroughRate"},
         ],
     }
 
@@ -111,12 +110,11 @@ def test_pull_daily_snapshots_does_not_duplicate_same_day(patch_data_dir):
 
     mock_analytics = MagicMock()
     mock_analytics.reports().query().execute.return_value = {
-        "rows": [[100, 50, 30, 50, 1, 5, 1, 1000, 0.04]],
+        "rows": [[100, 50, 30, 1, 5, 1, 1000, 0.04]],
         "columnHeaders": [
             {"name": "views"}, {"name": "watchTimeMinutes"}, {"name": "averageViewDuration"},
-            {"name": "estimatedMinutesWatched"}, {"name": "subscribersGained"},
-            {"name": "likes"}, {"name": "comments"}, {"name": "impressions"},
-            {"name": "impressionClickThroughRate"},
+            {"name": "subscribersGained"}, {"name": "likes"}, {"name": "comments"},
+            {"name": "impressions"}, {"name": "impressionClickThroughRate"},
         ],
     }
 
