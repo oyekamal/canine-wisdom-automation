@@ -79,91 +79,105 @@ def run_pipeline() -> dict:
     clear_outputs_dir()
     metadata = None
 
-    # ── Script generation + LLM evals (retry loop) ───────────────────────────
-    for attempt in range(MAX_LLM_RETRIES):
-        metadata = generate_script()
-        script_text = metadata["script"]
-        title = metadata["title"]
+    try:
+        # ── Script generation + LLM evals (retry loop) ───────────────────────────
+        for attempt in range(MAX_LLM_RETRIES):
+            metadata = generate_script()
+            script_text = metadata["script"]
+            title = metadata["title"]
 
-        # Hook eval — first sentence only
-        hook_sentence = script_text.split(".")[0] + "."
-        hook_result = hook_eval(hook_sentence)
-        save_eval_result(hook_result, run_id)
-        if not hook_result.passed:
-            log(f"⚠️  hook_eval failed (attempt {attempt + 1}): {hook_result.reasoning}")
-            if attempt == MAX_LLM_RETRIES - 1:
-                _write_incident("hook_eval", f"Score {hook_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
-                                hook_result.reasoning, "generate_script.py:prompt")
-                move_outputs_to_archive(run_id)
-                return {"success": False, "video_url": None, "reason": "hook_eval failed after max retries"}
-            continue
+            # Hook eval — first sentence only
+            hook_sentence = script_text.split(".")[0] + "."
+            hook_result = hook_eval(hook_sentence)
+            save_eval_result(hook_result, run_id)
+            if not hook_result.passed:
+                log(f"⚠️  hook_eval failed (attempt {attempt + 1}): {hook_result.reasoning}")
+                if attempt == MAX_LLM_RETRIES - 1:
+                    _write_incident("hook_eval", f"Score {hook_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
+                                    hook_result.reasoning, "generate_script.py:prompt")
+                    move_outputs_to_archive(run_id)
+                    return {"success": False, "video_url": None, "reason": "hook_eval failed after max retries"}
+                continue
 
-        # Script eval
-        script_result = script_eval(script_text, recent_topics=[])
-        save_eval_result(script_result, run_id)
-        if not script_result.passed:
-            log(f"⚠️  script_eval failed (attempt {attempt + 1}): {script_result.reasoning}")
-            if attempt == MAX_LLM_RETRIES - 1:
-                _write_incident("script_eval", f"Score {script_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
-                                script_result.reasoning, "generate_script.py:prompt")
-                move_outputs_to_archive(run_id)
-                return {"success": False, "video_url": None, "reason": "script_eval failed after max retries"}
-            continue
+            # Script eval
+            script_result = script_eval(script_text, recent_topics=[])
+            save_eval_result(script_result, run_id)
+            if not script_result.passed:
+                log(f"⚠️  script_eval failed (attempt {attempt + 1}): {script_result.reasoning}")
+                if attempt == MAX_LLM_RETRIES - 1:
+                    _write_incident("script_eval", f"Score {script_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
+                                    script_result.reasoning, "generate_script.py:prompt")
+                    move_outputs_to_archive(run_id)
+                    return {"success": False, "video_url": None, "reason": "script_eval failed after max retries"}
+                continue
 
-        # Title eval
-        title_result = title_eval(title)
-        save_eval_result(title_result, run_id)
-        if not title_result.passed:
-            log(f"⚠️  title_eval failed (attempt {attempt + 1}): {title_result.reasoning}")
-            if attempt == MAX_LLM_RETRIES - 1:
-                _write_incident("title_eval", f"Score {title_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
-                                title_result.reasoning, "generate_script.py:prompt")
-                move_outputs_to_archive(run_id)
-                return {"success": False, "video_url": None, "reason": "title_eval failed after max retries"}
-            continue
+            # Title eval
+            title_result = title_eval(title)
+            save_eval_result(title_result, run_id)
+            if not title_result.passed:
+                log(f"⚠️  title_eval failed (attempt {attempt + 1}): {title_result.reasoning}")
+                if attempt == MAX_LLM_RETRIES - 1:
+                    _write_incident("title_eval", f"Score {title_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
+                                    title_result.reasoning, "generate_script.py:prompt")
+                    move_outputs_to_archive(run_id)
+                    return {"success": False, "video_url": None, "reason": "title_eval failed after max retries"}
+                continue
 
-        break  # all script LLM evals passed
+            break  # all script LLM evals passed
 
-    # ── Description eval (non-blocking) ──────────────────────────────────────
-    description = metadata.get("description", " ".join(f"#{t}" for t in metadata.get("hashtags", [])))
-    desc_result = description_eval(description)
-    save_eval_result(desc_result, run_id)
-    if not desc_result.passed:
-        _write_incident("description_eval", f"Score {desc_result.score:.1f}",
-                        desc_result.reasoning, "upload_youtube.py:description")
-        log("⚠️  description_eval failed — continuing (non-blocking)")
+        # ── Description eval (non-blocking) ──────────────────────────────────────
+        description = metadata.get("description", " ".join(f"#{t}" for t in metadata.get("hashtags", [])))
+        desc_result = description_eval(description)
+        save_eval_result(desc_result, run_id)
+        if not desc_result.passed:
+            _write_incident("description_eval", f"Score {desc_result.score:.1f}",
+                            desc_result.reasoning, "upload_youtube.py:description")
+            log("⚠️  description_eval failed — continuing (non-blocking)")
 
-    # ── Thumbnail eval (placeholder) ──────────────────────────────────────────
-    thumb_result = thumbnail_eval(variants=[])
-    save_eval_result(thumb_result, run_id)
+        # ── Thumbnail eval (placeholder) ──────────────────────────────────────────
+        thumb_result = thumbnail_eval(variants=[])
+        save_eval_result(thumb_result, run_id)
 
-    # ── Audio generation + hard eval ─────────────────────────────────────────
-    audio_duration = generate_audio()
-    audio_path = Path("outputs/voiceover.mp3")
-    audio_result = audio_eval(audio_path)
-    save_eval_result(audio_result, run_id)
-    if not audio_result.passed:
-        _write_incident("audio_eval", audio_result.reasoning, "Check ElevenLabs response",
-                        "generate_audio.py")
+        # ── Audio generation + hard eval ─────────────────────────────────────────
+        audio_duration = generate_audio()
+        audio_path = Path("outputs/voiceover.mp3")
+        audio_result = audio_eval(audio_path)
+        save_eval_result(audio_result, run_id)
+        if not audio_result.passed:
+            _write_incident("audio_eval", audio_result.reasoning, "Check ElevenLabs response",
+                            "generate_audio.py")
+            move_outputs_to_archive(run_id)
+            return {"success": False, "video_url": None, "reason": f"audio_eval failed: {audio_result.reasoning}"}
+
+        # ── Video build + hard eval ───────────────────────────────────────────────
+        video_path = build_video(audio_duration)
+        video_result = video_eval(Path(video_path))
+        save_eval_result(video_result, run_id)
+        if not video_result.passed:
+            _write_incident("video_eval", video_result.reasoning, "Check ffmpeg filter chain",
+                            "build_video.py")
+            move_outputs_to_archive(run_id)
+            return {"success": False, "video_url": None, "reason": f"video_eval failed: {video_result.reasoning}"}
+
+        # ── Upload ────────────────────────────────────────────────────────────────
+        video_url = upload_youtube()
+        log(f"🎉 Short is LIVE: {video_url}")
+
         move_outputs_to_archive(run_id)
-        return {"success": False, "video_url": None, "reason": f"audio_eval failed: {audio_result.reasoning}"}
+        return {"success": True, "video_url": video_url, "reason": None}
 
-    # ── Video build + hard eval ───────────────────────────────────────────────
-    video_path = build_video(audio_duration)
-    video_result = video_eval(Path(video_path))
-    save_eval_result(video_result, run_id)
-    if not video_result.passed:
-        _write_incident("video_eval", video_result.reasoning, "Check ffmpeg filter chain",
-                        "build_video.py")
-        move_outputs_to_archive(run_id)
-        return {"success": False, "video_url": None, "reason": f"video_eval failed: {video_result.reasoning}"}
-
-    # ── Upload ────────────────────────────────────────────────────────────────
-    video_url = upload_youtube()
-    log(f"🎉 Short is LIVE: {video_url}")
-
-    move_outputs_to_archive(run_id)
-    return {"success": True, "video_url": video_url, "reason": None}
+    except Exception as exc:
+        _write_incident(
+            trigger="unhandled_exception",
+            what_failed=str(exc),
+            hypothesis="Unexpected error in pipeline step",
+            code_path="orchestrator.py",
+        )
+        try:
+            move_outputs_to_archive(run_id)
+        except Exception:
+            pass
+        return {"success": False, "video_url": None, "reason": f"unhandled exception: {exc}"}
 
 
 if __name__ == "__main__":
