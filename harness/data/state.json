@@ -1,0 +1,17 @@
+{
+  "competitor_channels": [],
+  "config": {
+    "eval_pass_threshold": 7,
+    "max_competitors": 5,
+    "post_hour_local": 9,
+    "thumbnail_api": null
+  },
+  "current_kpis": {
+    "avg_ctr_7d": null,
+    "avg_views_7d": null,
+    "subscribers": null,
+    "watch_time_minutes_7d": null
+  },
+  "last_run": null,
+  "last_weekly_eval": null
+}
