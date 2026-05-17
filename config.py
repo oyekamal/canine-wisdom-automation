@@ -32,7 +32,10 @@ ANTHROPIC_MAX_TOKENS = 500
 ELEVENLABS_API_BASE = "https://api.elevenlabs.io"
 
 # YouTube API Configuration
-YOUTUBE_API_SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+YOUTUBE_API_SCOPES = [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
+]
 
 # Retry & Backoff Configuration
 MAX_RETRIES = 1

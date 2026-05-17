@@ -123,6 +123,31 @@ def get_youtube_service():
     return build("youtube", "v3", credentials=creds)
 
 
+def get_analytics_service():
+    """
+    Get authenticated YouTube Analytics API v2 service.
+    Reuses the same OAuth credentials as get_youtube_service().
+    """
+    from googleapiclient.discovery import build
+    from google.oauth2.credentials import Credentials
+    from google.auth.transport.requests import Request
+    from config import YOUTUBE_API_SCOPES
+
+    base_dir = Path(__file__).parent
+    token_file = base_dir / "token.json"
+
+    if not token_file.exists():
+        raise FileNotFoundError("token.json not found. Run get_youtube_service() first to authenticate.")
+
+    creds = Credentials.from_authorized_user_file(str(token_file), YOUTUBE_API_SCOPES)
+    if creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+        with open(token_file, "w") as f:
+            f.write(creds.to_json())
+
+    return build("youtubeAnalytics", "v2", credentials=creds)
+
+
 # ============================================================================
 # PART 2: VIDEO UPLOAD
 # ============================================================================
