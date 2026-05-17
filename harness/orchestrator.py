@@ -14,7 +14,6 @@ from upload_youtube import upload_youtube
 from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive
 
 from harness.evals.audio_eval import audio_eval
-from harness.evals.channel_eval import channel_eval
 from harness.evals.description_eval import description_eval
 from harness.evals.hook_eval import hook_eval
 from harness.evals.script_eval import script_eval

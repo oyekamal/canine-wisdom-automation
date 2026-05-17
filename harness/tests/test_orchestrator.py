@@ -72,8 +72,9 @@ def _make_eval_result(passed: bool, score: float = 8.0, name: str = "hook_eval")
 @patch("harness.orchestrator.move_outputs_to_archive")
 @patch("harness.orchestrator.clear_outputs_dir")
 @patch("harness.orchestrator.init_logger")
+@patch("harness.orchestrator.save_eval_result")
 def test_run_pipeline_succeeds_when_all_evals_pass(
-    mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
+    mock_save, mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
     mock_hook, mock_script_eval, mock_title, mock_thumb, mock_desc, mock_audio_eval, mock_video_eval,
     tmp_path, monkeypatch
 ):
@@ -105,8 +106,9 @@ def test_run_pipeline_succeeds_when_all_evals_pass(
 @patch("harness.orchestrator.move_outputs_to_archive")
 @patch("harness.orchestrator.clear_outputs_dir")
 @patch("harness.orchestrator.init_logger")
+@patch("harness.orchestrator.save_eval_result")
 def test_run_pipeline_retries_script_on_hook_fail(
-    mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
+    mock_save, mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
     mock_hook, mock_script_eval, mock_title, mock_thumb, mock_desc, mock_audio_eval, mock_video_eval,
     tmp_path, monkeypatch
 ):
@@ -142,8 +144,9 @@ def test_run_pipeline_retries_script_on_hook_fail(
 @patch("harness.orchestrator.move_outputs_to_archive")
 @patch("harness.orchestrator.clear_outputs_dir")
 @patch("harness.orchestrator.init_logger")
+@patch("harness.orchestrator.save_eval_result")
 def test_run_pipeline_writes_incident_and_fails_after_3_hook_failures(
-    mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
+    mock_save, mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
     mock_hook, mock_script_eval, mock_title, mock_thumb, mock_desc, mock_audio_eval, mock_video_eval,
     tmp_path, monkeypatch
 ):
@@ -177,8 +180,9 @@ def test_run_pipeline_writes_incident_and_fails_after_3_hook_failures(
 @patch("harness.orchestrator.move_outputs_to_archive")
 @patch("harness.orchestrator.clear_outputs_dir")
 @patch("harness.orchestrator.init_logger")
+@patch("harness.orchestrator.save_eval_result")
 def test_run_pipeline_halts_on_hard_audio_fail(
-    mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
+    mock_save, mock_logger, mock_clear, mock_archive, mock_upload, mock_script, mock_audio, mock_video_build,
     mock_hook, mock_script_eval, mock_title, mock_thumb, mock_desc, mock_audio_eval, mock_video_eval,
     tmp_path, monkeypatch
 ):
