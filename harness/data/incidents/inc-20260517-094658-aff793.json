@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260517-094658-aff793",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword-rich content and explicit CTA, contains only hashtags without descriptive text, and provides no context about the video despite having adequate hashtag variety.",
+  "id": "inc-20260517-094658-aff793",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T09:46:58.818688",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

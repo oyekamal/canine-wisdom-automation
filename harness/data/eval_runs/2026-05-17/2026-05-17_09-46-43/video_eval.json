@@ -1,0 +1,9 @@
+{
+  "eval": "video_eval",
+  "passed": true,
+  "reasoning": "Video OK: 1080x1920",
+  "run_at": "2026-05-17T09:47:14.262894",
+  "score": 10.0,
+  "threshold": 1.0,
+  "video_id": "2026-05-17_09-46-43"
+}

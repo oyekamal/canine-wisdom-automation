@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "orchestrator.py",
+  "fix_branch": "harness-auto-fix/inc-20260517-094619-464317",
+  "fix_status": "open",
+  "hypothesis": "Unexpected error in pipeline step",
+  "id": "inc-20260517-094619-464317",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T09:46:19.175099",
+  "trigger": "unhandled_exception",
+  "what_failed": "hook_eval: failed to parse LLM response: Expecting value: line 1 column 1 (char 0)\nRaw: ```json\n{\"score\": 8.5, \"reasoning\": \"Combines surprising scientific revelation (dogs getting 'high' on owner scent), emotional resonance (oxytocin/mother-baby bond), and a cliffhanger ('here's what made me tear up') that creates multiple layers of curiosity and stops the scroll effectively.\"}\n```"
+}
