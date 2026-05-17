@@ -165,11 +165,31 @@ def build_topic_queue(date: str = None) -> dict:
         normalized = s.lower().strip()
         suggestion_counts[normalized] += 1
 
+    # Garbage filter — remove suggestions that are not real dog topics
+    GARBAGE_TERMS = {
+        "in hindi", "in english", "in tamil", "in telugu", "for kids",
+        "shorts", "short", "2024", "2025", "2026", "top 10", "top 5",
+        "compilation", "playlist", "subscribe", "channel",
+    }
+
+    def _is_garbage(suggestion: str) -> bool:
+        s = suggestion.lower().strip()
+        if len(s) < 8:
+            return True  # too short to be a real topic
+        if not any(w in s for w in ["dog", "puppy", "canine", "pup"]):
+            return True  # must mention dogs
+        if any(g in s for g in GARBAGE_TERMS):
+            return True
+        return False
+
     # Build ranked topic list
     topics = []
     seen_clusters = set()
 
     for suggestion, freq in suggestion_counts.most_common(50):
+        if _is_garbage(suggestion):
+            continue
+
         cluster = _assign_cluster(suggestion)
         topic_phrase = _suggestion_to_topic(suggestion)
 
