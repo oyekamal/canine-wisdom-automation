@@ -180,6 +180,9 @@ def build_topic_queue(date: str = None) -> dict:
             return True  # must mention dogs
         if any(g in s for g in GARBAGE_TERMS):
             return True
+        # Reject phrases starting with conjunctions/prepositions — artifact of autocomplete
+        if re.match(r'^(and|or|but|the|a |an |in |on |at |by |to )', s):
+            return True
         return False
 
     # Build ranked topic list

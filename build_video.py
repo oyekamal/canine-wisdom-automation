@@ -122,7 +122,26 @@ class VideoOptimizer:
             return str(self.video_path)
 
         if self.duration < audio_duration:
-            log(f"⚠️  Video shorter than audio ({self.duration:.1f}s < {audio_duration:.1f}s), using full video")
+            log(f"🔁 Video shorter than audio ({self.duration:.1f}s < {audio_duration:.1f}s), looping to match")
+            temp_dir = Path(tempfile.gettempdir())
+            looped_video = temp_dir / f"canine_loop_{self.video_path.stem}.mp4"
+            loops_needed = int(audio_duration / self.duration) + 2
+            try:
+                cmd = [
+                    "ffmpeg",
+                    "-stream_loop", str(loops_needed),
+                    "-i", str(self.video_path),
+                    "-t", str(audio_duration),
+                    "-c:v", "copy",
+                    "-an",
+                    "-y",
+                    str(looped_video)
+                ]
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+                if result.returncode == 0 and looped_video.exists():
+                    return str(looped_video)
+            except Exception as e:
+                log(f"⚠️  Loop failed: {e}, using full video")
             return str(self.video_path)
 
         # Calculate random start position
