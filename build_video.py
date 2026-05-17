@@ -159,7 +159,7 @@ class VideoOptimizer:
             return str(self.video_path)
 
 
-def build_video(audio_duration: float) -> str:
+def build_video(audio_duration: float, clip_path: str = None) -> str:
     """
     Build vertical Shorts video with fast hardware-accelerated encoding.
 
@@ -182,8 +182,12 @@ def build_video(audio_duration: float) -> str:
 
     log("🎬 Step 3: Building vertical Shorts video...")
 
-    dog_clip = get_random_dog_clip(dog_footage_dir)
-    log(f"📹 Selected dog clip: {Path(dog_clip).name}")
+    if clip_path and Path(clip_path).exists():
+        dog_clip = clip_path
+        log(f"📹 Using topic-matched clip: {Path(dog_clip).name}")
+    else:
+        dog_clip = get_random_dog_clip(dog_footage_dir)
+        log(f"📹 Selected dog clip: {Path(dog_clip).name}")
 
     voiceover_path = Path("outputs/voiceover.mp3")
     if not voiceover_path.exists():

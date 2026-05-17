@@ -287,6 +287,43 @@ def refresh_channel(youtube, channel_id: str, subscriber_count: int) -> dict:
     return {"videos_pulled": pulled, "video_data": all_video_data}
 
 
+def bootstrap_competitors_if_needed() -> bool:
+    """
+    Run channel discovery if competitor_channels in state.json is empty.
+    Called once on first orchestrator launch. Returns True if discovery ran.
+    """
+    from harness.storage import atomic_read, atomic_write, STATE_PATH
+    state = atomic_read(STATE_PATH)
+    if state.get("competitor_channels"):
+        return False  # already have channels
+
+    print("[competitor] No channels configured — running discovery...")
+    try:
+        youtube = get_youtube_service()
+        channels = discover_channels(youtube)
+        if not channels:
+            print("[competitor] Discovery returned no channels")
+            return False
+
+        # Save to competitors/ dir
+        for ch in channels:
+            ch_dir = DATA_DIR / "competitors" / ch["channel_id"]
+            ch_dir.mkdir(parents=True, exist_ok=True)
+            ch_file = ch_dir / "channel.json"
+            ch_data = {**ch, "last_scanned": None, "last_deep_scan": None}
+            atomic_write(ch_file, ch_data)
+
+        # Write IDs to state.json
+        state["competitor_channels"] = [ch["channel_id"] for ch in channels]
+        atomic_write(STATE_PATH, state)
+        print(f"[competitor] Discovered {len(channels)} channels: {[ch['channel_name'] for ch in channels]}")
+        return True
+
+    except Exception as e:
+        print(f"[competitor] Discovery failed (non-blocking): {e}")
+        return False
+
+
 def run_daily_refresh(channel_ids: list = None) -> dict:
     """
     Refresh all tracked channels if >24h stale.
