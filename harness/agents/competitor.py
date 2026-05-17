@@ -223,8 +223,9 @@ def refresh_channel(youtube, channel_id: str, subscriber_count: int) -> dict:
         transcript_text = ""
         transcript_status = "unavailable"
         try:
-            segments = YouTubeTranscriptApi.get_transcript(vid_id)
-            transcript_text = " ".join(s["text"] for s in segments)
+            fetched = YouTubeTranscriptApi().fetch(vid_id)
+            segments = fetched if isinstance(fetched, list) else list(fetched)
+            transcript_text = " ".join(s.get("text", "") if isinstance(s, dict) else str(s) for s in segments)
             transcript_status = "available"
             (trans_dir / f"{vid_id}.txt").write_text(transcript_text, encoding="utf-8")
         except (TranscriptsDisabled, NoTranscriptFound):
