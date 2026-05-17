@@ -1,15 +1,36 @@
 {
-  "updated_at": null,
-  "total_videos_tracked": 0,
   "channel_stats": {
     "subscriber_count": null,
     "total_views_all_time": null
   },
   "kpis_7d": {
-    "avg_views_per_video": null,
     "avg_ctr": null,
+    "avg_views_per_video": null,
     "avg_watch_time_min": null,
     "subscribers_gained": null
   },
-  "videos": []
+  "total_videos_tracked": 4,
+  "updated_at": null,
+  "videos": [
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:33:26.604995",
+      "video_id": "-lB8qnmrTtQ"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:36:20.897460",
+      "video_id": "KcUoF0scIdI"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:37:36.064149",
+      "video_id": "7s9RK7vUakk"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:39:18.380220",
+      "video_id": "oyRh5cfl9YU"
+    }
+  ]
 }
