@@ -1,40 +1,61 @@
 {
-  "updated_at": null,
-  "schema_version": 1,
-  "hook_patterns": [],
-  "title_formulas": [],
-  "thumbnail_features": [],
-  "posting_times": {
-    "shorts": {
-      "best_hour_utc": 14,
-      "best_dow": "Tue",
-      "confidence": "low",
-      "sample_size": 0
+  "anti_patterns": [],
+  "covered_topics": [
+    {
+      "posted": "2026-05-17",
+      "topic": "dogs smell human emotions",
+      "video_id": "-lB8qnmrTtQ"
     },
-    "long_form": {
-      "best_hour_utc": 17,
-      "best_dow": "Sat",
-      "confidence": "low",
-      "sample_size": 0
+    {
+      "posted": "2026-05-17",
+      "topic": "dog nose prints unique identification",
+      "video_id": "KcUoF0scIdI"
+    },
+    {
+      "posted": "2026-05-17",
+      "topic": "dog hearing ability",
+      "video_id": "7s9RK7vUakk"
+    },
+    {
+      "posted": "2026-05-17",
+      "topic": "dogs detecting illness",
+      "video_id": "oyRh5cfl9YU"
     }
+  ],
+  "format_mix": {
+    "long_form_per_week": 0,
+    "next_review": null,
+    "rationale": "insufficient data \u2014 will re-evaluate after 4 weeks",
+    "shorts_per_week": 7
   },
-  "topic_performance": [],
+  "hook_patterns": [],
   "pacing_rules": {
-    "shorts": {
-      "hook_max_sec": 3,
-      "words_per_min": 140
-    },
     "long_form": {
       "b_roll_cut_every_sec": 7,
       "chapter_count_target": 6
+    },
+    "shorts": {
+      "hook_max_sec": 3,
+      "words_per_min": 140
     }
   },
-  "anti_patterns": [],
-  "format_mix": {
-    "shorts_per_week": 7,
-    "long_form_per_week": 0,
-    "rationale": "insufficient data — will re-evaluate after 4 weeks",
-    "next_review": null
+  "posting_times": {
+    "long_form": {
+      "best_dow": "Sat",
+      "best_hour_utc": 17,
+      "confidence": "low",
+      "sample_size": 0
+    },
+    "shorts": {
+      "best_dow": "Tue",
+      "best_hour_utc": 14,
+      "confidence": "low",
+      "sample_size": 0
+    }
   },
-  "covered_topics": []
+  "schema_version": 1,
+  "thumbnail_features": [],
+  "title_formulas": [],
+  "topic_performance": [],
+  "updated_at": "2026-05-17T11:39:18.384928"
 }
