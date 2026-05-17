@@ -98,10 +98,10 @@ Topics covered in the last 30 days (DO NOT repeat these):
 
 Write a 45-second dog fact script that would go VIRAL on YouTube Shorts. Rules:
 1. Start with a HOOK as the first sentence (surprising or emotional, matching a top pattern above)
-2. Keep language simple and conversational
-3. Include an emotional angle that makes people care
-4. End with exactly: "Follow for daily dog facts!"
-5. Make it energetic and exciting
+2. STRICT word limit: 50-65 words total (including the closing line). Count every word.
+3. Keep language simple and conversational — no filler, no hype words like 'amazing' or 'incredible'
+4. Include one specific fact with a number or comparison that makes people care
+5. End with exactly: "Follow for daily dog facts!"
 
 Return ONLY valid JSON (no markdown, no extra text) with these exact fields:
 {{
