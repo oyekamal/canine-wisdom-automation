@@ -239,7 +239,7 @@ def build_video(audio_duration: float, clip_path: str = None) -> str:
         "-ar", str(AUDIO_SAMPLE_RATE),
         "-map", "0:v:0",
         "-map", "1:a:0",
-        "-shortest",
+        "-t", str(audio_duration),
         "-y",
         "outputs/final_video.mp4"
     ]

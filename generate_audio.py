@@ -144,10 +144,19 @@ def generate_audio() -> float:
     # Step 7: Calculate Estimated Duration
     # ========================================================================
 
-    # Audio bitrate is 192kbps (from config.py: AUDIO_BITRATE = "192k")
-    # 192 kbps = 192 kilobits per second = 24 kilobytes per second
-    audio_size_kb = len(audio_data) / 1024
-    estimated_duration = audio_size_kb / 24
+    # Use ffprobe to get the real duration — the bitrate estimate is unreliable
+    import subprocess as _sp
+    try:
+        result = _sp.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "csv=p=0", str(audio_file)],
+            capture_output=True, text=True, timeout=10
+        )
+        estimated_duration = float(result.stdout.strip())
+    except Exception:
+        # Fallback to byte-size estimate if ffprobe fails
+        audio_size_kb = len(audio_data) / 1024
+        estimated_duration = audio_size_kb / 24
 
     # ========================================================================
     # Step 8: Log Completion
