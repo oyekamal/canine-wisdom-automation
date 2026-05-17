@@ -13,6 +13,10 @@ from build_video import build_video
 from upload_youtube import upload_youtube
 from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive
 
+from harness.agents.competitor import bootstrap_competitors_if_needed
+from harness.agents.trend import build_topic_queue, pick_best_topic, mark_topic_used
+from harness.tools.footage import fetch_footage_for_topic
+
 from harness.evals.audio_eval import audio_eval
 from harness.evals.description_eval import description_eval
 from harness.evals.hook_eval import hook_eval
@@ -66,7 +70,12 @@ def _write_incident(trigger: str, what_failed: str, hypothesis: str, code_path: 
 
 
 def _run_competitor_refresh() -> None:
-    """Refresh competitor data if any channel is >24h stale. Silent on failure."""
+    """Bootstrap channel discovery on first run, then refresh if stale."""
+    try:
+        bootstrap_competitors_if_needed()
+    except Exception as e:
+        log(f"⚠️  Competitor bootstrap failed (non-blocking): {e}", level="warning")
+
     try:
         state = atomic_read(STATE_PATH)
         channel_ids = state.get("competitor_channels", [])
@@ -98,23 +107,59 @@ def run_pipeline() -> dict:
         dict with keys: success (bool), video_url (str|None), reason (str|None)
     """
     run_id = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    today = datetime.now().strftime("%Y-%m-%d")
     init_logger(run_id)
     log("🚀 Canine Wisdom Harness — starting pipeline")
 
     clear_outputs_dir()
-    metadata = None
 
     try:
-        # ── Competitor refresh (non-blocking) ─────────────────────────────────────
+        # ── Step 1: Competitor refresh (discovery + staleness check) ──────────
         _run_competitor_refresh()
 
-        # ── Script generation + LLM evals (retry loop) ───────────────────────────
+        # ── Step 2: Build topic queue for today ───────────────────────────────
+        log("🔍 Building topic queue...")
+        try:
+            queue = build_topic_queue(date=today)
+            topic_entry = pick_best_topic(queue)
+            if topic_entry:
+                topic = topic_entry["topic"]
+                topic_cluster = topic_entry["topic_cluster"]
+                log(f"📌 Topic selected: {topic} [{topic_cluster}]")
+            else:
+                topic = ""
+                topic_cluster = "dog fun"
+                log("⚠️  No topics in queue — generating freely")
+        except Exception as e:
+            log(f"⚠️  Topic queue failed (non-blocking): {e}", level="warning")
+            topic = ""
+            topic_cluster = "dog fun"
+            topic_entry = None
+
+        # ── Step 3: Download topic-matched footage ────────────────────────────
+        log(f"🎥 Fetching footage for: {topic or 'general dog'}")
+        clip_path = None
+        try:
+            clip_result = fetch_footage_for_topic(topic_cluster, topic or "dog")
+            if clip_result:
+                clip_path = str(clip_result)
+                log(f"✅ Footage ready: {clip_result.name}")
+            else:
+                log("⚠️  No footage downloaded — using existing library")
+        except Exception as e:
+            log(f"⚠️  Footage fetch failed (non-blocking): {e}", level="warning")
+
+        # ── Step 4: Script generation + LLM evals ────────────────────────────
+        metadata = None
+        hook_result = None
+        script_result = None
+        title_result = None
+
         for attempt in range(MAX_LLM_RETRIES):
             metadata = generate_script()
             script_text = metadata["script"]
             title = metadata["title"]
 
-            # Hook eval — first sentence only
             hook_sentence = script_text.split(".")[0] + "."
             hook_result = hook_eval(hook_sentence)
             save_eval_result(hook_result, run_id)
@@ -127,7 +172,6 @@ def run_pipeline() -> dict:
                     return {"success": False, "video_url": None, "reason": "hook_eval failed after max retries"}
                 continue
 
-            # Script eval
             script_result = script_eval(script_text, recent_topics=[])
             save_eval_result(script_result, run_id)
             if not script_result.passed:
@@ -139,7 +183,6 @@ def run_pipeline() -> dict:
                     return {"success": False, "video_url": None, "reason": "script_eval failed after max retries"}
                 continue
 
-            # Title eval
             title_result = title_eval(title)
             save_eval_result(title_result, run_id)
             if not title_result.passed:
@@ -151,9 +194,9 @@ def run_pipeline() -> dict:
                     return {"success": False, "video_url": None, "reason": "title_eval failed after max retries"}
                 continue
 
-            break  # all script LLM evals passed
+            break
 
-        # ── Description eval (non-blocking) ──────────────────────────────────────
+        # ── Step 5: Description eval (non-blocking) ───────────────────────────
         description = metadata.get("description", " ".join(f"#{t}" for t in metadata.get("hashtags", [])))
         desc_result = description_eval(description)
         save_eval_result(desc_result, run_id)
@@ -162,11 +205,11 @@ def run_pipeline() -> dict:
                             desc_result.reasoning, "upload_youtube.py:description")
             log("⚠️  description_eval failed — continuing (non-blocking)")
 
-        # ── Thumbnail eval (placeholder) ──────────────────────────────────────────
+        # ── Step 6: Thumbnail eval (placeholder) ─────────────────────────────
         thumb_result = thumbnail_eval(variants=[])
         save_eval_result(thumb_result, run_id)
 
-        # ── Audio generation + hard eval ─────────────────────────────────────────
+        # ── Step 7: Audio generation + hard eval ─────────────────────────────
         audio_duration = generate_audio()
         audio_path = Path("outputs/voiceover.mp3")
         audio_result = audio_eval(audio_path)
@@ -177,8 +220,8 @@ def run_pipeline() -> dict:
             move_outputs_to_archive(run_id)
             return {"success": False, "video_url": None, "reason": f"audio_eval failed: {audio_result.reasoning}"}
 
-        # ── Video build + hard eval ───────────────────────────────────────────────
-        video_path = build_video(audio_duration)
+        # ── Step 8: Video build + hard eval ──────────────────────────────────
+        video_path = build_video(audio_duration, clip_path=clip_path)
         video_result = video_eval(Path(video_path))
         save_eval_result(video_result, run_id)
         if not video_result.passed:
@@ -187,19 +230,19 @@ def run_pipeline() -> dict:
             move_outputs_to_archive(run_id)
             return {"success": False, "video_url": None, "reason": f"video_eval failed: {video_result.reasoning}"}
 
-        # ── Upload ────────────────────────────────────────────────────────────────
+        # ── Step 9: Upload ────────────────────────────────────────────────────
         video_url = upload_youtube()
         video_id = video_url.split("/")[-1]
         log(f"🎉 Short is LIVE: {video_url}")
 
-        # ── Post-upload tracking ───────────────────────────────────────────────────
+        # ── Step 10: Post-upload tracking ─────────────────────────────────────
         try:
             from harness.agents.analytics import track_video
             track_video(video_id, {
                 "title": metadata.get("title", ""),
                 "format": "short",
-                "topic": metadata.get("topic", ""),
-                "topic_cluster": metadata.get("topic_cluster", ""),
+                "topic": metadata.get("topic", topic),
+                "topic_cluster": metadata.get("topic_cluster", topic_cluster),
                 "hook_pattern_used": metadata.get("hook_pattern_used", ""),
                 "title_formula_used": metadata.get("title_formula_used", ""),
                 "eval_scores": {
@@ -213,13 +256,20 @@ def run_pipeline() -> dict:
 
         try:
             from harness.tools.learnings import add_covered_topic
-            topic = metadata.get("topic", "")
-            if topic:
-                add_covered_topic(topic, video_id)
+            final_topic = metadata.get("topic", topic)
+            if final_topic:
+                add_covered_topic(final_topic, video_id)
         except Exception as e:
             log(f"⚠️  add_covered_topic failed (non-blocking): {e}", level="warning")
 
-        # ── Analytics pull (yesterday's videos) ───────────────────────────────────
+        # Mark topic as used in queue
+        if topic_entry:
+            try:
+                mark_topic_used(today, topic_entry)
+            except Exception as e:
+                log(f"⚠️  mark_topic_used failed (non-blocking): {e}", level="warning")
+
+        # ── Step 11: Analytics pull ────────────────────────────────────────────
         _run_analytics_pull()
 
         move_outputs_to_archive(run_id)
