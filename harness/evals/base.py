@@ -38,8 +38,13 @@ def save_eval_result(result: EvalResult, video_id: str) -> None:
 
 def _parse_llm_score(text: str, eval_name: str) -> tuple[float, str]:
     """Extract score and reasoning from Claude JSON response."""
+    # Strip markdown code fences if the model wrapped its response
+    stripped = text.strip()
+    if stripped.startswith("```"):
+        lines = stripped.splitlines()
+        stripped = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
     try:
-        data = json.loads(text)
+        data = json.loads(stripped)
         return float(data["score"]), str(data.get("reasoning", ""))
     except (json.JSONDecodeError, KeyError, ValueError) as e:
         raise ValueError(f"{eval_name}: failed to parse LLM response: {e}\nRaw: {text}")
