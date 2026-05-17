@@ -153,3 +153,87 @@ def test_thumbnail_eval_always_passes():
 def test_channel_eval_always_passes():
     result = channel_eval(current_kpis={}, prior_kpis={})
     assert result.passed is True
+
+
+# ── audio_eval ────────────────────────────────────────────────────────────────
+
+from harness.evals.audio_eval import audio_eval
+from harness.evals.video_eval import video_eval
+
+
+def test_audio_eval_passes_valid_mp3(tmp_path):
+    """Create a fake mp3 — we mock ffprobe."""
+    audio_file = tmp_path / "voiceover.mp3"
+    audio_file.write_bytes(b"\x00" * 1000)
+
+    with patch("harness.evals.audio_eval.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0, stdout="45.3\n", stderr="")
+        result = audio_eval(audio_file)
+    assert result.passed is True
+    assert result.score == 10.0
+
+
+def test_audio_eval_fails_too_short(tmp_path):
+    audio_file = tmp_path / "voiceover.mp3"
+    audio_file.write_bytes(b"\x00" * 100)
+
+    with patch("harness.evals.audio_eval.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0, stdout="5.0\n", stderr="")
+        result = audio_eval(audio_file)
+    assert result.passed is False
+
+
+def test_audio_eval_fails_too_long(tmp_path):
+    audio_file = tmp_path / "voiceover.mp3"
+    audio_file.write_bytes(b"\x00" * 100)
+
+    with patch("harness.evals.audio_eval.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=0, stdout="95.0\n", stderr="")
+        result = audio_eval(audio_file)
+    assert result.passed is False
+
+
+def test_audio_eval_fails_missing_file(tmp_path):
+    result = audio_eval(tmp_path / "nonexistent.mp3")
+    assert result.passed is False
+
+
+def test_video_eval_passes_valid_1080x1920(tmp_path):
+    video_file = tmp_path / "final_video.mp4"
+    video_file.write_bytes(b"\x00" * 1000)
+
+    with patch("harness.evals.video_eval.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(
+            returncode=0,
+            stdout='{"streams": [{"width": 1080, "height": 1920}]}\n',
+            stderr=""
+        )
+        result = video_eval(video_file)
+    assert result.passed is True
+    assert result.score == 10.0
+
+
+def test_video_eval_fails_wrong_resolution(tmp_path):
+    video_file = tmp_path / "final_video.mp4"
+    video_file.write_bytes(b"\x00" * 1000)
+
+    with patch("harness.evals.video_eval.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(
+            returncode=0,
+            stdout='{"streams": [{"width": 1920, "height": 1080}]}\n',
+            stderr=""
+        )
+        result = video_eval(video_file)
+    assert result.passed is False
+
+
+def test_video_eval_fails_missing_file(tmp_path):
+    result = video_eval(tmp_path / "nonexistent.mp4")
+    assert result.passed is False
+
+
+def test_video_eval_fails_zero_size_file(tmp_path):
+    video_file = tmp_path / "final_video.mp4"
+    video_file.write_bytes(b"")
+    result = video_eval(video_file)
+    assert result.passed is False
