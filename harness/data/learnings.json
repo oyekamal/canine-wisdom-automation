@@ -1,0 +1,40 @@
+{
+  "updated_at": null,
+  "schema_version": 1,
+  "hook_patterns": [],
+  "title_formulas": [],
+  "thumbnail_features": [],
+  "posting_times": {
+    "shorts": {
+      "best_hour_utc": 14,
+      "best_dow": "Tue",
+      "confidence": "low",
+      "sample_size": 0
+    },
+    "long_form": {
+      "best_hour_utc": 17,
+      "best_dow": "Sat",
+      "confidence": "low",
+      "sample_size": 0
+    }
+  },
+  "topic_performance": [],
+  "pacing_rules": {
+    "shorts": {
+      "hook_max_sec": 3,
+      "words_per_min": 140
+    },
+    "long_form": {
+      "b_roll_cut_every_sec": 7,
+      "chapter_count_target": 6
+    }
+  },
+  "anti_patterns": [],
+  "format_mix": {
+    "shorts_per_week": 7,
+    "long_form_per_week": 0,
+    "rationale": "insufficient data — will re-evaluate after 4 weeks",
+    "next_review": null
+  },
+  "covered_topics": []
+}
