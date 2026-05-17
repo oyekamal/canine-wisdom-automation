@@ -21,7 +21,7 @@ from harness.evals.thumbnail_eval import thumbnail_eval
 from harness.evals.title_eval import title_eval
 from harness.evals.video_eval import video_eval
 from harness.evals.base import save_eval_result
-from harness.storage import atomic_write, DATA_DIR
+from harness.storage import atomic_write, atomic_read, DATA_DIR, STATE_PATH
 
 MAX_LLM_RETRIES = 3
 
@@ -65,6 +65,31 @@ def _write_incident(trigger: str, what_failed: str, hypothesis: str, code_path: 
     return incident_id
 
 
+def _run_competitor_refresh() -> None:
+    """Refresh competitor data if any channel is >24h stale. Silent on failure."""
+    try:
+        state = atomic_read(STATE_PATH)
+        channel_ids = state.get("competitor_channels", [])
+        if not channel_ids:
+            log("ℹ️  No competitor channels configured yet — skipping refresh")
+            return
+        from harness.agents.competitor import run_daily_refresh
+        results = run_daily_refresh(channel_ids=channel_ids)
+        log(f"📊 Competitor refresh: {results}")
+    except Exception as e:
+        log(f"⚠️  Competitor refresh failed (non-blocking): {e}", level="warning")
+
+
+def _run_analytics_pull() -> None:
+    """Pull daily analytics snapshots for all tracked videos. Silent on failure."""
+    try:
+        from harness.agents.analytics import pull_daily_snapshots
+        result = pull_daily_snapshots()
+        log(f"📈 Analytics pull: {result['pulled']} videos updated")
+    except Exception as e:
+        log(f"⚠️  Analytics pull failed (non-blocking): {e}", level="warning")
+
+
 def run_pipeline() -> dict:
     """
     Run the full harness pipeline with eval gating.
@@ -80,6 +105,9 @@ def run_pipeline() -> dict:
     metadata = None
 
     try:
+        # ── Competitor refresh (non-blocking) ─────────────────────────────────────
+        _run_competitor_refresh()
+
         # ── Script generation + LLM evals (retry loop) ───────────────────────────
         for attempt in range(MAX_LLM_RETRIES):
             metadata = generate_script()
@@ -161,7 +189,38 @@ def run_pipeline() -> dict:
 
         # ── Upload ────────────────────────────────────────────────────────────────
         video_url = upload_youtube()
+        video_id = video_url.split("/")[-1]
         log(f"🎉 Short is LIVE: {video_url}")
+
+        # ── Post-upload tracking ───────────────────────────────────────────────────
+        try:
+            from harness.agents.analytics import track_video
+            track_video(video_id, {
+                "title": metadata.get("title", ""),
+                "format": "short",
+                "topic": metadata.get("topic", ""),
+                "topic_cluster": metadata.get("topic_cluster", ""),
+                "hook_pattern_used": metadata.get("hook_pattern_used", ""),
+                "title_formula_used": metadata.get("title_formula_used", ""),
+                "eval_scores": {
+                    "hook_eval": hook_result.score,
+                    "script_eval": script_result.score,
+                    "title_eval": title_result.score,
+                },
+            })
+        except Exception as e:
+            log(f"⚠️  track_video failed (non-blocking): {e}", level="warning")
+
+        try:
+            from harness.tools.learnings import add_covered_topic
+            topic = metadata.get("topic", "")
+            if topic:
+                add_covered_topic(topic, video_id)
+        except Exception as e:
+            log(f"⚠️  add_covered_topic failed (non-blocking): {e}", level="warning")
+
+        # ── Analytics pull (yesterday's videos) ───────────────────────────────────
+        _run_analytics_pull()
 
         move_outputs_to_archive(run_id)
         return {"success": True, "video_url": video_url, "reason": None}
