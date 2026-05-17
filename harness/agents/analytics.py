@@ -78,11 +78,9 @@ def _parse_analytics_row(row: list, headers: list) -> dict:
         "views": int(row[col_map["views"]]),
         "watch_time_minutes": float(row[col_map["estimatedMinutesWatched"]]),
         "avg_view_duration_sec": float(row[col_map["averageViewDuration"]]),
-        "ctr": float(row[col_map["impressionClickThroughRate"]]),
         "likes": int(row[col_map["likes"]]),
         "comments": int(row[col_map["comments"]]),
         "subscribers_gained": int(row[col_map["subscribersGained"]]),
-        "impressions": int(row[col_map["impressions"]]),
     }
 
 
@@ -115,7 +113,7 @@ def pull_daily_snapshots() -> dict:
                 ids="channel==MINE",
                 startDate=(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
                 endDate=today,
-                metrics="views,estimatedMinutesWatched,averageViewDuration,subscribersGained,likes,comments,impressions,impressionClickThroughRate",
+                metrics="views,estimatedMinutesWatched,averageViewDuration,subscribersGained,likes,comments",
                 filters=f"video=={vid_id}",
             ).execute()
 

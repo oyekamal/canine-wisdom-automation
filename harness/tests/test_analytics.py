@@ -86,11 +86,10 @@ def test_pull_daily_snapshots_appends_snapshot(patch_data_dir):
 
     mock_analytics = MagicMock()
     mock_analytics.reports().query().execute.return_value = {
-        "rows": [[1240, 620, 30, 4, 88, 12, 20000, 0.062]],
+        "rows": [[1240, 620, 30, 4, 88, 12]],
         "columnHeaders": [
             {"name": "views"}, {"name": "estimatedMinutesWatched"}, {"name": "averageViewDuration"},
             {"name": "subscribersGained"}, {"name": "likes"}, {"name": "comments"},
-            {"name": "impressions"}, {"name": "impressionClickThroughRate"},
         ],
     }
 
@@ -100,7 +99,7 @@ def test_pull_daily_snapshots_appends_snapshot(patch_data_dir):
     perf = json.loads((patch_data_dir / "performance" / "vid001.json").read_text())
     assert len(perf["snapshots"]) == 1
     assert perf["snapshots"][0]["views"] == 1240
-    assert abs(perf["snapshots"][0]["ctr"] - 0.062) < 0.001
+    assert perf["snapshots"][0]["watch_time_minutes"] == 620
 
 
 def test_pull_daily_snapshots_does_not_duplicate_same_day(patch_data_dir):
@@ -110,11 +109,10 @@ def test_pull_daily_snapshots_does_not_duplicate_same_day(patch_data_dir):
 
     mock_analytics = MagicMock()
     mock_analytics.reports().query().execute.return_value = {
-        "rows": [[100, 50, 30, 1, 5, 1, 1000, 0.04]],
+        "rows": [[100, 50, 30, 1, 5, 1]],
         "columnHeaders": [
             {"name": "views"}, {"name": "estimatedMinutesWatched"}, {"name": "averageViewDuration"},
             {"name": "subscribersGained"}, {"name": "likes"}, {"name": "comments"},
-            {"name": "impressions"}, {"name": "impressionClickThroughRate"},
         ],
     }
 
