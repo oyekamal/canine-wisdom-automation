@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 8.2,
+    "title_eval": 8.2
+  },
+  "format": "short",
+  "hook_pattern_used": "Your dog [does something emotional about you]",
+  "snapshots": [],
+  "title": "Your Dog Dreams About You Every Night",
+  "title_formula_used": "Your Dog [Emotional Claim] Every [Time Period]",
+  "topic": "dogs dreaming about owners",
+  "topic_cluster": "dog science",
+  "uploaded_at": "2026-05-17T12:23:38.532072",
+  "video_id": "3x3afYnT-I8"
+}

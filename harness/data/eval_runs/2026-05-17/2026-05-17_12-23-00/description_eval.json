@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich content and CTAs (no follow/subscribe request), contains 10 hashtags (excessive for Shorts), and is only hashtags with zero descriptive text or call-to-action\u2014missing the opportunity to engage viewers with actual dog facts or compelling copy.",
+  "run_at": "2026-05-17T12:23:22.201723",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_12-23-00"
+}

@@ -1,5 +1,11 @@
 {
-  "competitor_channels": [],
+  "competitor_channels": [
+    "UClQ3mKZEkYO2qqn5vcIZrFQ",
+    "UCPIvT-zcQl2H0vabdXJGcpg",
+    "UCNSzfesc7IgWZwg4n6uXr1A",
+    "UCZzFRKsgVMhGTxffpzgTJlQ",
+    "UCDyz_T0uPt66D_b4kukhdDA"
+  ],
   "config": {
     "eval_pass_threshold": 7,
     "max_competitors": 5,

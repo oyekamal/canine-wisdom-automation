@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich text content and clear CTA, relying only on 10 hashtags without explanatory context, making it weak for discoverability and engagement despite adequate hashtag quantity.",
+  "run_at": "2026-05-17T12:28:22.762765",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_12-28-04"
+}
