@@ -16,7 +16,7 @@ from harness.storage import lock_state
 
 
 _NEVER_USED = "0000-00-00T00:00:00"
-_CUT_DURATION_AVG = 2.5  # seconds per clip segment
+_CUT_DURATION_AVG = 1.5  # seconds per clip segment
 
 
 def get_clips_for_video(footage_dir: Path, audio_duration: float) -> List[Path]:

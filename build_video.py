@@ -191,7 +191,7 @@ def _assign_cut_durations(n_clips: int, audio_duration: float) -> list:
     Returns:
         List of float durations, one per clip, summing to audio_duration.
     """
-    raw = [random.uniform(2.0, 3.0) for _ in range(n_clips)]
+    raw = [random.uniform(1.0, 2.0) for _ in range(n_clips)]
     total = sum(raw)
     return [r * audio_duration / total for r in raw]
 
