@@ -12,6 +12,7 @@ from pathlib import Path
 from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE, TARGET_DURATION_MIN, TARGET_DURATION_MAX
 from utils import log, get_random_dog_clip
 from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
+from clip_scheduler import get_clips_for_video
 
 
 class HardwareAccelerator:
@@ -292,23 +293,34 @@ def build_video(audio_duration: float, clip_path: str = None,
 
     log("🎬 Step 3: Building vertical Shorts video...")
 
-    if clip_path and Path(clip_path).exists():
-        dog_clip = clip_path
-        log(f"📹 Using topic-matched clip: {Path(dog_clip).name}")
-    else:
-        dog_clip = get_random_dog_clip(dog_footage_dir)
-        log(f"📹 Selected dog clip: {Path(dog_clip).name}")
-
     voiceover_path = Path("outputs/voiceover.mp3")
     if not voiceover_path.exists():
         raise FileNotFoundError(f"Audio file not found: {voiceover_path}")
 
-    # Initialize optimizer with hardware detection
-    optimizer = VideoOptimizer(dog_clip)
+    # Detect encoder using any available clip
+    all_clips = sorted(dog_footage_dir.iterdir())
+    first_clip = next(
+        (c for c in all_clips if c.suffix.lower() in {".mp4", ".mov"}), None
+    )
+    if not first_clip:
+        raise FileNotFoundError(f"No clips found in {dog_footage_dir}")
+    optimizer = VideoOptimizer(str(first_clip))
     enc_params = optimizer.get_encoding_params()
 
-    # Trim video to match audio duration from random start position
-    actual_video_path = optimizer.trim_video_segment(audio_duration)
+    if clip_path and Path(clip_path).exists():
+        # Topic-matched: single clip, use existing trim logic
+        log(f"📹 Using topic-matched clip: {Path(clip_path).name}")
+        single_optimizer = VideoOptimizer(clip_path)
+        actual_video_path = single_optimizer.trim_video_segment(audio_duration)
+        log(f"✂️  Single-clip mode (topic match)")
+    else:
+        # Multi-clip: LRU rotation + 2-3s cuts
+        clips = get_clips_for_video(dog_footage_dir, audio_duration)
+        log(f"📹 Multi-clip mode: {len(clips)} cuts from LRU rotation")
+        for i, c in enumerate(clips):
+            log(f"   [{i+1}] {c.name}")
+        actual_video_path = _concat_clips(clips, audio_duration)
+        log(f"✂️  Concat complete: {actual_video_path}")
 
     # Duration clamp: enforce 25-35s range
     if audio_duration < TARGET_DURATION_MIN:
