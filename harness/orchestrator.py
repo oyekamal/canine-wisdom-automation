@@ -210,7 +210,7 @@ def run_pipeline() -> dict:
         save_eval_result(thumb_result, run_id)
 
         # ── Step 7: Audio generation + hard eval ─────────────────────────────
-        audio_duration = generate_audio()
+        audio_duration, word_timestamps = generate_audio()
         audio_path = Path("outputs/voiceover.mp3")
         audio_result = audio_eval(audio_path)
         save_eval_result(audio_result, run_id)
@@ -221,7 +221,9 @@ def run_pipeline() -> dict:
             return {"success": False, "video_url": None, "reason": f"audio_eval failed: {audio_result.reasoning}"}
 
         # ── Step 8: Video build + hard eval ──────────────────────────────────
-        video_path = build_video(audio_duration, clip_path=clip_path)
+        video_path = build_video(audio_duration, clip_path=clip_path,
+                                  word_timestamps=word_timestamps,
+                                  hook_overlay=metadata.get("hook_overlay"))
         video_result = video_eval(Path(video_path))
         save_eval_result(video_result, run_id)
         if not video_result.passed:
