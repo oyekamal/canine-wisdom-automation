@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE, TARGET_DURATION_MIN, TARGET_DURATION_MAX
 from utils import log, get_random_dog_clip
-from caption_engine import build_caption_filter, CaptionStyle
+from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 
 
 class HardwareAccelerator:
@@ -242,35 +242,21 @@ def build_video(audio_duration: float, clip_path: str = None,
         f"eq=brightness=0.02:saturation=1.4:contrast=1.1"
     )
 
-    # Hook overlay: bold all-caps text in first 1.5 seconds
-    hook_filter = ""
-    if hook_overlay:
-        safe_hook = hook_overlay.replace("'", "\\'").replace(":", "\\:")
-        hook_font = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-        hook_filter = (
-            f"drawtext=fontfile='{hook_font}':"
-            f"text='{safe_hook}':"
-            f"fontcolor=white:"
-            f"fontsize=90:"
-            f"borderw=5:"
-            f"bordercolor=black:"
-            f"shadowx=4:shadowy=4:"
-            f"x=(w-text_w)/2:y=(h*0.35):"
-            f"enable='between(t,0,1.5)'"
-        )
+    # Build ASS subtitle file containing both hook overlay and word captions.
+    # ASS avoids the ffmpeg -vf comma/quote parsing issues that affect drawtext.
+    style = CaptionStyle(font_size=68, font_color="yellow", stroke_width=4)
+    ass_file = write_word_ass(
+        word_timestamps or [],
+        style,
+        VIDEO_WIDTH,
+        VIDEO_HEIGHT,
+        hook_overlay=hook_overlay,
+    )
 
-    # Word-by-word captions
-    caption_filter = ""
-    if word_timestamps:
-        style = CaptionStyle(font_size=68, font_color="yellow", stroke_width=4)
-        caption_filter = build_caption_filter(word_timestamps, style)
-
-    # Combine all filters
     filter_parts = [base_filter]
-    if hook_filter:
-        filter_parts.append(hook_filter)
-    if caption_filter:
-        filter_parts.append(caption_filter)
+    if ass_file:
+        filter_parts.append(f"subtitles={ass_file}")
+
     video_filter = ",".join(filter_parts)
 
     cmd = [

@@ -23,8 +23,9 @@ def test_drawtext_contains_word_text():
 def test_drawtext_has_enable_range():
     style = CaptionStyle()
     filters = words_to_drawtext(SAMPLE_WORDS, style)
-    assert "enable='between(t,0.0,0.3)'" in filters[0]
-    assert "enable='between(t,0.3,0.6)'" in filters[1]
+    # Uses gte*lte to avoid comma-inside-quotes ffmpeg parsing bug
+    assert "gte(t\\,0.0)*lte(t\\,0.3)" in filters[0]
+    assert "gte(t\\,0.3)*lte(t\\,0.6)" in filters[1]
 
 
 def test_drawtext_uses_bold_color():
