@@ -179,6 +179,89 @@ class VideoOptimizer:
             return str(self.video_path)
 
 
+def _assign_cut_durations(n_clips: int, audio_duration: float) -> list:
+    """
+    Assign a random duration (2.0–3.0s) to each clip, scaled so they sum to audio_duration.
+
+    Args:
+        n_clips: Number of clip segments needed.
+        audio_duration: Total duration all segments must fill exactly.
+
+    Returns:
+        List of float durations, one per clip, summing to audio_duration.
+    """
+    raw = [random.uniform(2.0, 3.0) for _ in range(n_clips)]
+    total = sum(raw)
+    return [r * audio_duration / total for r in raw]
+
+
+def _concat_clips(clip_paths: list, audio_duration: float) -> str:
+    """
+    Extract one random-duration segment from each clip and concatenate them.
+
+    Each clip gets a proportionally-scaled random duration between 2–3s.
+    Short clips are looped to cover their assigned duration.
+    The result is a single raw concatenated video (no audio, no scale) in a temp file.
+
+    Args:
+        clip_paths: Ordered list of Path objects for source clips.
+        audio_duration: Total duration the concatenated video must fill.
+
+    Returns:
+        Path to concatenated temp video as str.
+    """
+    temp_dir = Path(tempfile.gettempdir())
+    durations = _assign_cut_durations(len(clip_paths), audio_duration)
+
+    segment_paths = []
+    for i, (clip, dur) in enumerate(zip(clip_paths, durations)):
+        clip_dur = HardwareAccelerator.get_video_duration(str(clip))
+        seg_out = temp_dir / f"canine_seg_{i}_{clip.stem}.mp4"
+
+        if clip_dur is None or clip_dur < dur:
+            loops = int(dur / (clip_dur or 1)) + 2
+            cmd = [
+                "ffmpeg", "-stream_loop", str(loops),
+                "-i", str(clip),
+                "-t", f"{dur:.3f}",
+                "-c:v", "copy", "-an", "-y", str(seg_out),
+            ]
+        else:
+            max_start = clip_dur - dur
+            start = random.uniform(0, max_start)
+            cmd = [
+                "ffmpeg",
+                "-ss", f"{start:.3f}",
+                "-i", str(clip),
+                "-t", f"{dur:.3f}",
+                "-c:v", "copy", "-an", "-y", str(seg_out),
+            ]
+
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        if result.returncode != 0 or not seg_out.exists():
+            raise Exception(f"Segment extraction failed for {clip.name}: {result.stderr[-300:]}")
+        segment_paths.append(seg_out)
+
+    # Write concat list file
+    concat_list = temp_dir / "canine_concat_list.txt"
+    with open(concat_list, "w") as f:
+        for seg in segment_paths:
+            f.write(f"file '{seg}'\n")
+
+    # Concatenate all segments
+    concat_out = temp_dir / "canine_concat.mp4"
+    cmd = [
+        "ffmpeg", "-f", "concat", "-safe", "0",
+        "-i", str(concat_list),
+        "-c", "copy", "-y", str(concat_out),
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    if result.returncode != 0 or not concat_out.exists():
+        raise Exception(f"Concat failed: {result.stderr[-300:]}")
+
+    return str(concat_out)
+
+
 def build_video(audio_duration: float, clip_path: str = None,
                 word_timestamps: list = None, hook_overlay: str = None) -> str:
     """
