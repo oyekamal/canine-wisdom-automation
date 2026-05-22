@@ -11,7 +11,7 @@ from generate_audio import generate_audio
 from generate_script import generate_script
 from build_video import build_video
 from upload_youtube import upload_youtube
-from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive
+from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive, retry_with_backoff
 
 from harness.agents.competitor import bootstrap_competitors_if_needed
 from harness.agents.trend import build_topic_queue, pick_best_topic, mark_topic_used
@@ -161,7 +161,7 @@ def run_pipeline() -> dict:
             title = metadata["title"]
 
             hook_sentence = script_text.split(".")[0] + "."
-            hook_result = hook_eval(hook_sentence)
+            hook_result = retry_with_backoff(lambda: hook_eval(hook_sentence), max_retries=3, initial_backoff=5, step_name="hook_eval")
             save_eval_result(hook_result, run_id)
             if not hook_result.passed:
                 log(f"⚠️  hook_eval failed (attempt {attempt + 1}): {hook_result.reasoning}")
@@ -172,7 +172,7 @@ def run_pipeline() -> dict:
                     return {"success": False, "video_url": None, "reason": "hook_eval failed after max retries"}
                 continue
 
-            script_result = script_eval(script_text, recent_topics=[])
+            script_result = retry_with_backoff(lambda: script_eval(script_text, recent_topics=[]), max_retries=3, initial_backoff=5, step_name="script_eval")
             save_eval_result(script_result, run_id)
             if not script_result.passed:
                 log(f"⚠️  script_eval failed (attempt {attempt + 1}): {script_result.reasoning}")
@@ -183,7 +183,7 @@ def run_pipeline() -> dict:
                     return {"success": False, "video_url": None, "reason": "script_eval failed after max retries"}
                 continue
 
-            title_result = title_eval(title)
+            title_result = retry_with_backoff(lambda: title_eval(title), max_retries=3, initial_backoff=5, step_name="title_eval")
             save_eval_result(title_result, run_id)
             if not title_result.passed:
                 log(f"⚠️  title_eval failed (attempt {attempt + 1}): {title_result.reasoning}")
@@ -198,7 +198,7 @@ def run_pipeline() -> dict:
 
         # ── Step 5: Description eval (non-blocking) ───────────────────────────
         description = metadata.get("description", " ".join(f"#{t}" for t in metadata.get("hashtags", [])))
-        desc_result = description_eval(description)
+        desc_result = retry_with_backoff(lambda: description_eval(description), max_retries=3, initial_backoff=5, step_name="description_eval")
         save_eval_result(desc_result, run_id)
         if not desc_result.passed:
             _write_incident("description_eval", f"Score {desc_result.score:.1f}",
