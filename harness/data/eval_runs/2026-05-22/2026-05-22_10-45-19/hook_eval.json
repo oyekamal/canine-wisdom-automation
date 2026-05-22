@@ -1,0 +1,9 @@
+{
+  "eval": "hook_eval",
+  "passed": true,
+  "reasoning": "This hook directly matches top-performing pattern #3 with a bold claim that creates curiosity about dog training while evoking slight emotion, but lacks the immediate shock factor needed for 8+.",
+  "run_at": "2026-05-22T10:46:10.376479",
+  "score": 7.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-22_10-45-19"
+}

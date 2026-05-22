@@ -1,15 +1,15 @@
 {
   "channel_id": "UCDyz_T0uPt66D_b4kukhdDA",
-  "comment_count": 109,
-  "comment_rate": 0.0037172185656310745,
+  "comment_count": 215,
+  "comment_rate": 0.0020777564096369243,
   "description": "In this intense episode, Cesar Millan works with two dogs pushed to the brink by insecurity and past trauma. First, meet Rocky, a German Shepherd mix whose dangerous aggression toward men has left his owner, Jolene, terrified and exhausted. After a breakthrough leads to a sudden second charge, Cesar must bring Rocky to the Dog Psychology Center to rebuild his self-esteem through the power of the pack.  \nThen, Cesar helps Kaitlyn and her dog, Leon. Adopted after the tragic passing of Kaitlyn\u2019s be",
-  "hook": "",
-  "like_count": 1128,
-  "like_rate": 0.03846809671588855,
+  "hook": "FetchedTranscriptSnippet(text=\"It's one of Cesar's most dangerous\", start=2.84, duration=5.64) FetchedTranscriptSnippet(text='encounters. He has attacked me.', start=4.96, duration=5.28)",
+  "like_count": 2568,
+  "like_rate": 0.02481710911603545,
   "publish_dow": "Sat",
   "publish_hour_utc": 13,
   "published_at": "2026-05-16T13:00:13Z",
-  "scraped_at": "2026-05-17T12:17:29.460536",
+  "scraped_at": "2026-05-22T10:42:09.618185",
   "tags": [
     "cesar millan",
     "dog whisperer",
@@ -35,8 +35,8 @@
   ],
   "thumbnail_path": "competitors/UCDyz_T0uPt66D_b4kukhdDA/thumbnails/MasdCp9RRII.jpg",
   "title": "Dog Attack at the Dog Psychology Center! | Cesar Millan\u2019s Most Dangerous Dogs | Ep. 6",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "MasdCp9RRII",
-  "view_count": 29323,
-  "views_per_sub": 0.008378
+  "view_count": 103477,
+  "views_per_sub": 0.029564857142857143
 }

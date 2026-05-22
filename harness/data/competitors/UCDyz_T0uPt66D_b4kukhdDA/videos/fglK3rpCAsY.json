@@ -1,15 +1,15 @@
 {
   "channel_id": "UCDyz_T0uPt66D_b4kukhdDA",
-  "comment_count": 28,
-  "comment_rate": 0.0019654639898918995,
+  "comment_count": 29,
+  "comment_rate": 0.0013442729337597922,
   "description": "This aggressive dog could be euthanized if nothing changes. \ud83d\udc36\u26a0\ufe0f\n In this Cesar Millan training moment, I show how leash control, calm energy, and leadership can transform reactive dog behavior in seconds.\n \ud83d\udc49 Watch more Cesar Millan dog training videos on my YouTube channel!\n\nEste perro agresivo podr\u00eda ser sacrificado si nada cambia. \ud83d\udc36\u26a0\ufe0f\nEn este entrenamiento con Cesar Millan, te ense\u00f1o c\u00f3mo el control de la correa, la energ\u00eda en calma y el liderazgo pueden transformar el comportamiento reactivo ",
-  "hook": "",
-  "like_count": 800,
-  "like_rate": 0.056156113996911415,
+  "hook": "FetchedTranscriptSnippet(text='If he sees another dog or person reacts,', start=1.68, duration=4.8) FetchedTranscriptSnippet(text='he can drag her over.',",
+  "like_count": 1044,
+  "like_rate": 0.04839382561535253,
   "publish_dow": "Sat",
   "publish_hour_utc": 0,
   "published_at": "2026-05-16T00:30:36Z",
-  "scraped_at": "2026-05-17T12:17:36.491255",
+  "scraped_at": "2026-05-22T10:42:23.517993",
   "tags": [
     "cesar millan",
     "dog whisperer",
@@ -35,8 +35,8 @@
   ],
   "thumbnail_path": "competitors/UCDyz_T0uPt66D_b4kukhdDA/thumbnails/fglK3rpCAsY.jpg",
   "title": "This Dog Was a Risk to Everyone \ud83d\ude33",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "fglK3rpCAsY",
-  "view_count": 14246,
-  "views_per_sub": 0.004070285714285715
+  "view_count": 21573,
+  "views_per_sub": 0.006163714285714285
 }

@@ -1,15 +1,15 @@
 {
   "channel_id": "UCDyz_T0uPt66D_b4kukhdDA",
-  "comment_count": 65,
-  "comment_rate": 0.003547647636720882,
+  "comment_count": 135,
+  "comment_rate": 0.0024548132523548026,
   "description": "When I meet Junior, I\u2019m not just looking at a dangerous dog.\nI\u2019m looking at a dangerous contradiction.\nInside the home, he\u2019s calm, loving, and deeply connected to the family, especially to a young boy he helps through panic attacks. But outside, it\u2019s a completely different story. Junior has bitten multiple people and even lunged at a toddler. And that tells me something important.\nThis isn\u2019t about aggression.\nIt\u2019s about responsibility.\nJunior has taken on a role that doesn\u2019t belong to him. When ",
-  "hook": "",
-  "like_count": 981,
-  "like_rate": 0.053542189717279774,
+  "hook": "FetchedTranscriptSnippet(text='My good friend [music] and neighbor', start=1.88, duration=4.44) FetchedTranscriptSnippet(text='Leslie, she has a Great Dane that",
+  "like_count": 2043,
+  "like_rate": 0.03714950721896934,
   "publish_dow": "Sat",
   "publish_hour_utc": 0,
   "published_at": "2026-05-16T00:00:36Z",
-  "scraped_at": "2026-05-17T12:17:30.718895",
+  "scraped_at": "2026-05-22T10:42:11.757679",
   "tags": [
     "cesar millan",
     "dog whisperer",
@@ -34,9 +34,9 @@
     "pet parent"
   ],
   "thumbnail_path": "competitors/UCDyz_T0uPt66D_b4kukhdDA/thumbnails/bgWfWGD0Xls.jpg",
-  "title": "How to Stop a Dog From Biting People at the Dog Park | Cesar 911",
-  "transcript_status": "unavailable",
+  "title": "This Dog Was Loving at Home\u2026 But Dangerous Outside | Cesar 911",
+  "transcript_status": "available",
   "video_id": "bgWfWGD0Xls",
-  "view_count": 18322,
-  "views_per_sub": 0.005234857142857143
+  "view_count": 54994,
+  "views_per_sub": 0.01571257142857143
 }

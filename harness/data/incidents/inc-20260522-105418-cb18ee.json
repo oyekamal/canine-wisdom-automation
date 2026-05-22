@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "orchestrator.py",
+  "fix_branch": "harness-auto-fix/inc-20260522-105418-cb18ee",
+  "fix_status": "open",
+  "hypothesis": "Unexpected error in pipeline step",
+  "id": "inc-20260522-105418-cb18ee",
+  "resolved_at": null,
+  "timestamp": "2026-05-22T10:54:18.943338",
+  "trigger": "unhandled_exception",
+  "what_failed": "Error code: 529 - {'type': 'error', 'error': {'type': 'overloaded_error', 'message': 'Overloaded'}, 'request_id': 'req_011CbH689jCR51QddJq7ZYSb'}"
+}

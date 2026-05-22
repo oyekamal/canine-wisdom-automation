@@ -1,0 +1,208 @@
+{
+  "date": "2026-05-22",
+  "generated_at": "2026-05-22T10:42:33.072992",
+  "topics": [
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 1,
+      "raw_suggestion": "dog facts",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog facts",
+      "topic_cluster": "dog fun",
+      "used": true
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 2,
+      "raw_suggestion": "dog facts and fun",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "and fun",
+      "topic_cluster": "dog fun"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 3,
+      "raw_suggestion": "dog facts you didn't know",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "you didn't know",
+      "topic_cluster": "dog fun"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 4,
+      "raw_suggestion": "dog facts video",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "video",
+      "topic_cluster": "dog fun"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 5,
+      "raw_suggestion": "dog facts telugu",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "telugu",
+      "topic_cluster": "dog fun"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 6,
+      "raw_suggestion": "dog behaviorist",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behaviorist",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 7,
+      "raw_suggestion": "dog behavior",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 8,
+      "raw_suggestion": "dog behavior explained",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior explained",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 9,
+      "raw_suggestion": "dog behavior problems",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior problems",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 10,
+      "raw_suggestion": "dog behavior training",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior training",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 11,
+      "raw_suggestion": "dog behavior analysis",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior analysis",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 12,
+      "raw_suggestion": "dog behavior videos",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior videos",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 13,
+      "raw_suggestion": "dog behaviorist training course",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behaviorist training course",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 14,
+      "raw_suggestion": "dog behavior 101",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog behavior 101",
+      "topic_cluster": "dog behavior"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 15,
+      "raw_suggestion": "dog health tips",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog health tips",
+      "topic_cluster": "dog health"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 16,
+      "raw_suggestion": "dog healthy food",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog healthy food",
+      "topic_cluster": "dog health"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 17,
+      "raw_suggestion": "dog health problems",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog health problems",
+      "topic_cluster": "dog health"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 18,
+      "raw_suggestion": "dog healthy diet",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog healthy diet",
+      "topic_cluster": "dog health"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 19,
+      "raw_suggestion": "dog health food",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog health food",
+      "topic_cluster": "dog health"
+    },
+    {
+      "autocomplete_freq": 1,
+      "competitor_boost": 0,
+      "rank": 20,
+      "raw_suggestion": "dog healthy food at home",
+      "score": 10,
+      "source": "autocomplete",
+      "topic": "dog healthy food at home",
+      "topic_cluster": "dog health"
+    }
+  ],
+  "used": "dog facts"
+}

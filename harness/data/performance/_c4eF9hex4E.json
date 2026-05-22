@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 7.5,
+    "script_eval": 8.2,
+    "title_eval": 8.2
+  },
+  "format": "short",
+  "hook_pattern_used": "FetchedTranscriptSnippet(text='The word disobedient has probably caused', start=0.0, duration=4.72) FetchedTranscriptSnippet(text='more bad dog training than any dog',",
+  "snapshots": [],
+  "title": "Your Dog Isn't Stubborn, Science Proves It",
+  "title_formula_used": "No data yet",
+  "topic": "dog stress response training",
+  "topic_cluster": "dog training",
+  "uploaded_at": "2026-05-22T10:46:44.355524",
+  "video_id": "_c4eF9hex4E"
+}
