@@ -49,11 +49,11 @@ def main():
 
         # Step 2: Generate audio
         log("")
-        audio_duration = generate_audio()
+        audio_duration, word_timestamps = generate_audio()
 
         # Step 3: Build video
         log("")
-        video_path = build_video(audio_duration)
+        video_path = build_video(audio_duration, word_timestamps=word_timestamps)
 
         # Step 4: Upload to YouTube (optional)
         log("")
