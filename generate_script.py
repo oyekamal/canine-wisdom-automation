@@ -85,33 +85,36 @@ def generate_script() -> dict:
             covered_text = "none"
 
         # Define the prompt for Claude
-        prompt = f"""You are a viral YouTube Shorts scriptwriter specializing in dog facts.
+        prompt = f"""You are a viral YouTube Shorts scriptwriter for a dog channel in 2026.
 
-Top-performing hook patterns (use one of these or a similar structure):
+Top-performing hook patterns (use one):
 {hooks_text}
 
-Top-performing title formulas (use one of these or a similar structure):
+Top-performing title formulas (use one):
 {titles_text}
 
-Topics covered in the last 30 days (DO NOT repeat these):
+Topics covered in the last 30 days (DO NOT repeat):
 {covered_text}
 
-Write a 45-second dog fact script that would go VIRAL on YouTube Shorts. Rules:
-1. Start with a HOOK as the first sentence (surprising or emotional, matching a top pattern above)
-2. STRICT word limit: 50-65 words total (including the closing line). Count every word.
-3. Keep language simple and conversational — no filler, no hype words like 'amazing' or 'incredible'
-4. Include one specific fact with a number or comparison that makes people care
+Write a dog fact script for a 25–35 second Short. Rules:
+1. FIRST SENTENCE = HOOK. Make it a bold, specific claim or question that dog owners can't ignore.
+   Examples of good hooks: "STOP doing this when your dog jumps on you.", "Most owners get this completely wrong.", "Did you know a dog's nose print is as unique as a fingerprint?"
+2. WORD COUNT: 54–76 words total (25–35 seconds at 130 wpm). Count every word.
+3. No filler words. No "amazing" or "incredible". Simple, punchy sentences.
+4. Include one stat, number, or comparison (e.g. "3x faster", "9 out of 10 vets").
 5. End with exactly: "Follow for daily dog facts!"
+6. Suggest one bold TEXT OVERLAY phrase (3–6 words, all caps) that should appear on screen in the first 2 seconds. Example: "STOP DOING THIS", "MOST OWNERS GET THIS WRONG".
 
-Return ONLY valid JSON (no markdown, no extra text) with these exact fields:
+Return ONLY valid JSON (no markdown, no extra text):
 {{
-    "script": "Full 45-second script text here",
+    "script": "Full script here",
     "title": "Clickbait title under 60 chars",
+    "hook_overlay": "BOLD OVERLAY PHRASE IN CAPS",
     "hashtags": ["tag1", "tag2", "tag3", "tag4", "tag5", "tag6", "tag7", "tag8", "tag9", "tag10"],
-    "topic": "2-5 word description of the dog fact topic",
+    "topic": "2-5 word description",
     "topic_cluster": "one of: dog health, dog behavior, dog breeds, dog training, dog history, dog science, dog fun",
-    "hook_pattern_used": "the hook pattern template you used (e.g. 'Did you know dogs can [fact]?')",
-    "title_formula_used": "the title formula template you used (e.g. '[Surprising claim] Before [Authority]')"
+    "hook_pattern_used": "the hook pattern template you used",
+    "title_formula_used": "the title formula template you used"
 }}"""
 
         # Call Claude API
@@ -139,7 +142,7 @@ Return ONLY valid JSON (no markdown, no extra text) with these exact fields:
             )
 
         # Validate required fields
-        required_fields = {"script", "title", "hashtags", "topic", "topic_cluster",
+        required_fields = {"script", "title", "hook_overlay", "hashtags", "topic", "topic_cluster",
                            "hook_pattern_used", "title_formula_used"}
         missing_fields = required_fields - set(metadata.keys())
 

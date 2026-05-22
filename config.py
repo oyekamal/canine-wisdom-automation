@@ -48,6 +48,13 @@ VIDEO_HEIGHT = 1920
 VIDEO_CRF = 20
 VIDEO_PRESET = "fast"
 
+# Target Short duration
+TARGET_DURATION_MIN = 25   # seconds
+TARGET_DURATION_MAX = 35   # seconds
+# Approx 130 words per minute → 25-35s ≈ 54-76 words
+TARGET_WORD_COUNT_MIN = 54
+TARGET_WORD_COUNT_MAX = 76
+
 # Audio Configuration
 AUDIO_BITRATE = "192k"
 AUDIO_SAMPLE_RATE = 44100
