@@ -129,8 +129,13 @@ Return ONLY valid JSON (no markdown, no extra text):
             ]
         )
 
-        # Extract text response
-        response_text = message.content[0].text
+        # Extract text response, strip markdown code fences if present
+        response_text = message.content[0].text.strip()
+        if response_text.startswith("```"):
+            response_text = response_text.split("```", 2)[-1]
+            if response_text.startswith("json"):
+                response_text = response_text[4:]
+            response_text = response_text.rsplit("```", 1)[0].strip()
 
         # Parse JSON
         try:
