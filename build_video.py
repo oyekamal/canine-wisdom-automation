@@ -9,8 +9,9 @@ import psutil
 import random
 import tempfile
 from pathlib import Path
-from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE
+from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRESET, AUDIO_BITRATE, AUDIO_SAMPLE_RATE, TARGET_DURATION_MIN, TARGET_DURATION_MAX
 from utils import log, get_random_dog_clip
+from caption_engine import build_caption_filter, CaptionStyle
 
 
 class HardwareAccelerator:
@@ -178,7 +179,8 @@ class VideoOptimizer:
             return str(self.video_path)
 
 
-def build_video(audio_duration: float, clip_path: str = None) -> str:
+def build_video(audio_duration: float, clip_path: str = None,
+                word_timestamps: list = None, hook_overlay: str = None) -> str:
     """
     Build vertical Shorts video with fast hardware-accelerated encoding.
 
@@ -188,9 +190,15 @@ def build_video(audio_duration: float, clip_path: str = None) -> str:
     - Simplified filter chain for speed
     - Direct scaling without loops
     - No pre-transcoding
+    - Word-by-word animated captions
+    - Hook overlay text in first 1.5 seconds
+    - Duration clamp to 25-35 seconds
 
     Args:
         audio_duration: Duration of audio track in seconds
+        clip_path: Optional path to video clip (defaults to random from dog_footage/)
+        word_timestamps: Optional list of word-level timestamps for captions
+        hook_overlay: Optional hook text to overlay in first 1.5 seconds
 
     Returns:
         str: Path to final_video.mp4
@@ -219,12 +227,51 @@ def build_video(audio_duration: float, clip_path: str = None) -> str:
     # Trim video to match audio duration from random start position
     actual_video_path = optimizer.trim_video_segment(audio_duration)
 
-    # Simplified filter chain: just scale + pad + brightness boost
-    video_filter = (
+    # Duration clamp: enforce 25-35s range
+    if audio_duration < TARGET_DURATION_MIN:
+        log(f"⚠️  Audio is {audio_duration:.1f}s — shorter than target {TARGET_DURATION_MIN}s")
+    elif audio_duration > TARGET_DURATION_MAX:
+        log(f"⚠️  Audio is {audio_duration:.1f}s — longer than target {TARGET_DURATION_MAX}s")
+        audio_duration = float(TARGET_DURATION_MAX)
+        log(f"✂️  Clamping video to {TARGET_DURATION_MAX}s")
+
+    # Base scale + color grading
+    base_filter = (
         f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
         f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,"
-        f"eq=brightness=0.02:saturation=1.3"
+        f"eq=brightness=0.02:saturation=1.4:contrast=1.1"
     )
+
+    # Hook overlay: bold all-caps text in first 1.5 seconds
+    hook_filter = ""
+    if hook_overlay:
+        safe_hook = hook_overlay.replace("'", "\\'").replace(":", "\\:")
+        hook_font = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+        hook_filter = (
+            f"drawtext=fontfile='{hook_font}':"
+            f"text='{safe_hook}':"
+            f"fontcolor=white:"
+            f"fontsize=90:"
+            f"borderw=5:"
+            f"bordercolor=black:"
+            f"shadowx=4:shadowy=4:"
+            f"x=(w-text_w)/2:y=(h*0.35):"
+            f"enable='between(t,0,1.5)'"
+        )
+
+    # Word-by-word captions
+    caption_filter = ""
+    if word_timestamps:
+        style = CaptionStyle(font_size=68, font_color="yellow", stroke_width=4)
+        caption_filter = build_caption_filter(word_timestamps, style)
+
+    # Combine all filters
+    filter_parts = [base_filter]
+    if hook_filter:
+        filter_parts.append(hook_filter)
+    if caption_filter:
+        filter_parts.append(caption_filter)
+    video_filter = ",".join(filter_parts)
 
     cmd = [
         "ffmpeg",
