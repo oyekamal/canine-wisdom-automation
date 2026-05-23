@@ -67,9 +67,10 @@ def test_wraps_when_fewer_clips_than_needed(tmp_path, monkeypatch):
 
     monkeypatch.setattr("clip_scheduler.lock_state", fake_lock_state)
 
-    # audio_duration=12.0 → n_clips = ceil(12.0/2.5) = 5
+    # audio_duration=12.0 → n_clips = ceil(12.0/1.5) = 8 (cut duration avg is 1.5s)
     result = get_clips_for_video(tmp_path, audio_duration=12.0)
-    assert len(result) == math.ceil(12.0 / 2.5)
+    from clip_scheduler import _CUT_DURATION_AVG
+    assert len(result) == math.ceil(12.0 / _CUT_DURATION_AVG)
 
 
 def test_oldest_picked_first(tmp_path, monkeypatch):
