@@ -14,14 +14,14 @@ from typing import List, Optional
 @dataclass
 class CaptionStyle:
     font_path: str = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-    font_color: str = "yellow"
+    font_color: str = "white"
     stroke_color: str = "black"
-    stroke_width: int = 4
-    font_size: int = 72
+    stroke_width: int = 6
+    font_size: int = 88
     x_expr: str = "(w-text_w)/2"
     y_expr: str = "(h*0.72)"
-    shadow_x: int = 3
-    shadow_y: int = 3
+    shadow_x: int = 4
+    shadow_y: int = 4
 
 
 def _seconds_to_ass_time(seconds: float) -> str:
@@ -69,8 +69,8 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Word,Arial,{style.font_size},{font_color_ass},&H000000FF,{stroke_color_ass},&H00000000,-1,0,0,0,100,100,0,0,1,{style.stroke_width},{style.shadow_x},2,10,10,{bottom_margin},1
-Style: Hook,Arial,90,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,5,4,8,10,10,{hook_top_margin},1
+Style: Word,Arial Black,{style.font_size},{font_color_ass},&H000000FF,{stroke_color_ass},&H00000000,-1,0,0,0,100,100,0,0,1,{style.stroke_width},{style.shadow_x},2,10,10,{bottom_margin},1
+Style: Hook,Arial Black,100,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,6,5,8,10,10,{hook_top_margin},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

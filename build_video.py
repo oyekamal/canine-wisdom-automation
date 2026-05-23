@@ -339,7 +339,7 @@ def build_video(audio_duration: float, clip_path: str = None,
 
     # Build ASS subtitle file containing both hook overlay and word captions.
     # ASS avoids the ffmpeg -vf comma/quote parsing issues that affect drawtext.
-    style = CaptionStyle(font_size=68, font_color="yellow", stroke_width=4)
+    style = CaptionStyle(font_size=88, font_color="white", stroke_width=6)
     ass_file = write_word_ass(
         word_timestamps or [],
         style,
