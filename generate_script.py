@@ -97,13 +97,17 @@ Topics covered in the last 30 days (DO NOT repeat):
 {covered_text}
 
 Write a dog fact script for a 25–35 second Short. Rules:
-1. FIRST SENTENCE = HOOK. Make it a bold, specific claim or question that dog owners can't ignore.
-   Examples of good hooks: "STOP doing this when your dog jumps on you.", "Most owners get this completely wrong.", "Did you know a dog's nose print is as unique as a fingerprint?"
+1. FIRST SENTENCE = HOOK. It must stop the scroll in under 1.5 seconds. Use urgency, fear, or curiosity directed personally at the dog owner.
+   REQUIRED hook styles (pick one):
+   - Accusation/secret: "YOUR DOG IS HIDING THIS FROM YOU." / "VET WON'T TELL YOU THIS."
+   - Challenge: "MOST OWNERS GET THIS COMPLETELY WRONG." / "YOU'VE BEEN DOING THIS WRONG YOUR WHOLE LIFE."
+   - Surprising fact with personal stakes: "Your dog's [X] is 40% [worse/better] than you think — and it's your fault."
+   NEVER start with: "Did you know", "Have you ever", or any gentle question. Always personal and direct.
 2. WORD COUNT: 54–76 words total (25–35 seconds at 130 wpm). Count every word.
 3. No filler words. No "amazing" or "incredible". Simple, punchy sentences.
 4. Include one stat, number, or comparison (e.g. "3x faster", "9 out of 10 vets").
 5. End with exactly: "Follow for daily dog facts!"
-6. Suggest one bold TEXT OVERLAY phrase (3–6 words, all caps) that should appear on screen in the first 2 seconds. Example: "STOP DOING THIS", "MOST OWNERS GET THIS WRONG".
+6. Suggest one TEXT OVERLAY phrase (3–6 words, ALL CAPS) for the first 1.5 seconds. Must be emotionally charged and owner-directed. Examples: "YOUR DOG IS HIDING THIS", "VET WON'T TELL YOU THIS", "STOP DOING THIS NOW", "YOU'RE HURTING YOUR DOG". Never vague or generic.
 
 Return ONLY valid JSON (no markdown, no extra text):
 {{
