@@ -21,13 +21,55 @@ FOOTAGE_INDEX = BASE_DIR / "harness" / "data" / "footage_index.json"
 # Topic → Pexels search queries mapping
 # When the script topic matches a cluster, we use more specific search terms
 TOPIC_SEARCH_MAP = {
-    "dog health": ["dog veterinarian", "dog nose sniffing", "dog alert", "sick dog owner"],
-    "dog behavior": ["dog playing owner", "dog wagging tail", "dog running", "dog tricks"],
-    "dog breeds": ["golden retriever", "labrador puppy", "husky dog", "dog breed"],
-    "dog training": ["dog training obedience", "dog sit command", "dog agility", "puppy learning"],
-    "dog history": ["dog ancient", "wolf dog", "dog loyalty", "dog companion human"],
-    "dog science": ["dog nose close up", "dog brain", "dog senses", "dog research"],
-    "dog fun": ["puppy playing", "dog funny", "dog excited", "cute puppy"],
+    "dog health": [
+        "dog veterinarian examination",
+        "dog vaccination needle",
+        "dog health check",
+        "dog nose sniffing close up",
+        "sick dog owner comfort",
+    ],
+    "dog behavior": [
+        "dog wagging tail excited",
+        "dog growling aggressive",
+        "dog jumping owner",
+        "dog separation anxiety",
+        "dog body language",
+    ],
+    "dog breeds": [
+        "golden retriever portrait",
+        "labrador puppy close up",
+        "husky blue eyes",
+        "german shepherd alert",
+        "border collie running",
+    ],
+    "dog training": [
+        "dog training sit command",
+        "dog agility course",
+        "puppy obedience lesson",
+        "dog trainer reward treat",
+        "dog learning trick",
+    ],
+    "dog history": [
+        "wolf running wild",
+        "dog human bond ancient",
+        "dog loyalty owner",
+        "dog companion walking",
+        "dog working farm",
+    ],
+    "dog science": [
+        "dog nose sniffing close up",
+        "dog brain scan",
+        "dog dna test swab",
+        "dog senses research",
+        "dog eye close up",
+    ],
+    "dog fun": [
+        "puppy playing ball",
+        "dog running beach",
+        "dog excited jumping",
+        "cute puppy face",
+        "dog funny reaction",
+    ],
 }
 
 DEFAULT_QUERIES = ["dog portrait", "puppy close up", "cute dog", "dog face"]
@@ -180,11 +222,12 @@ def fetch_footage_for_topic(topic_cluster: str, topic: str) -> Path | None:
     api_key = _load_api_key()
 
     # Build query list for this topic cluster
-    queries = TOPIC_SEARCH_MAP.get(topic_cluster, DEFAULT_QUERIES).copy()
-    # Add the topic itself as an extra query
-    topic_words = topic.replace("_", " ").split()[:3]
-    queries.insert(0, "dog " + " ".join(topic_words))
-    random.shuffle(queries[1:])  # randomise after the topic-specific one
+    # Primary query: full topic string for maximum specificity
+    primary = "dog " + topic.replace("_", " ").strip()
+    # Secondary: topic-cluster queries, randomised
+    cluster_queries = TOPIC_SEARCH_MAP.get(topic_cluster, DEFAULT_QUERIES).copy()
+    random.shuffle(cluster_queries)
+    queries = [primary] + cluster_queries
 
     for query in queries:
         clips = _search_pexels(query, api_key)
