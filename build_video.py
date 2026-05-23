@@ -15,7 +15,7 @@ from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
 
 MUSIC_DIR = Path(__file__).parent / "assets" / "music"
-MUSIC_VOLUME = 0.12  # background music at 12% of voiceover volume
+MUSIC_VOLUME = 0.28  # background music at 28% of voiceover volume
 
 
 def _pick_music_track() -> Path | None:
@@ -317,20 +317,22 @@ def build_video(audio_duration: float, clip_path: str = None,
     optimizer = VideoOptimizer(str(first_clip))
     enc_params = optimizer.get_encoding_params()
 
+    # Always use multi-clip mode. If a topic-matched clip was downloaded,
+    # copy it into the footage library first so it gets included in rotation.
     if clip_path and Path(clip_path).exists():
-        # Topic-matched: single clip, use existing trim logic
-        log(f"📹 Using topic-matched clip: {Path(clip_path).name}")
-        single_optimizer = VideoOptimizer(clip_path)
-        actual_video_path = single_optimizer.trim_video_segment(audio_duration)
-        log(f"✂️  Single-clip mode (topic match)")
-    else:
-        # Multi-clip: LRU rotation + 2-3s cuts
-        clips = get_clips_for_video(dog_footage_dir, audio_duration)
-        log(f"📹 Multi-clip mode: {len(clips)} cuts from LRU rotation")
-        for i, c in enumerate(clips):
-            log(f"   [{i+1}] {c.name}")
-        actual_video_path = _concat_clips(clips, audio_duration)
-        log(f"✂️  Concat complete: {actual_video_path}")
+        topic_clip = Path(clip_path)
+        dest = dog_footage_dir / topic_clip.name
+        if not dest.exists():
+            import shutil
+            shutil.copy2(str(topic_clip), str(dest))
+            log(f"📥 Added topic clip to library: {topic_clip.name}")
+
+    clips = get_clips_for_video(dog_footage_dir, audio_duration)
+    log(f"📹 Multi-clip mode: {len(clips)} cuts from LRU rotation")
+    for i, c in enumerate(clips):
+        log(f"   [{i+1}] {c.name}")
+    actual_video_path = _concat_clips(clips, audio_duration)
+    log(f"✂️  Concat complete: {actual_video_path}")
 
     # Duration clamp: enforce 25-35s range
     if audio_duration < TARGET_DURATION_MIN:
