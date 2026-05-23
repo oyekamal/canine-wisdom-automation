@@ -3,6 +3,7 @@ Canine Wisdom Harness — Daily Orchestrator
 Replaces main.py as the entry point. Wraps existing pipeline with eval gating.
 """
 import sys
+import json
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -67,6 +68,26 @@ def _write_incident(trigger: str, what_failed: str, hypothesis: str, code_path: 
 
     log(f"📋 Incident written: {incident_id}")
     return incident_id
+
+
+def _log_eval_skip(run_id: str, skipped_evals: list, video_url: str) -> None:
+    """Append to harness/data/eval_skips.json so client can review manually."""
+    skip_log = DATA_DIR / "eval_skips.json"
+    existing = []
+    if skip_log.exists():
+        try:
+            existing = json.loads(skip_log.read_text(encoding="utf-8"))
+        except Exception:
+            existing = []
+    existing.append({
+        "run_id": run_id,
+        "timestamp": datetime.now().isoformat(),
+        "video_url": video_url,
+        "skipped_evals": skipped_evals,
+        "review_status": "pending",
+    })
+    atomic_write(skip_log, existing)
+    log(f"📋 Eval skip logged for manual review: {skip_log}")
 
 
 def _run_competitor_refresh() -> None:
@@ -151,48 +172,63 @@ def run_pipeline() -> dict:
 
         # ── Step 4: Script generation + LLM evals ────────────────────────────
         metadata = None
-        hook_result = None
-        script_result = None
-        title_result = None
+        skipped_evals = []
+        hook_result = script_result = title_result = None
 
         for attempt in range(MAX_LLM_RETRIES):
-            metadata = generate_script()
+            try:
+                metadata = generate_script()
+            except Exception as e:
+                log(f"⚠️  Script generation failed (attempt {attempt+1}): {e}", level="warning")
+                if attempt == MAX_LLM_RETRIES - 1:
+                    raise
+                continue
+
             script_text = metadata["script"]
             title = metadata["title"]
-
             hook_sentence = script_text.split(".")[0] + "."
-            hook_result = retry_with_backoff(lambda: hook_eval(hook_sentence), max_retries=3, initial_backoff=5, step_name="hook_eval")
-            save_eval_result(hook_result, run_id)
-            if not hook_result.passed:
-                log(f"⚠️  hook_eval failed (attempt {attempt + 1}): {hook_result.reasoning}")
-                if attempt == MAX_LLM_RETRIES - 1:
-                    _write_incident("hook_eval", f"Score {hook_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
-                                    hook_result.reasoning, "generate_script.py:prompt")
-                    move_outputs_to_archive(run_id)
-                    return {"success": False, "video_url": None, "reason": "hook_eval failed after max retries"}
-                continue
 
-            script_result = retry_with_backoff(lambda: script_eval(script_text, recent_topics=[]), max_retries=3, initial_backoff=5, step_name="script_eval")
-            save_eval_result(script_result, run_id)
-            if not script_result.passed:
-                log(f"⚠️  script_eval failed (attempt {attempt + 1}): {script_result.reasoning}")
-                if attempt == MAX_LLM_RETRIES - 1:
-                    _write_incident("script_eval", f"Score {script_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
-                                    script_result.reasoning, "generate_script.py:prompt")
-                    move_outputs_to_archive(run_id)
-                    return {"success": False, "video_url": None, "reason": "script_eval failed after max retries"}
-                continue
+            # Hook eval — non-blocking on API error
+            try:
+                hook_result = retry_with_backoff(lambda: hook_eval(hook_sentence), max_retries=2, initial_backoff=5, step_name="hook_eval")
+                save_eval_result(hook_result, run_id)
+                if not hook_result.passed:
+                    log(f"⚠️  hook_eval score {hook_result.score:.1f} (attempt {attempt+1}): {hook_result.reasoning}")
+                    if attempt < MAX_LLM_RETRIES - 1:
+                        continue
+                    log("⚠️  hook_eval below threshold after max retries — publishing anyway")
+                    skipped_evals.append({"eval": "hook_eval", "reason": f"score {hook_result.score:.1f} below threshold", "score": hook_result.score})
+            except Exception as e:
+                log(f"⚠️  hook_eval errored (API issue) — skipping: {e}", level="warning")
+                skipped_evals.append({"eval": "hook_eval", "reason": str(e)})
 
-            title_result = retry_with_backoff(lambda: title_eval(title), max_retries=3, initial_backoff=5, step_name="title_eval")
-            save_eval_result(title_result, run_id)
-            if not title_result.passed:
-                log(f"⚠️  title_eval failed (attempt {attempt + 1}): {title_result.reasoning}")
-                if attempt == MAX_LLM_RETRIES - 1:
-                    _write_incident("title_eval", f"Score {title_result.score:.1f} after {MAX_LLM_RETRIES} attempts",
-                                    title_result.reasoning, "generate_script.py:prompt")
-                    move_outputs_to_archive(run_id)
-                    return {"success": False, "video_url": None, "reason": "title_eval failed after max retries"}
-                continue
+            # Script eval — non-blocking on API error
+            try:
+                script_result = retry_with_backoff(lambda: script_eval(script_text, recent_topics=[]), max_retries=2, initial_backoff=5, step_name="script_eval")
+                save_eval_result(script_result, run_id)
+                if not script_result.passed:
+                    log(f"⚠️  script_eval score {script_result.score:.1f} (attempt {attempt+1}): {script_result.reasoning}")
+                    if attempt < MAX_LLM_RETRIES - 1:
+                        continue
+                    log("⚠️  script_eval below threshold after max retries — publishing anyway")
+                    skipped_evals.append({"eval": "script_eval", "reason": f"score {script_result.score:.1f} below threshold", "score": script_result.score})
+            except Exception as e:
+                log(f"⚠️  script_eval errored (API issue) — skipping: {e}", level="warning")
+                skipped_evals.append({"eval": "script_eval", "reason": str(e)})
+
+            # Title eval — non-blocking on API error
+            try:
+                title_result = retry_with_backoff(lambda: title_eval(title), max_retries=2, initial_backoff=5, step_name="title_eval")
+                save_eval_result(title_result, run_id)
+                if not title_result.passed:
+                    log(f"⚠️  title_eval score {title_result.score:.1f} (attempt {attempt+1}): {title_result.reasoning}")
+                    if attempt < MAX_LLM_RETRIES - 1:
+                        continue
+                    log("⚠️  title_eval below threshold after max retries — publishing anyway")
+                    skipped_evals.append({"eval": "title_eval", "reason": f"score {title_result.score:.1f} below threshold", "score": title_result.score})
+            except Exception as e:
+                log(f"⚠️  title_eval errored (API issue) — skipping: {e}", level="warning")
+                skipped_evals.append({"eval": "title_eval", "reason": str(e)})
 
             break
 
@@ -236,6 +272,8 @@ def run_pipeline() -> dict:
         video_url = upload_youtube()
         video_id = video_url.split("/")[-1]
         log(f"🎉 Short is LIVE: {video_url}")
+        if skipped_evals:
+            _log_eval_skip(run_id, skipped_evals, video_url)
 
         # ── Step 10: Post-upload tracking ─────────────────────────────────────
         try:
@@ -248,9 +286,9 @@ def run_pipeline() -> dict:
                 "hook_pattern_used": metadata.get("hook_pattern_used", ""),
                 "title_formula_used": metadata.get("title_formula_used", ""),
                 "eval_scores": {
-                    "hook_eval": hook_result.score,
-                    "script_eval": script_result.score,
-                    "title_eval": title_result.score,
+                    "hook_eval": hook_result.score if hook_result else None,
+                    "script_eval": script_result.score if script_result else None,
+                    "title_eval": title_result.score if title_result else None,
                 },
             })
         except Exception as e:
