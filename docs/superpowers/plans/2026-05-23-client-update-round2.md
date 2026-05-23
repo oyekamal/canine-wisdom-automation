@@ -14,7 +14,8 @@
 
 | File | Change |
 |---|---|
-| `youtube_settings.json` | Replace placeholder affiliate links with real ones (client to supply) |
+| `youtube_settings.json` | Real topic-matched Amazon affiliate links keyed by topic_cluster |
+| `upload_youtube.py` | Inject affiliate block based on video topic_cluster |
 | `generate_script.py` | Strengthen hook prompt with emotional/urgency examples |
 | `harness/tools/footage.py` | Tighten `TOPIC_SEARCH_MAP` + use script topic words as primary Pexels query |
 | `caption_engine.py` | Increase font size, switch font, improve ASS style |
@@ -23,65 +24,154 @@
 
 ---
 
-## Task 1: Replace placeholder affiliate links
+## Task 1: Topic-matched affiliate links
 
 **Files:**
-- Modify: `youtube_settings.json`
+- Modify: `youtube_settings.json` — store real affiliate links keyed by topic cluster
+- Modify: `upload_youtube.py` — pick the right link based on video topic cluster, inject into description
 
-The current file has:
-```json
-"🦴 Best Dog Food: https://barkbox.com\n💊 Pet Insurance: https://example.com/pet-insurance\n🏥 Vet Recommended: https://example.com/vet\n🛒 Amazon Dog Essentials: https://amazon.com/dog-products\n\n"
+**Client-provided links (use exactly as given):**
+
+| Topic cluster | Product | URL |
+|---|---|---|
+| dog breeds | Dog DNA Test | https://amzn.to/4d1CdKq |
+| dog training | Puzzle Toy (Outward Hound) | https://amzn.to/4d14ulL |
+| dog behavior | ThunderShirt | https://amzn.to/4whfoeI |
+| dog health | Joint Supplement | https://amzn.to/4wjWweX |
+| dog science | Dog DNA Test | https://amzn.to/4d1CdKq |
+| dog history | Dog DNA Test | https://amzn.to/4d1CdKq |
+| dog fun | Puzzle Toy | https://amzn.to/4d14ulL |
+| default | Puzzle Toy | https://amzn.to/4d14ulL |
+
+**Format per client:** after intro blurb, before hashtags:
+```
+🐾 [Short product recommendation line]
+👉 [AFFILIATE LINK]
+(Affiliate link — we may earn a small commission at no extra cost to you)
 ```
 
-- [ ] **Step 1: Update youtube_settings.json with affiliate link placeholders clearly marked**
-
-Replace the description_template affiliate section so it is obvious which links need the client's real URLs. Until the client provides them, use clearly-marked placeholder text so nothing fake goes live:
+- [ ] **Step 1: Replace youtube_settings.json entirely**
 
 ```json
 {
   "channel_name": "Canine Wisdom",
-  "description_template": "🐕 {video_title}\n\n{video_script}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 Our Favourite Dog Products\n\n🦴 Best Dog Food → [AFFILIATE_LINK_DOG_FOOD]\n💊 Pet Insurance → [AFFILIATE_LINK_PET_INSURANCE]\n🏥 Vet Recommended → [AFFILIATE_LINK_VET]\n🛒 Amazon Dog Essentials → [AFFILIATE_LINK_AMAZON]\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✨ Subscribe for daily dog facts and tips!\n\n{hashtags}",
+  "description_template": "🐕 {video_title}\n\n{video_script}\n\n{affiliate_block}\n\n{hashtags}\n\n✨ Subscribe for daily dog facts and tips!",
   "hashtags_in_description": true,
   "playlist_id": null,
   "affiliate_links": {
-    "dog_food": "[AFFILIATE_LINK_DOG_FOOD]",
-    "pet_insurance": "[AFFILIATE_LINK_PET_INSURANCE]",
-    "vet": "[AFFILIATE_LINK_VET]",
-    "amazon": "[AFFILIATE_LINK_AMAZON]"
+    "dog breeds": {
+      "product": "Want to know your dog's breed mix? This DNA test reveals everything.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog training": {
+      "product": "Keep your dog mentally sharp with this puzzle toy trainers love.",
+      "url": "https://amzn.to/4d14ulL"
+    },
+    "dog behavior": {
+      "product": "Does your dog get anxious? This ThunderShirt calms them fast.",
+      "url": "https://amzn.to/4whfoeI"
+    },
+    "dog health": {
+      "product": "Support your dog's joints with this vet-recommended supplement.",
+      "url": "https://amzn.to/4wjWweX"
+    },
+    "dog science": {
+      "product": "Curious about your dog's breed? This DNA test reveals it all.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog history": {
+      "product": "Discover your dog's ancient breed origins with this DNA test.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog fun": {
+      "product": "Keep your dog busy and happy with this top-rated puzzle toy.",
+      "url": "https://amzn.to/4d14ulL"
+    },
+    "default": {
+      "product": "Keep your dog mentally stimulated with this top-rated puzzle toy.",
+      "url": "https://amzn.to/4d14ulL"
+    }
   }
 }
 ```
 
-- [ ] **Step 2: Add a pre-upload guard in upload_youtube.py**
+- [ ] **Step 2: Update upload_youtube.py to inject topic-matched affiliate block**
 
-Read `upload_youtube.py` to find where description is built. Add a check that raises an error if any `[AFFILIATE_LINK_` placeholder is still in the description before uploading:
+Read `upload_youtube.py`. Find the description assembly block (around lines 225–244). Replace it with:
 
-Find the line where `description` is assembled and add after it:
 ```python
-    if "[AFFILIATE_LINK_" in description:
-        raise ValueError(
-            "Affiliate links not configured. "
-            "Update youtube_settings.json with real URLs before publishing."
+        affiliate_links = yt_settings.get("affiliate_links", {})
+        topic_cluster = metadata.get("topic_cluster", "default")
+        link_entry = affiliate_links.get(topic_cluster) or affiliate_links.get("default", {})
+
+        if link_entry:
+            affiliate_block = (
+                f"🐾 {link_entry['product']}\n"
+                f"👉 {link_entry['url']}\n"
+                f"(Affiliate link — we may earn a small commission at no extra cost to you)"
+            )
+        else:
+            affiliate_block = ""
+
+        description_template = yt_settings.get("description_template", "{video_script}\n\n{hashtags}")
+        description = description_template.format(
+            video_title=metadata.get("title", ""),
+            video_script=script,
+            hashtags=hashtags_str,
+            affiliate_block=affiliate_block,
         )
 ```
 
-- [ ] **Step 3: Verify import check**
+- [ ] **Step 3: Write unit tests**
+
+Create `tests/test_affiliate_links.py`:
+
+```python
+import json
+from pathlib import Path
+
+
+def test_all_topic_clusters_have_real_links():
+    settings = json.loads(Path("youtube_settings.json").read_text())
+    links = settings["affiliate_links"]
+    required = ["dog breeds", "dog training", "dog behavior",
+                "dog health", "dog science", "dog history", "dog fun", "default"]
+    for cluster in required:
+        assert cluster in links, f"Missing cluster: {cluster}"
+        assert "url" in links[cluster], f"Missing url for: {cluster}"
+        assert "amzn.to" in links[cluster]["url"], f"Not Amazon URL for: {cluster}"
+        assert "product" in links[cluster], f"Missing product text for: {cluster}"
+
+
+def test_no_placeholder_links():
+    content = Path("youtube_settings.json").read_text()
+    assert "example.com" not in content
+    assert "barkbox.com" not in content
+    assert "[AFFILIATE_LINK" not in content
+```
+
+- [ ] **Step 4: Run tests**
 
 ```bash
 cd /home/oye/Documents/free_work/repos/canine-wisdom-automation
 source venv/bin/activate
+python -m pytest tests/test_affiliate_links.py -v
+```
+Expected: 2 tests PASS.
+
+- [ ] **Step 5: Verify import**
+
+```bash
 python -c "import upload_youtube; print('OK')"
 ```
 Expected: `OK`
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add youtube_settings.json upload_youtube.py
-git commit -m "fix: replace placeholder affiliate links with labelled slots + pre-upload guard"
+git add youtube_settings.json upload_youtube.py tests/test_affiliate_links.py
+git commit -m "feat: topic-matched Amazon affiliate links in video descriptions"
 ```
-
-> **NOTE FOR CLIENT:** Replace every `[AFFILIATE_LINK_*]` value in `youtube_settings.json` with your real affiliate URLs before running the pipeline. The guard will block publishing until all placeholders are replaced.
 
 ---
 
@@ -626,8 +716,8 @@ git commit -m "chore: verify round 2 client updates end-to-end"
 
 | Client request | Task |
 |---|---|
-| Replace placeholder affiliate links | Task 1 |
-| Pre-upload guard for placeholder links | Task 1 |
+| Topic-matched Amazon affiliate links (real URLs) | Task 1 |
+| Affiliate block injected into description per topic_cluster | Task 1 |
 | Stronger hook prompt (urgency/accusation) | Task 2 |
 | Tighter footage keyword matching to topic | Task 3 |
 | No still images / more specific queries | Task 3 (video-only Pexels filter already in place) |
