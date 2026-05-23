@@ -1,20 +1,20 @@
 {
   "channel_id": "UClQ3mKZEkYO2qqn5vcIZrFQ",
-  "comment_count": 486,
-  "comment_rate": 0.0007363178954034674,
+  "comment_count": 590,
+  "comment_rate": 0.0006055443227653875,
   "description": "",
   "hook": "",
-  "like_count": 43756,
-  "like_rate": 0.06629285150467926,
+  "like_count": 54393,
+  "like_rate": 0.05582605482741987,
   "publish_dow": "Thu",
   "publish_hour_utc": 13,
   "published_at": "2026-05-21T13:07:16Z",
-  "scraped_at": "2026-05-22T10:41:31.938057",
+  "scraped_at": "2026-05-23T10:54:08.749885",
   "tags": [],
   "thumbnail_path": "competitors/UClQ3mKZEkYO2qqn5vcIZrFQ/thumbnails/rBn6I_OfiWI.jpg",
   "title": "Small Bird Fly Away But \u203c\ufe0f",
   "transcript_status": "unavailable",
   "video_id": "rBn6I_OfiWI",
-  "view_count": 660041,
-  "views_per_sub": 0.0660041
+  "view_count": 974330,
+  "views_per_sub": 0.097433
 }

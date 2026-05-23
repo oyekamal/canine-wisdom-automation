@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Strong hashtag coverage (10 relevant tags) and keyword-rich, but lacks CTA (no follow/subscribe request) and is below ideal length at just 106 characters with no descriptive text or hook.",
+  "run_at": "2026-05-23T10:55:54.659700",
+  "score": 6.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-23_10-53-45"
+}

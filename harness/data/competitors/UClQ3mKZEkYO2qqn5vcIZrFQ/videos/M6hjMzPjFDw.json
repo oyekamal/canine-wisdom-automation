@@ -1,20 +1,20 @@
 {
   "channel_id": "UClQ3mKZEkYO2qqn5vcIZrFQ",
-  "comment_count": 741,
-  "comment_rate": 0.0006989082506071824,
+  "comment_count": 757,
+  "comment_rate": 0.0006688330850610785,
   "description": "",
   "hook": "",
-  "like_count": 56973,
-  "like_rate": 0.05373670683109717,
+  "like_count": 59739,
+  "like_rate": 0.052781267725843815,
   "publish_dow": "Wed",
   "publish_hour_utc": 12,
   "published_at": "2026-05-20T12:30:29Z",
-  "scraped_at": "2026-05-22T10:41:29.954050",
+  "scraped_at": "2026-05-23T10:54:07.108318",
   "tags": [],
   "thumbnail_path": "competitors/UClQ3mKZEkYO2qqn5vcIZrFQ/thumbnails/M6hjMzPjFDw.jpg",
   "title": "Big Bird vs Small Bird \ud83d\ude32",
   "transcript_status": "unavailable",
   "video_id": "M6hjMzPjFDw",
-  "view_count": 1060225,
-  "views_per_sub": 0.1060225
+  "view_count": 1131822,
+  "views_per_sub": 0.1131822
 }

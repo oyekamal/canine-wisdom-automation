@@ -1,20 +1,20 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
-  "comment_count": 30,
-  "comment_rate": 0.007869884575026232,
+  "comment_count": 37,
+  "comment_rate": 0.00729064039408867,
   "description": "What does \u201creactive\u201d actually mean?\n\nAre you working on training a reactive dog? Tell me about them in the comments!!\n\nFree 30 day training guide: https://pupford.com/training\n\n\nSOURCE\n\nVan Haevermaet, Himara; Soulsbury, Carl; Mills, Daniel (2026). Reactive and risky: The behavioural structuring of \u2018dog reactive dogs\u2019. University of Lincoln. Journal contribution. https://hdl.handle.net/10779/lincoln.31451947.v1",
   "hook": "FetchedTranscriptSnippet(text='What does it even mean to have a', start=0.08, duration=3.76) FetchedTranscriptSnippet(text='reactive dog? Because that word",
-  "like_count": 170,
-  "like_rate": 0.04459601259181532,
+  "like_count": 201,
+  "like_rate": 0.03960591133004926,
   "publish_dow": "Thu",
   "publish_hour_utc": 14,
   "published_at": "2026-05-21T14:14:09Z",
-  "scraped_at": "2026-05-22T10:42:06.473625",
+  "scraped_at": "2026-05-23T10:54:42.659484",
   "tags": [],
   "thumbnail_path": "competitors/UCZzFRKsgVMhGTxffpzgTJlQ/thumbnails/_mMGnztknPI.jpg",
   "title": "How To Train a \u201cReactive\u201d Dog",
   "transcript_status": "available",
   "video_id": "_mMGnztknPI",
-  "view_count": 3812,
-  "views_per_sub": 0.0010219839142091153
+  "view_count": 5075,
+  "views_per_sub": 0.0013605898123324398
 }
