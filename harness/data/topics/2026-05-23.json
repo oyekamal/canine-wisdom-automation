@@ -21,7 +21,8 @@
       "score": 10,
       "source": "autocomplete",
       "topic": "and fun",
-      "topic_cluster": "dog fun"
+      "topic_cluster": "dog fun",
+      "used": true
     },
     {
       "autocomplete_freq": 1,
@@ -31,7 +32,8 @@
       "score": 10,
       "source": "autocomplete",
       "topic": "you didn't know",
-      "topic_cluster": "dog fun"
+      "topic_cluster": "dog fun",
+      "used": true
     },
     {
       "autocomplete_freq": 1,
@@ -41,7 +43,8 @@
       "score": 10,
       "source": "autocomplete",
       "topic": "video",
-      "topic_cluster": "dog fun"
+      "topic_cluster": "dog fun",
+      "used": true
     },
     {
       "autocomplete_freq": 1,
@@ -204,5 +207,5 @@
       "topic_cluster": "dog health"
     }
   ],
-  "used": "dog facts"
+  "used": "video"
 }

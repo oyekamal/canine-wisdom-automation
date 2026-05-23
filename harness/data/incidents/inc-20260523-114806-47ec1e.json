@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260523-114806-47ec1e",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword-rich content and CTA entirely, consisting only of 10 hashtags (good hashtag count) but missing the crucial informational text, context, and viewer engagement elements needed for effective YouTube Shorts SEO.",
+  "id": "inc-20260523-114806-47ec1e",
+  "resolved_at": null,
+  "timestamp": "2026-05-23T11:48:06.183937",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script directly repeats the 'dog yawning stress signals' topic covered in the last 30 days, resulting in zero novelty score that overrides any other positive attributes.",
+  "run_at": "2026-05-23T11:47:59.085290",
+  "score": 0.0,
+  "threshold": 7.0,
+  "video_id": "2026-05-23_11-47-15"
+}
