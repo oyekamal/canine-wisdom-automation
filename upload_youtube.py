@@ -229,12 +229,27 @@ def upload_youtube() -> str:
     if youtube_settings_file.exists():
         with open(youtube_settings_file, "r") as f:
             yt_settings = json.load(f)
-        # Use template from settings
-        description_template = yt_settings.get("description_template", "{video_script}")
+
+        # Build topic-matched affiliate block
+        affiliate_links = yt_settings.get("affiliate_links", {})
+        topic_cluster = metadata.get("topic_cluster", "default")
+        link_entry = affiliate_links.get(topic_cluster) or affiliate_links.get("default", {})
+
+        if link_entry:
+            affiliate_block = (
+                f"🐾 {link_entry['product']}\n"
+                f"👉 {link_entry['url']}\n"
+                f"(Affiliate link — we may earn a small commission at no extra cost to you)"
+            )
+        else:
+            affiliate_block = ""
+
+        description_template = yt_settings.get("description_template", "{video_script}\n\n{hashtags}")
         description = description_template.format(
             video_title=title,
             video_script=script,
-            hashtags=hashtags_str
+            hashtags=hashtags_str,
+            affiliate_block=affiliate_block,
         )
     else:
         # Fallback to simple description

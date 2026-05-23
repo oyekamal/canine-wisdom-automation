@@ -1,6 +1,40 @@
 {
   "channel_name": "Canine Wisdom",
-  "description_template": "🐕 {video_title}\n\n{video_script}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 AFFILIATE LINKS (Recommended Products)\n\n🦴 Best Dog Food: https://barkbox.com\n💊 Pet Insurance: https://example.com/pet-insurance\n🏥 Vet Recommended: https://example.com/vet\n🛒 Amazon Dog Essentials: https://amazon.com/dog-products\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✨ Subscribe for daily dog facts and tips!\n",
+  "description_template": "🐕 {video_title}\n\n{video_script}\n\n{affiliate_block}\n\n{hashtags}\n\n✨ Subscribe for daily dog facts and tips!",
   "hashtags_in_description": true,
-  "playlist_id": null
+  "playlist_id": null,
+  "affiliate_links": {
+    "dog breeds": {
+      "product": "Want to know your dog's breed mix? This DNA test reveals everything.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog training": {
+      "product": "Keep your dog mentally sharp with this puzzle toy trainers love.",
+      "url": "https://amzn.to/4d14ulL"
+    },
+    "dog behavior": {
+      "product": "Does your dog get anxious? This ThunderShirt calms them fast.",
+      "url": "https://amzn.to/4whfoeI"
+    },
+    "dog health": {
+      "product": "Support your dog's joints with this vet-recommended supplement.",
+      "url": "https://amzn.to/4wjWweX"
+    },
+    "dog science": {
+      "product": "Curious about your dog's breed? This DNA test reveals it all.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog history": {
+      "product": "Discover your dog's ancient breed origins with this DNA test.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog fun": {
+      "product": "Keep your dog busy and happy with this top-rated puzzle toy.",
+      "url": "https://amzn.to/4d14ulL"
+    },
+    "default": {
+      "product": "Keep your dog mentally stimulated with this top-rated puzzle toy.",
+      "url": "https://amzn.to/4d14ulL"
+    }
+  }
 }
