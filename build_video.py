@@ -14,6 +14,9 @@ from utils import log, get_random_dog_clip
 from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
 
+# Background music configuration
+MUSIC_PATH = Path(__file__).parent / "assets" / "music" / "background.mp3"
+MUSIC_VOLUME = 0.12  # background music at 12% of voiceover volume
 
 class HardwareAccelerator:
     """Detect and use available hardware acceleration"""
@@ -354,23 +357,46 @@ def build_video(audio_duration: float, clip_path: str = None,
 
     video_filter = ",".join(filter_parts)
 
-    cmd = [
-        "ffmpeg",
-        "-i", actual_video_path,
-        "-i", str(voiceover_path),
-        "-c:v", enc_params["codec"],
-        "-crf", enc_params["crf"],
-        "-preset", enc_params["preset"],
-        "-vf", video_filter,
-        "-c:a", "aac",
-        "-b:a", AUDIO_BITRATE,
-        "-ar", str(AUDIO_SAMPLE_RATE),
-        "-map", "0:v:0",
-        "-map", "1:a:0",
-        "-t", str(audio_duration),
-        "-y",
-        "outputs/final_video.mp4"
-    ]
+    if MUSIC_PATH.exists():
+        log(f"🎵 Mixing background music at {int(MUSIC_VOLUME * 100)}% volume")
+        cmd = [
+            "ffmpeg",
+            "-i", actual_video_path,
+            "-i", str(voiceover_path),
+            "-stream_loop", "-1", "-i", str(MUSIC_PATH),
+            "-c:v", enc_params["codec"],
+            "-crf", enc_params["crf"],
+            "-preset", enc_params["preset"],
+            "-vf", video_filter,
+            "-filter_complex",
+            f"[1:a]volume=1.0[voice];[2:a]volume={MUSIC_VOLUME}[music];[voice][music]amix=inputs=2:duration=first[aout]",
+            "-map", "0:v:0",
+            "-map", "[aout]",
+            "-c:a", "aac",
+            "-b:a", AUDIO_BITRATE,
+            "-ar", str(AUDIO_SAMPLE_RATE),
+            "-t", str(audio_duration),
+            "-y",
+            "outputs/final_video.mp4"
+        ]
+    else:
+        cmd = [
+            "ffmpeg",
+            "-i", actual_video_path,
+            "-i", str(voiceover_path),
+            "-c:v", enc_params["codec"],
+            "-crf", enc_params["crf"],
+            "-preset", enc_params["preset"],
+            "-vf", video_filter,
+            "-c:a", "aac",
+            "-b:a", AUDIO_BITRATE,
+            "-ar", str(AUDIO_SAMPLE_RATE),
+            "-map", "0:v:0",
+            "-map", "1:a:0",
+            "-t", str(audio_duration),
+            "-y",
+            "outputs/final_video.mp4"
+        ]
 
     try:
         log(f"⏳ Encoding with {optimizer.encoder_name}...")
