@@ -302,7 +302,31 @@ def fetch_footage_for_topic(topic_cluster: str, topic: str) -> Path | None:
             _record_footage(output_path, "pexels", topic_cluster, query)
             return output_path
 
-    # All Pexels queries failed — try yt-dlp CC
+    # All Pexels queries failed — try Pixabay
+    pixabay_key = _load_pixabay_key()
+    if pixabay_key:
+        print(f"[footage] Pexels exhausted — trying Pixabay for: {topic}")
+        for query in queries:
+            clips = _search_pixabay(query, pixabay_key)
+            if not clips:
+                continue
+            good_clips = [c for c in clips if 8 <= c["duration"] <= 90]
+            if not good_clips:
+                good_clips = clips
+            clip = random.choice(good_clips[:5])
+            filename = f"pixabay_{clip['pexels_id'].replace('pixabay_', '')}_{topic_cluster.replace(' ', '_')}.mp4"
+            output_path = DOG_FOOTAGE_DIR / filename
+            if output_path.exists():
+                print(f"[footage] Already have (Pixabay): {filename}")
+                _record_footage(output_path, "pixabay", topic_cluster, query)
+                return output_path
+            if _download_clip(clip, output_path):
+                _record_footage(output_path, "pixabay", topic_cluster, query)
+                return output_path
+    else:
+        print("[footage] PIXABAY_API_KEY not set — skipping Pixabay fallback")
+
+    # All Pixabay queries failed — try yt-dlp CC
     cc_path = _yt_dlp_cc_fallback(topic)
     if cc_path:
         _record_footage(cc_path, "youtube_cc", topic_cluster, topic)

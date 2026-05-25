@@ -98,3 +98,26 @@ def test_search_pixabay_returns_empty_on_error():
         results = _search_pixabay("dog", "fake_key")
 
     assert results == []
+
+
+def test_pixabay_fallback_called_when_pexels_empty(tmp_path, monkeypatch):
+    """When Pexels returns no clips, Pixabay should be tried."""
+    from harness.tools import footage as footage_mod
+
+    monkeypatch.setattr(footage_mod, "DOG_FOOTAGE_DIR", tmp_path)
+    monkeypatch.setattr(footage_mod, "_search_pexels", lambda q, k, **kw: [])
+    monkeypatch.setattr(footage_mod, "_load_pixabay_key", lambda: "fake_pixabay_key")
+    monkeypatch.setattr(footage_mod, "_load_api_key", lambda: "fake_pexels_key")
+
+    pixabay_called_with = []
+
+    def fake_pixabay(query, key, **kw):
+        pixabay_called_with.append(query)
+        return []
+
+    monkeypatch.setattr(footage_mod, "_search_pixabay", fake_pixabay)
+    monkeypatch.setattr(footage_mod, "_yt_dlp_cc_fallback", lambda q: None)
+
+    result = footage_mod.fetch_footage_for_topic("dog fun", "puppy playing fetch")
+    assert len(pixabay_called_with) > 0, "Pixabay was never called despite Pexels returning nothing"
+    assert result is None
