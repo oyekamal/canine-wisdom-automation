@@ -1,3 +1,5 @@
+from unittest.mock import patch, MagicMock
+
 from harness.tools.footage import TOPIC_SEARCH_MAP
 
 
@@ -20,3 +22,9 @@ def test_no_generic_single_word_queries():
     for cluster, queries in TOPIC_SEARCH_MAP.items():
         for q in queries:
             assert q.lower() not in bad, f"Generic query '{q}' in {cluster}"
+
+
+def test_pixabay_key_returns_none_or_string():
+    from harness.tools.footage import _load_pixabay_key
+    result = _load_pixabay_key()
+    assert result is None or isinstance(result, str)

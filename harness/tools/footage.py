@@ -85,6 +85,14 @@ def _load_api_key() -> str:
     return key
 
 
+def _load_pixabay_key() -> str | None:
+    """Load Pixabay API key from .env. Returns None if not set (fallback disabled)."""
+    env_path = BASE_DIR / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+    return os.getenv("PIXABAY_API_KEY") or None
+
+
 def _search_pexels(query: str, api_key: str, per_page: int = 15) -> list:
     """Search Pexels for portrait dog videos. Returns list of clip dicts."""
     headers = {"Authorization": api_key}
@@ -133,7 +141,6 @@ def _search_pexels(query: str, api_key: str, per_page: int = 15) -> list:
             "query": query,
         })
     return results
-
 
 def _download_clip(clip: dict, output_path: Path) -> bool:
     """Download a video clip from URL. Returns True on success."""
