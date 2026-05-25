@@ -15,7 +15,7 @@ from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
 
 MUSIC_DIR = Path(__file__).parent / "assets" / "music"
-MUSIC_VOLUME = 0.28  # background music at 28% of voiceover volume
+MUSIC_VOLUME = 0.45  # background music at 45% of voiceover volume
 
 
 def _pick_music_track() -> Path | None:
@@ -229,13 +229,19 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
         clip_dur = HardwareAccelerator.get_video_duration(str(clip))
         seg_out = temp_dir / f"canine_seg_{i}_{clip.stem}.mp4"
 
+        # Re-encode every segment to a consistent format (yuv420p, 30fps, 1080x1920).
+        # Stream-copy (-c:v copy) causes freezes when clips have mismatched codecs/fps.
         if clip_dur is None or clip_dur < dur:
             loops = int(dur / (clip_dur or 1)) + 2
             cmd = [
                 "ffmpeg", "-stream_loop", str(loops),
                 "-i", str(clip),
                 "-t", f"{dur:.3f}",
-                "-c:v", "copy", "-an", "-y", str(seg_out),
+                "-vf", f"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1",
+                "-r", "30",
+                "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
+                "-pix_fmt", "yuv420p",
+                "-an", "-y", str(seg_out),
             ]
         else:
             max_start = clip_dur - dur
@@ -245,7 +251,11 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
                 "-ss", f"{start:.3f}",
                 "-i", str(clip),
                 "-t", f"{dur:.3f}",
-                "-c:v", "copy", "-an", "-y", str(seg_out),
+                "-vf", f"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1",
+                "-r", "30",
+                "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
+                "-pix_fmt", "yuv420p",
+                "-an", "-y", str(seg_out),
             ]
 
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
@@ -259,7 +269,7 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
         for seg in segment_paths:
             f.write(f"file '{seg}'\n")
 
-    # Concatenate all segments
+    # Concatenate pre-normalised segments — all same codec/fps/resolution so copy is safe
     concat_out = temp_dir / "canine_concat.mp4"
     cmd = [
         "ffmpeg", "-f", "concat", "-safe", "0",
