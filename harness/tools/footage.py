@@ -142,6 +142,49 @@ def _search_pexels(query: str, api_key: str, per_page: int = 15) -> list:
         })
     return results
 
+
+def _search_pixabay(query: str, api_key: str, per_page: int = 15) -> list:
+    """Search Pixabay for vertical dog videos. Returns list of clip dicts matching _search_pexels format."""
+    try:
+        resp = requests.get(
+            "https://pixabay.com/api/videos/",
+            params={
+                "key": api_key,
+                "q": query,
+                "video_type": "film",
+                "orientation": "vertical",
+                "per_page": per_page,
+            },
+            timeout=15,
+        )
+        resp.raise_for_status()
+        hits = resp.json().get("hits", [])
+    except Exception as e:
+        print(f"[footage] Pixabay search failed for '{query}': {e}")
+        return []
+
+    results = []
+    for hit in hits:
+        if hit.get("duration", 0) < 8:
+            continue
+        large = hit.get("videos", {}).get("large", {})
+        if not large.get("url"):
+            medium = hit.get("videos", {}).get("medium", {})
+            if not medium.get("url"):
+                continue
+            large = medium
+        results.append({
+            "pexels_id": f"pixabay_{hit['id']}",
+            "pexels_url": hit.get("pageURL", ""),
+            "download_url": large["url"],
+            "width": large.get("width", 0),
+            "height": large.get("height", 0),
+            "duration": hit["duration"],
+            "query": query,
+        })
+    return results
+
+
 def _download_clip(clip: dict, output_path: Path) -> bool:
     """Download a video clip from URL. Returns True on success."""
     try:
