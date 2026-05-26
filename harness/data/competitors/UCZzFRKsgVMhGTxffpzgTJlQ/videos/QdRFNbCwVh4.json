@@ -1,20 +1,20 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
   "comment_count": 14,
-  "comment_rate": 0.0027089783281733747,
+  "comment_rate": 0.002476123098691192,
   "description": "Sign up for my free 30 day training guide HERE: https://pupford.com/training",
   "hook": "FetchedTranscriptSnippet(text='Because dogs sometimes snap at one', start=0.0, duration=4.32) FetchedTranscriptSnippet(text='another when under stress, professional', start=2.24, duration=3.84)",
-  "like_count": 214,
-  "like_rate": 0.041408668730650154,
+  "like_count": 220,
+  "like_rate": 0.038910505836575876,
   "publish_dow": "Mon",
   "publish_hour_utc": 14,
   "published_at": "2026-05-18T14:01:46Z",
-  "scraped_at": "2026-05-23T10:54:39.679716",
+  "scraped_at": "2026-05-25T12:35:26.675999",
   "tags": [],
   "thumbnail_path": "competitors/UCZzFRKsgVMhGTxffpzgTJlQ/thumbnails/QdRFNbCwVh4.jpg",
   "title": "Sometimes Dogs Snap At Each Other. So\u2026",
   "transcript_status": "available",
   "video_id": "QdRFNbCwVh4",
-  "view_count": 5168,
-  "views_per_sub": 0.0013855227882037533
+  "view_count": 5654,
+  "views_per_sub": 0.0015158176943699732
 }

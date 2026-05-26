@@ -70,6 +70,16 @@
       "posted": "2026-05-23",
       "topic": "dog yawning stress signal",
       "video_id": "FjXwq0IInt0"
+    },
+    {
+      "posted": "2026-05-25",
+      "topic": "dogs detecting human deception",
+      "video_id": "3eb_9yeP0RQ"
+    },
+    {
+      "posted": "2026-05-25",
+      "topic": "dogs reading facial expressions",
+      "video_id": "31d3psumSNs"
     }
   ],
   "format_mix": {
@@ -96,19 +106,19 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.02928364431554105,
+      "avg_3sec_retention_proxy": 0.028840559006951344,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='What do you have? Do you have mulch?', start=1.64, duration=3.64) FetchedTranscriptSnippet(text='[music]', start=3.274, duration=3.846) FetchedTranscriptSnippet(text='Drop the",
-      "sample_size": 2,
+      "sample_size": 3,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.05046616094909184,
+      "avg_3sec_retention_proxy": 0.04534676734481936,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='Welcome', start=1.4, duration=3.32) FetchedTranscriptSnippet(text='to the guided meditation for [music]', start=2.72, duration=4.56) FetchedTranscriptSnippet(text='pets.', start=4.72, duration=2.56) FetchedTranscriptSnippet(text='Close",
-      "sample_size": 2,
+      "sample_size": 3,
       "source": "competitor"
     },
     {
@@ -136,19 +146,19 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.042165333127190535,
+      "avg_3sec_retention_proxy": 0.04108039069698565,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='Because dogs sometimes snap at one', start=0.0, duration=4.32) FetchedTranscriptSnippet(text='another when under stress, professional', start=2.24, duration=3.84)",
-      "sample_size": 2,
+      "sample_size": 3,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04210096196093229,
+      "avg_3sec_retention_proxy": 0.04129025841663624,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='What does it even mean to have a', start=0.08, duration=3.76) FetchedTranscriptSnippet(text='reactive dog? Because that word",
-      "sample_size": 2,
+      "sample_size": 3,
       "source": "competitor"
     },
     {
@@ -184,11 +194,11 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.08221587055861393,
+      "avg_3sec_retention_proxy": 0.0782003337821922,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='Peter, I would like to introduce', start=27.92, duration=6.639) FetchedTranscriptSnippet(text='properly but in a very you know",
-      "sample_size": 2,
+      "sample_size": 3,
       "source": "competitor"
     },
     {
@@ -208,11 +218,11 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.08311374301361382,
+      "avg_3sec_retention_proxy": 0.0811553614899806,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text=\"You don't have to walk a dog to be to\", start=0.0, duration=2.96) FetchedTranscriptSnippet(text='learn how to",
-      "sample_size": 2,
+      "sample_size": 3,
       "source": "competitor"
     },
     {
@@ -224,50 +234,122 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.022238737708666818,
+      "avg_3sec_retention_proxy": 0.021435070875934076,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='EW.', start=6.32, duration=2.52) FetchedTranscriptSnippet(text='OH MY GOSH.', start=30.0, duration=3.88) FetchedTranscriptSnippet(text='Who is it, B? Oh my god.',",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.033439953474847336,
+      "avg_3sec_retention_proxy": 0.031303310070757,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='No, sorry.', start=7.04, duration=3.56) FetchedTranscriptSnippet(text='Steve, get off of the car now. Get down.', start=34.719, duration=7.241)",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.030506274340112504,
+      "avg_3sec_retention_proxy": 0.03896770774404856,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text=\"Bad parents, I know what you're\", start=0.4, duration=2.96) FetchedTranscriptSnippet(text='thinking. You want to make your [music]',",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.03860840050912177,
+      "avg_3sec_retention_proxy": 0.0349023333913823,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text=\"My dog is too hyper and doesn't listen.\", start=0.0, duration=4.12) FetchedTranscriptSnippet(text=\"If you're a dog trainer,",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.03358359570517478,
+      "avg_3sec_retention_proxy": 0.03290711980484354,
       "confidence": "low",
-      "last_seen": "2026-05-23",
+      "last_seen": "2026-05-25",
       "pattern": "FetchedTranscriptSnippet(text='[laughter]', start=0.654, duration=4.026) FetchedTranscriptSnippet(text='>> Harvey!', start=2.2, duration=2.48) FetchedTranscriptSnippet(text='He gets vicious. Hey!', start=5.0, duration=5.0) FetchedTranscriptSnippet(text='Hey! He",
+      "sample_size": 2,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.043776338142526114,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text=\"Why do dogs run away? It's usually not\", start=0.0, duration=5.08) FetchedTranscriptSnippet(text=\"what people think. They're not",
+      "sample_size": 2,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04195984765347621,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='What brings you joy [music]', start=0.0, duration=3.6) FetchedTranscriptSnippet(text='when life gets you down?', start=1.56, duration=4.334) FetchedTranscriptSnippet(text='What",
       "sample_size": 1,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.048734072480556015,
+      "avg_3sec_retention_proxy": 0.040014603870025554,
       "confidence": "low",
-      "last_seen": "2026-05-23",
-      "pattern": "FetchedTranscriptSnippet(text=\"Why do dogs run away? It's usually not\", start=0.0, duration=5.08) FetchedTranscriptSnippet(text=\"what people think. They're not",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Sam, do you like the new dog food we', start=0.0, duration=3.88) FetchedTranscriptSnippet(text='got?', start=1.52, duration=2.36) FetchedTranscriptSnippet(text='>>",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.06540880503144654,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Kevin, you just knocked my donut out of', start=26.64, duration=4.399) FetchedTranscriptSnippet(text='my hand.', start=28.8, duration=4.4) FetchedTranscriptSnippet(text='Got",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04245671887881286,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Would you even know it if your dog was', start=0.0, duration=3.679) FetchedTranscriptSnippet(text='in pain? This is",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04928571428571429,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Tell me if you agree or disagree with', start=0.08, duration=3.28) FetchedTranscriptSnippet(text='this. A frightened dog bites",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04561949196474858,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Stop trying to be an alpha. Dominance', start=0.0, duration=3.24) FetchedTranscriptSnippet(text=\"theory in dog training isn't just\",",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03496248509922165,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text=\"There's many simple pleasures with dogs\", start=4.04, duration=3.92) FetchedTranscriptSnippet(text='and one of my favorites is to",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04228602092836061,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Before him, I had a 100 pound black', start=0.0, duration=4.56) FetchedTranscriptSnippet(text='German Shepherd rescue.', start=2.24, duration=3.599)",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03874377566174544,
+      "confidence": "low",
+      "last_seen": "2026-05-25",
+      "pattern": "FetchedTranscriptSnippet(text='Okay.', start=0.0, duration=2.04) FetchedTranscriptSnippet(text='>> people say, \"My dog is my baby.\" That\\'s', start=0.48, duration=3.449) FetchedTranscriptSnippet(text='a",
       "sample_size": 1,
       "source": "competitor"
     }
@@ -300,5 +382,5 @@
   "thumbnail_features": [],
   "title_formulas": [],
   "topic_performance": [],
-  "updated_at": "2026-05-23T12:49:41.972145"
+  "updated_at": "2026-05-25T12:42:49.678836"
 }

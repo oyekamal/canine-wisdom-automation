@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 8.2,
+    "title_eval": 8.2
+  },
+  "format": "short",
+  "hook_pattern_used": "Accusation/secret: YOUR DOG IS HIDING THIS FROM YOU style - revealing something the dog knows",
+  "snapshots": [],
+  "title": "Your Dog Knows You're Faking The Throw",
+  "title_formula_used": "No data yet - created original formula: Your Dog Knows [Shocking Owner Behavior]",
+  "topic": "dogs detecting human deception",
+  "topic_cluster": "dog behavior",
+  "uploaded_at": "2026-05-25T12:37:57.187643",
+  "video_id": "3eb_9yeP0RQ"
+}

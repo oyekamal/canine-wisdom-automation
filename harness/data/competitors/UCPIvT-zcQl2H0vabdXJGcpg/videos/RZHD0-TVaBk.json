@@ -1,15 +1,15 @@
 {
   "channel_id": "UCPIvT-zcQl2H0vabdXJGcpg",
-  "comment_count": 7,
-  "comment_rate": 0.0015144958892254435,
+  "comment_count": 9,
+  "comment_rate": 0.00064093433983763,
   "description": "Here\u2019s a short guide to starting the process of getting your pet registered as an emotional support animal (ESA)\n.\n ESA\u2019s are not service animals \u2014 they cannot go into public spaces such as grocery stores, and they do not provide critical disability support \u2014 the primary function of an ESA is to provide therapeutic benefits like emotional support, comfort, and companionship that provide relief for certain conditions associated with a person\u2019s mental health. \n\nThis is also a different classificat",
   "hook": "FetchedTranscriptSnippet(text=\"Bad parents, I know what you're\", start=0.4, duration=2.96) FetchedTranscriptSnippet(text='thinking. You want to make your [music]',",
-  "like_count": 141,
-  "like_rate": 0.030506274340112504,
+  "like_count": 666,
+  "like_rate": 0.04742914114798462,
   "publish_dow": "Fri",
   "publish_hour_utc": 14,
   "published_at": "2026-05-22T14:45:09Z",
-  "scraped_at": "2026-05-23T10:54:31.731006",
+  "scraped_at": "2026-05-25T12:35:17.856212",
   "tags": [
     "the pet collective",
     "pet collective",
@@ -29,6 +29,6 @@
   "title": "Registering Your Pet As An ESA | Pet Pointers",
   "transcript_status": "available",
   "video_id": "RZHD0-TVaBk",
-  "view_count": 4622,
-  "views_per_sub": 0.0004896186440677966
+  "view_count": 14042,
+  "views_per_sub": 0.0014875
 }

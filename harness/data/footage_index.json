@@ -1,4 +1,11 @@
 {
+  "pexels_10976410_dog_fun.mp4": {
+    "downloaded_at": "2026-05-25T12:41:31.584956",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_10976410_dog_fun.mp4",
+    "query": "dog and fun",
+    "source": "pexels",
+    "topic_cluster": "dog fun"
+  },
   "pexels_16622195_dog_fun.mp4": {
     "downloaded_at": "2026-05-17T12:06:12.721762",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_16622195_dog_fun.mp4",
@@ -31,6 +38,13 @@
     "downloaded_at": "2026-05-17T12:28:05.858916",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_34300590_dog_fun.mp4",
     "query": "dog and fun",
+    "source": "pexels",
+    "topic_cluster": "dog fun"
+  },
+  "pexels_34688820_dog_fun.mp4": {
+    "downloaded_at": "2026-05-25T12:36:37.384983",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_34688820_dog_fun.mp4",
+    "query": "dog dog facts",
     "source": "pexels",
     "topic_cluster": "dog fun"
   },

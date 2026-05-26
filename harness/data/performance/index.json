@@ -9,7 +9,7 @@
     "avg_watch_time_min": null,
     "subscribers_gained": null
   },
-  "total_videos_tracked": 14,
+  "total_videos_tracked": 16,
   "updated_at": null,
   "videos": [
     {
@@ -81,6 +81,16 @@
       "format": "short",
       "uploaded_at": "2026-05-23T12:49:41.968123",
       "video_id": "FjXwq0IInt0"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-25T12:37:57.191063",
+      "video_id": "3eb_9yeP0RQ"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-25T12:42:49.674297",
+      "video_id": "31d3psumSNs"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
   "channel_id": "UCPIvT-zcQl2H0vabdXJGcpg",
   "comment_count": 9,
-  "comment_rate": 0.0009757155247181266,
+  "comment_rate": 0.0006571741511500548,
   "description": "If your kibble kitchen\u2019s turned into an all-you-can-eat buffet\u2026 it\u2019s time to shut it down with the Houndsy.  The Houndsy Kibble Dispenser keeps food locked, portions controlled, and actually looks like a retro piece of furniture\u2014not a plastic eyesore. Clean, stylish, and no more snack bandits.  \ud83d\udc49 Get yours here: https://www.thepetcollective.com/pawpicks/\n\nOur Paw Picks aren\u2019t sponsored\u2014just real favorites from our team & community.\n#Dogs #PetProducts #ProductReview #Review #DogParents\n\nWe're the",
-  "hook": "FetchedTranscriptSnippet(text='Sam, do you like the new dog food we', start=0.08, duration=4.6) FetchedTranscriptSnippet(text='got?', start=1.68, duration=3.0) FetchedTranscriptSnippet(text='>>",
-  "like_count": 350,
-  "like_rate": 0.037944492627927144,
+  "hook": "FetchedTranscriptSnippet(text='Sam, do you like the new dog food we', start=0.0, duration=3.88) FetchedTranscriptSnippet(text='got?', start=1.52, duration=2.36) FetchedTranscriptSnippet(text='>>",
+  "like_count": 548,
+  "like_rate": 0.040014603870025554,
   "publish_dow": "Thu",
   "publish_hour_utc": 16,
   "published_at": "2026-05-21T16:00:00Z",
-  "scraped_at": "2026-05-23T10:54:29.869276",
+  "scraped_at": "2026-05-25T12:35:19.882276",
   "tags": [
     "the pet collective",
     "pet collective",
@@ -29,6 +29,6 @@
   "title": "Paw Picks:  Houndsy Kibble Dispenser",
   "transcript_status": "available",
   "video_id": "JVEWMbEBX-I",
-  "view_count": 9224,
-  "views_per_sub": 0.0009771186440677966
+  "view_count": 13695,
+  "views_per_sub": 0.0014507415254237288
 }

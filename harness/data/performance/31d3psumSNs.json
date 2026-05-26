@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 8.2,
+    "title_eval": 7.8
+  },
+  "format": "short",
+  "hook_pattern_used": "Accusation/secret: YOUR DOG IS HIDING THIS FROM YOU",
+  "snapshots": [],
+  "title": "Your Dog Reads Faces Faster Than You Do",
+  "title_formula_used": "No data yet",
+  "topic": "dogs reading facial expressions",
+  "topic_cluster": "dog science",
+  "uploaded_at": "2026-05-25T12:42:49.666424",
+  "video_id": "31d3psumSNs"
+}
