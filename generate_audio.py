@@ -13,9 +13,13 @@ from config import load_config, ELEVENLABS_API_BASE
 from utils import log, retry_with_backoff
 
 
-def generate_audio() -> tuple:
+def generate_audio(script: str = None, voice_id: str = None) -> tuple:
     """
     Generate voiceover using ElevenLabs with word-level timestamps.
+
+    Args:
+        script: Script text to convert to audio. If None, loads from outputs/script.txt.
+        voice_id: ElevenLabs voice ID to use. If None, loads from config.
 
     Returns:
         tuple: (audio_duration_seconds: float, word_timestamps: list[dict])
@@ -23,12 +27,16 @@ def generate_audio() -> tuple:
     """
     cfg = load_config()
     api_key = cfg["elevenlabs_api_key"]
-    voice_id = cfg["elevenlabs_voice_id"]
+    if voice_id is None:
+        voice_id = cfg["elevenlabs_voice_id"]
     outputs_dir = cfg["outputs_dir"]
 
-    script_path = outputs_dir / "script.txt"
-    with open(script_path, "r", encoding="utf-8") as f:
-        script_text = f.read().strip()
+    if script is None:
+        script_path = outputs_dir / "script.txt"
+        with open(script_path, "r", encoding="utf-8") as f:
+            script = f.read().strip()
+
+    script_text = script
 
     log("🎙️ Step 2: Generating voiceover with timestamps...")
 
