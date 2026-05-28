@@ -14,6 +14,8 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from config import VideoFormat
+
 BASE_DIR = Path(__file__).parent.parent.parent
 DOG_FOOTAGE_DIR = BASE_DIR / "dog_footage"
 FOOTAGE_INDEX = BASE_DIR / "harness" / "data" / "footage_index.json"
@@ -93,12 +95,12 @@ def _load_pixabay_key() -> str | None:
     return os.getenv("PIXABAY_API_KEY") or None
 
 
-def _search_pexels(query: str, api_key: str, per_page: int = 15) -> list:
-    """Search Pexels for portrait dog videos. Returns list of clip dicts."""
+def _search_pexels(query: str, api_key: str, per_page: int = 15, orientation: str = "portrait") -> list:
+    """Search Pexels for dog videos. Returns list of clip dicts."""
     headers = {"Authorization": api_key}
     params = {
         "query": query,
-        "orientation": "portrait",
+        "orientation": orientation,
         "size": "medium",
         "per_page": per_page,
     }
@@ -119,14 +121,18 @@ def _search_pexels(query: str, api_key: str, per_page: int = 15) -> list:
     for video in videos:
         if video.get("duration", 0) < 8:
             continue  # too short for a 15-30s script
-        # Find best portrait file (height > width, highest resolution)
-        portrait_files = [
-            f for f in video.get("video_files", [])
-            if f.get("height", 0) > f.get("width", 0) and f.get("height", 0) >= 720
-        ]
+        # Find best file matching requested orientation
+        def _keep_file(f):
+            w, h = f.get("width", 0), f.get("height", 0)
+            if orientation == "portrait":
+                return h > w and h >= 720
+            else:
+                return w > h and w >= 1280
+        portrait_files = [f for f in video.get("video_files", []) if _keep_file(f)]
         if not portrait_files:
             # Accept any file — we'll crop in ffmpeg
-            all_files = [f for f in video.get("video_files", []) if f.get("height", 0) >= 720]
+            min_dim = 720 if orientation == "portrait" else 1280
+            all_files = [f for f in video.get("video_files", []) if max(f.get("height", 0), f.get("width", 0)) >= min_dim]
             if not all_files:
                 continue
             portrait_files = all_files
@@ -143,8 +149,8 @@ def _search_pexels(query: str, api_key: str, per_page: int = 15) -> list:
     return results
 
 
-def _search_pixabay(query: str, api_key: str, per_page: int = 15) -> list:
-    """Search Pixabay for vertical dog videos. Returns list of clip dicts matching _search_pexels format."""
+def _search_pixabay(query: str, api_key: str, per_page: int = 15, orientation: str = "vertical") -> list:
+    """Search Pixabay for dog videos. Returns list of clip dicts matching _search_pexels format."""
     try:
         resp = requests.get(
             "https://pixabay.com/api/videos/",
@@ -152,7 +158,7 @@ def _search_pixabay(query: str, api_key: str, per_page: int = 15) -> list:
                 "key": api_key,
                 "q": query,
                 "video_type": "film",
-                "orientation": "vertical",
+                "orientation": orientation,
                 "per_page": per_page,
             },
             timeout=15,
@@ -259,15 +265,19 @@ def _record_footage(clip_path: Path, source: str, topic_cluster: str, query: str
     tmp.replace(FOOTAGE_INDEX)
 
 
-def fetch_footage_for_topic(topic_cluster: str, topic: str) -> Path | None:
+def fetch_footage_for_topic(topic_cluster: str, topic: str, fmt=VideoFormat.SHORT) -> Path | None:
     """
     Main entry point. Find and download a dog clip relevant to the topic.
     Returns path to downloaded clip, or None if all sources failed.
 
     Priority:
-    1. Pexels portrait clip matching topic cluster queries
-    2. yt-dlp CC fallback
+    1. Pexels portrait/landscape clip matching topic cluster queries
+    2. Pixabay fallback
+    3. yt-dlp CC fallback
     """
+    orientation_pexels  = "portrait"   if fmt == VideoFormat.SHORT else "landscape"
+    orientation_pixabay = "vertical"   if fmt == VideoFormat.SHORT else "horizontal"
+
     DOG_FOOTAGE_DIR.mkdir(exist_ok=True)
     api_key = _load_api_key()
 
@@ -280,7 +290,7 @@ def fetch_footage_for_topic(topic_cluster: str, topic: str) -> Path | None:
     queries = [primary] + cluster_queries
 
     for query in queries:
-        clips = _search_pexels(query, api_key)
+        clips = _search_pexels(query, api_key, orientation=orientation_pexels)
         if not clips:
             continue
 
@@ -307,7 +317,7 @@ def fetch_footage_for_topic(topic_cluster: str, topic: str) -> Path | None:
     if pixabay_key:
         print(f"[footage] Pexels exhausted — trying Pixabay for: {topic}")
         for query in queries:
-            clips = _search_pixabay(query, pixabay_key)
+            clips = _search_pixabay(query, pixabay_key, orientation=orientation_pixabay)
             if not clips:
                 continue
             good_clips = [c for c in clips if 8 <= c["duration"] <= 90]
