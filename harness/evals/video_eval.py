@@ -3,14 +3,16 @@ import subprocess
 from pathlib import Path
 
 from harness.evals.base import EvalResult
+from config import VideoFormat, LONG_VIDEO_WIDTH, LONG_VIDEO_HEIGHT, VIDEO_WIDTH, VIDEO_HEIGHT
 
 EVAL_NAME = "video_eval"
-EXPECTED_WIDTH = 1080
-EXPECTED_HEIGHT = 1920
 
 
-def video_eval(video_path: Path) -> EvalResult:
-    """Deterministic check: file exists, non-zero size, resolution 1080x1920 via ffprobe."""
+def video_eval(video_path: Path, fmt=VideoFormat.SHORT) -> EvalResult:
+    """Deterministic check: file exists, non-zero size, resolution matches format via ffprobe."""
+    EXPECTED_WIDTH = LONG_VIDEO_WIDTH if fmt == VideoFormat.LONG else VIDEO_WIDTH
+    EXPECTED_HEIGHT = LONG_VIDEO_HEIGHT if fmt == VideoFormat.LONG else VIDEO_HEIGHT
+
     video_path = Path(video_path)
 
     if not video_path.exists():
