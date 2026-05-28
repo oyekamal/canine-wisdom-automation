@@ -30,10 +30,7 @@ def _build_prompt(channel_config=None) -> str:
     If channel_config is None, return the existing hardcoded prompt unchanged
     (learnings context is injected by the caller).
     """
-    if channel_config is not None and channel_config.prompt_path.exists():
-        return channel_config.prompt_path.read_text(encoding="utf-8")
-
-    # Build learnings context
+    # Build learnings context (needed for both file-based and inline prompts)
     try:
         from harness.tools.learnings import get_top_hook_patterns, get_top_title_formulas, get_covered_topics
         top_hooks = get_top_hook_patterns(min_confidence="low", n=3)
@@ -52,6 +49,13 @@ def _build_prompt(channel_config=None) -> str:
         hooks_text = "- No data yet"
         titles_text = "- No data yet"
         covered_text = "none"
+
+    # If channel has a prompt file, substitute learnings placeholders into it
+    if channel_config is not None and channel_config.prompt_path.exists():
+        raw = channel_config.prompt_path.read_text(encoding="utf-8")
+        return raw.replace("{hooks_text}", hooks_text) \
+                   .replace("{titles_text}", titles_text) \
+                   .replace("{covered_text}", covered_text)
 
     if channel_config is not None:
         niche = channel_config.niche
