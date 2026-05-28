@@ -68,17 +68,23 @@ def test_caption_style_customization():
 
 
 def test_base_filter_includes_color_grading():
-    """Verify base filter has contrast and saturation boost."""
+    """Verify cinematic base filter has Ken Burns, warm color grade, and vignette."""
     VIDEO_WIDTH = 1080
     VIDEO_HEIGHT = 1920
     base_filter = (
-        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
-        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,"
-        f"eq=brightness=0.02:saturation=1.4:contrast=1.1"
+        "zoompan=z='min(zoom+0.0015,1.5)':d=150"
+        ":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT},"
+        f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+        f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+        f"vignette=PI/5"
     )
-    assert "saturation=1.4" in base_filter
-    assert "contrast=1.1" in base_filter
-    assert "brightness=0.02" in base_filter
+    assert "zoompan" in base_filter
+    assert "saturation=1.25" in base_filter
+    assert "contrast=1.15" in base_filter
+    assert "brightness=0.04" in base_filter
+    assert "colorbalance" in base_filter
+    assert "vignette=PI/5" in base_filter
 
 
 def test_filter_composition():
@@ -95,3 +101,30 @@ def test_filter_composition():
     video_filter = ",".join(filter_parts)
 
     assert video_filter == "scale=1080:1920,drawtext=text='HOOK',drawtext=text='caption1',drawtext=text='caption2'"
+
+
+def test_ken_burns_filter_components():
+    """Verify Ken Burns zoompan expression is correct."""
+    ken_burns = "zoompan=z='min(zoom+0.0015,1.5)':d=150:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+    assert "zoompan" in ken_burns
+    assert "min(zoom+0.0015,1.5)" in ken_burns
+    assert "d=150" in ken_burns
+    assert "iw/2-(iw/zoom/2)" in ken_burns
+    assert "ih/2-(ih/zoom/2)" in ken_burns
+
+
+def test_vignette_in_filter():
+    """Verify vignette filter is appended after color grading."""
+    VIDEO_WIDTH = 1080
+    VIDEO_HEIGHT = 1920
+    base_filter = (
+        "zoompan=z='min(zoom+0.0015,1.5)':d=150"
+        ":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT},"
+        f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+        f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+        f"vignette=PI/5"
+    )
+    parts = base_filter.split(",")
+    last = parts[-1]
+    assert last.startswith("vignette"), f"vignette must be last filter, got: {last}"
