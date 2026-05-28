@@ -210,6 +210,12 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
         fmt = VideoFormat.SHORT
     clip_w = LONG_VIDEO_WIDTH if fmt == VideoFormat.LONG else 1080
     clip_h = LONG_VIDEO_HEIGHT if fmt == VideoFormat.LONG else 1920
+    # Long-form: upscale+crop to exact size. Short: shrink+pad to exact size.
+    scale_filter = (
+        f"scale={clip_w}:{clip_h}:force_original_aspect_ratio=increase,crop={clip_w}:{clip_h},setsar=1"
+        if fmt == VideoFormat.LONG else
+        f"scale={clip_w}:{clip_h}:force_original_aspect_ratio=decrease,pad={clip_w}:{clip_h}:(ow-iw)/2:(oh-ih)/2,setsar=1"
+    )
 
     temp_dir = Path(tempfile.gettempdir())
     durations = _assign_cut_durations(len(clip_paths), audio_duration)
@@ -227,7 +233,7 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
                 "ffmpeg", "-stream_loop", str(loops),
                 "-i", str(clip),
                 "-t", f"{dur:.3f}",
-                "-vf", f"scale={clip_w}:{clip_h}:force_original_aspect_ratio=decrease,pad={clip_w}:{clip_h}:(ow-iw)/2:(oh-ih)/2,setsar=1",
+                "-vf", scale_filter,
                 "-r", "30",
                 "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
                 "-pix_fmt", "yuv420p",
@@ -241,7 +247,7 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
                 "-ss", f"{start:.3f}",
                 "-i", str(clip),
                 "-t", f"{dur:.3f}",
-                "-vf", f"scale={clip_w}:{clip_h}:force_original_aspect_ratio=decrease,pad={clip_w}:{clip_h}:(ow-iw)/2:(oh-ih)/2,setsar=1",
+                "-vf", scale_filter,
                 "-r", "30",
                 "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
                 "-pix_fmt", "yuv420p",
@@ -347,12 +353,12 @@ def build_video(audio_duration: float, clip_path: str = None,
         log(f"✂️  Clamping video to {TARGET_DURATION_MAX}s")
 
     if fmt == VideoFormat.LONG:
-        # Landscape 1920×1080: Ken Burns zoom safe on wide frame
+        # Landscape 1920×1080: force exact size (upscale+crop), cinematic grade + vignette
+        # zoompan is not used here — it overrides output resolution unpredictably on mixed-source clips
         bw, bh = LONG_VIDEO_WIDTH, LONG_VIDEO_HEIGHT
         base_filter = (
-            f"scale={bw}:{bh}:force_original_aspect_ratio=decrease,"
-            f"pad={bw}:{bh}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
-            f"zoompan=z='min(zoom+0.0008,1.3)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+            f"scale={bw}:{bh}:force_original_aspect_ratio=increase,"
+            f"crop={bw}:{bh},setsar=1,"
             f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
             f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
             f"vignette=PI/5"
