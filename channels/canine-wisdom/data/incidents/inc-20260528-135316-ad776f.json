@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260528-135316-ad776f",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword-rich text content (only hashtags), missing clear CTA for subscriptions/follows, exceeds ideal length at 142 characters but provides 10 relevant hashtags which partially offsets other deficiencies.",
+  "id": "inc-20260528-135316-ad776f",
+  "resolved_at": null,
+  "timestamp": "2026-05-28T13:53:16.478992",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

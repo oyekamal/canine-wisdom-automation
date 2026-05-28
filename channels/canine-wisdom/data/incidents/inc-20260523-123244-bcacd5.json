@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260523-123244-bcacd5",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword context and CTA, consists only of hashtags (10 total, meeting hashtag requirement), but provides no actual description text, failing on keyword coverage, CTA presence, and ideal length guidelines.",
+  "id": "inc-20260523-123244-bcacd5",
+  "resolved_at": null,
+  "timestamp": "2026-05-23T12:32:44.485575",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "While the core claim about dogs reading facial expressions is factually sound, this exact topic was covered in the last 30 days (dog reading facial expressions), creating a direct novelty violation that outweighs the engaging pacing and mostly credible content; the '70% faster' statistic lacks clear sourcing and may be overstated.",
+  "run_at": "2026-05-28T13:46:37.790325",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-45-24"
+}

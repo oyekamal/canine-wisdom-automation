@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260523-105554-334ab9",
+  "fix_status": "open",
+  "hypothesis": "Strong hashtag coverage (10 relevant tags) and keyword-rich, but lacks CTA (no follow/subscribe request) and is below ideal length at just 106 characters with no descriptive text or hook.",
+  "id": "inc-20260523-105554-334ab9",
+  "resolved_at": null,
+  "timestamp": "2026-05-23T10:55:54.676545",
+  "trigger": "description_eval",
+  "what_failed": "Score 6.5"
+}

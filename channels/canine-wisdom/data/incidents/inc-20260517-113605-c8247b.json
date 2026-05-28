@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260517-113605-c8247b",
+  "fix_status": "open",
+  "hypothesis": "While it includes 10 relevant hashtags covering dog-facts keywords, it lacks a clear CTA (no follow/subscribe request), contains no descriptive text or context, and provides zero engagement opportunities for viewers beyond hashtags alone.",
+  "id": "inc-20260517-113605-c8247b",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T11:36:05.010605",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

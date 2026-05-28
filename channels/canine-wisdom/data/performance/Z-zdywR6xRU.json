@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 7.2,
+    "script_eval": 8.2,
+    "title_eval": 7.2
+  },
+  "format": "short",
+  "hook_pattern_used": "Your dog [does something] differently than you do",
+  "snapshots": [],
+  "title": "Your Dog Doesn't Remember Like You Think",
+  "title_formula_used": "Your Dog Doesn't [Common Assumption]",
+  "topic": "dog memory and recall",
+  "topic_cluster": "dog science",
+  "uploaded_at": "2026-05-17T12:18:19.191881",
+  "video_id": "Z-zdywR6xRU"
+}

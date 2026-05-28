@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.2,
+    "script_eval": 8.2,
+    "title_eval": 8.2
+  },
+  "format": "short",
+  "hook_pattern_used": "Your dog can [unexpected ability relating to owner]",
+  "snapshots": [],
+  "title": "Your Dog Knows You're Sick Before You Do",
+  "title_formula_used": "Your Dog [Does Something] Before You [Realize It]",
+  "topic": "dogs detecting illness",
+  "topic_cluster": "dog science",
+  "uploaded_at": "2026-05-17T11:39:18.374980",
+  "video_id": "oyRh5cfl9YU"
+}

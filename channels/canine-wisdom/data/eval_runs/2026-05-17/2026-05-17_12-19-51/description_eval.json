@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich content and any CTA (no subscribe/follow request), consisting only of 10 hashtags with no contextual text, making it difficult for the algorithm to understand the video topic beyond tags alone.",
+  "run_at": "2026-05-17T12:21:54.573946",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_12-19-51"
+}

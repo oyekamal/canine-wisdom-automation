@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich context and call-to-action (no subscribe/follow request), consisting only of 10 hashtags without explanatory text, making it unclear what the video content is about and failing to engage viewers to take action.",
+  "run_at": "2026-05-28T13:46:41.996513",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-45-24"
+}

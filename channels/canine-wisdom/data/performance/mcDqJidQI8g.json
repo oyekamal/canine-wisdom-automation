@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 8.2,
+    "title_eval": 8.2
+  },
+  "format": "short",
+  "hook_pattern_used": "Accusation/secret: YOUR DOG IS HIDING THIS FROM YOU.",
+  "snapshots": [],
+  "title": "Your Dog's Guilty Face Is A Complete Lie",
+  "title_formula_used": "No data yet",
+  "topic": "dog guilty look myth",
+  "topic_cluster": "dog behavior",
+  "uploaded_at": "2026-05-28T13:07:31.107231",
+  "video_id": "mcDqJidQI8g"
+}

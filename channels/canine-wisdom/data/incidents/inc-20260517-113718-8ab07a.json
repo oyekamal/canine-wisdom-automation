@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260517-113718-8ab07a",
+  "fix_status": "open",
+  "hypothesis": "Good hashtag coverage (10 relevant tags) and keyword inclusion, but lacks CTA (no follow/subscribe request) and contains no actual description text, making it hashtag-only which reduces engagement potential.",
+  "id": "inc-20260517-113718-8ab07a",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T11:37:18.347972",
+  "trigger": "description_eval",
+  "what_failed": "Score 6.5"
+}

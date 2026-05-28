@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Good hashtag coverage (10 relevant tags) and keyword inclusion, but lacks CTA (no follow/subscribe request) and contains no actual description text, making it hashtag-only which reduces engagement potential.",
+  "run_at": "2026-05-17T11:37:18.341540",
+  "score": 6.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_11-37-03"
+}

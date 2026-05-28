@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "orchestrator.py",
+  "fix_branch": "harness-auto-fix/inc-20260522-104502-e872a0",
+  "fix_status": "open",
+  "hypothesis": "Unexpected error in pipeline step",
+  "id": "inc-20260522-104502-e872a0",
+  "resolved_at": null,
+  "timestamp": "2026-05-22T10:45:02.705149",
+  "trigger": "unhandled_exception",
+  "what_failed": "Invalid JSON response from Claude: Expecting value: line 1 column 1 (char 0)\nResponse text: ```json\n{\n    \"script\": \"The word disobedient has probably caused more bad dog training than any dog behavior ever has. Your dog isn't being stubborn. They literally process commands 40% slower when stressed. Their brain shuts down the learning center and activates survival mode. So next time your dog ignores you, check the environment first. They might just need a calmer space to focus. Follow for daily dog facts!\",\n    \"title\": \"Your Dog Isn't Disobedient, You're Missing This\",\n    \"hook_overlay\": \"STOP CALLING THEM DISOBEDIENT\",\n    \"hashtags\": [\"dogtraining\", \"dogfacts\", \"dogbehavior\", \"dogowners\", \"dogmom\", \"dogdad\", \"puppytraining\", \"dogstress\", \"dogscience\", \"dogtips\"],\n    \"topic\": \"dog stress affects learning\",\n    \"topic_cluster\": \"dog training\",\n    \"hook_pattern_used\": \"The word disobedient has probably caused more bad dog training than any dog\",\n    \"title_formula_used\": \"No data yet\"\n}\n```"
+}

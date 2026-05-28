@@ -1,0 +1,9 @@
+{
+  "eval": "hook_eval",
+  "passed": true,
+  "reasoning": "mocked",
+  "run_at": "2026-05-17T09:36:24.138914",
+  "score": 8.0,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_09-36-24"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Strong hashtag selection (10 relevant tags) but lacks descriptive text, CTA, and actual keyword coverage in description content\u2014relies entirely on hashtags without engaging copy or subscriber call-to-action.",
+  "run_at": "2026-05-17T12:18:02.949415",
+  "score": 5.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_12-12-33"
+}

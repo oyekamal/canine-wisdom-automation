@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260522-104617-5ae4bd",
+  "fix_status": "open",
+  "hypothesis": "Strong hashtag coverage (10 relevant tags) but lacks keyword-rich text content, missing explicit CTA for follows/subscribes, and contains only hashtags without descriptive context that would improve keyword coverage and engagement.",
+  "id": "inc-20260522-104617-5ae4bd",
+  "resolved_at": null,
+  "timestamp": "2026-05-22T10:46:17.424594",
+  "trigger": "description_eval",
+  "what_failed": "Score 6.5"
+}

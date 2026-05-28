@@ -1,0 +1,106 @@
+{
+  "channel_stats": {
+    "subscriber_count": null,
+    "total_views_all_time": null
+  },
+  "kpis_7d": {
+    "avg_ctr": null,
+    "avg_views_per_video": null,
+    "avg_watch_time_min": null,
+    "subscribers_gained": null
+  },
+  "total_videos_tracked": 18,
+  "updated_at": null,
+  "videos": [
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:33:26.604995",
+      "video_id": "-lB8qnmrTtQ"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:36:20.897460",
+      "video_id": "KcUoF0scIdI"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:37:36.064149",
+      "video_id": "7s9RK7vUakk"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T11:39:18.380220",
+      "video_id": "oyRh5cfl9YU"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T12:18:19.201374",
+      "video_id": "Z-zdywR6xRU"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T12:22:14.155142",
+      "video_id": "U2eyKf2YECc"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T12:23:38.554498",
+      "video_id": "3x3afYnT-I8"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T12:28:47.137899",
+      "video_id": "8ZTmUQE-guo"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-17T12:31:09.880836",
+      "video_id": "GvKLhuGXuYc"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-22T10:46:44.359002",
+      "video_id": "_c4eF9hex4E"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-23T10:56:12.601210",
+      "video_id": "w4z1AZDx59A"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-23T11:48:58.286199",
+      "video_id": "_8Fqn6GicIg"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-23T12:32:59.237332",
+      "video_id": "-vkBnTp_k8I"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-23T12:49:41.968123",
+      "video_id": "FjXwq0IInt0"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-25T12:37:57.191063",
+      "video_id": "3eb_9yeP0RQ"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-25T12:42:49.674297",
+      "video_id": "31d3psumSNs"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-28T13:45:00.562713",
+      "video_id": "kw9N2DDtC7Q"
+    },
+    {
+      "format": "long",
+      "uploaded_at": "2026-05-28T13:55:07.572626",
+      "video_id": "BrUai8Ale2A"
+    }
+  ]
+}

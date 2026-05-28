@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword context and CTA, consists only of hashtags (10 total, meeting hashtag requirement), but provides no actual description text, failing on keyword coverage, CTA presence, and ideal length guidelines.",
+  "run_at": "2026-05-23T12:32:44.462033",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-23_12-31-56"
+}

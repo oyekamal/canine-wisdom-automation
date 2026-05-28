@@ -1,0 +1,78 @@
+{
+  "channel_name": "Canine Wisdom",
+  "niche": "viral YouTube Shorts scriptwriter for a dog facts channel in 2026",
+  "voice_id": "pNInz6obpgDQGcFmaJgB",
+  "youtube_category_id": "15",
+  "topic_clusters": [
+    "dog health",
+    "dog behavior",
+    "dog breeds",
+    "dog training",
+    "dog history",
+    "dog science",
+    "dog fun"
+  ],
+  "description_template": "🐕 {video_title}\n\n{video_script}\n\n{affiliate_block}\n\n{hashtags}\n\n✨ Subscribe for daily dog facts and tips!",
+  "affiliate_links": {
+    "dog breeds": {
+      "product": "Want to know your dog's breed mix? This DNA test reveals everything.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog training": {
+      "product": "Keep your dog mentally sharp with this puzzle toy trainers love.",
+      "url": "https://amzn.to/4d14ulL"
+    },
+    "dog behavior": {
+      "product": "Does your dog get anxious? This ThunderShirt calms them fast.",
+      "url": "https://amzn.to/4whfoeI"
+    },
+    "dog health": {
+      "product": "Support your dog's joints with this vet-recommended supplement.",
+      "url": "https://amzn.to/4wjWweX"
+    },
+    "dog science": {
+      "product": "Curious about your dog's breed? This DNA test reveals it all.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog history": {
+      "product": "Discover your dog's ancient breed origins with this DNA test.",
+      "url": "https://amzn.to/4d1CdKq"
+    },
+    "dog fun": {
+      "product": "Keep your dog busy and happy with this top-rated puzzle toy.",
+      "url": "https://amzn.to/4d14ulL"
+    },
+    "dog anxiety": {
+      "product": "Does your dog get anxious? This ThunderShirt calms them fast.",
+      "url": "https://amzn.to/4whfoeI"
+    },
+    "dog calming": {
+      "product": "Help your anxious dog relax with these vet-recommended calming chews.",
+      "url": "https://amzn.to/4d2T15m"
+    },
+    "dog separation anxiety": {
+      "product": "Watch your dog remotely and toss treats with the Furbo Dog Camera.",
+      "url": "https://amzn.to/4u0AhZY"
+    },
+    "senior dog": {
+      "product": "Give your senior dog the comfort they deserve with this orthopedic bed.",
+      "url": "https://amzn.to/3OWy3Md"
+    },
+    "dog joint health": {
+      "product": "Support aging joints with this vet-recommended supplement.",
+      "url": "https://amzn.to/4wjWweX"
+    },
+    "dog nutrition": {
+      "product": "Slow down fast eaters and improve digestion with this slow feeder bowl.",
+      "url": "https://amzn.to/4dkXi2Z"
+    },
+    "dog safety": {
+      "product": "Never lose your dog again — real-time GPS tracking with this top-rated tracker.",
+      "url": "https://amzn.to/3QQZxU7"
+    },
+    "default": {
+      "product": "Keep your dog mentally stimulated with this top-rated puzzle toy.",
+      "url": "https://amzn.to/4d14ulL"
+    }
+  }
+}

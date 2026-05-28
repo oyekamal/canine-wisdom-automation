@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": true,
+  "reasoning": "Factually accurate (dog yawning as stress signal is well-documented), novel topic not previously covered, and paced well with conversational urgency under 60 words, though the '70% of yawns' statistic could be more precisely sourced.",
+  "run_at": "2026-05-23T10:55:45.888499",
+  "score": 8.2,
+  "threshold": 7.0,
+  "video_id": "2026-05-23_10-53-45"
+}

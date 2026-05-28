@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script directly repeats the 'dog yawn stress signals' topic covered in the last 30 days (mentioned twice in the covered list), making it ineligible regardless of its factual accuracy or pacing.",
+  "run_at": "2026-05-23T12:49:00.882868",
+  "score": 0.0,
+  "threshold": 7.0,
+  "video_id": "2026-05-23_12-48-20"
+}

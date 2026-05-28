@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260517-113246-d73d29",
+  "fix_status": "open",
+  "hypothesis": "Good hashtag coverage (10 relevant tags) but lacks keyword context, CTA elements, and descriptive text\u2014description is hashtag-only with no engaging copy to explain the video content or encourage subscriptions.",
+  "id": "inc-20260517-113246-d73d29",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T11:32:46.960469",
+  "trigger": "description_eval",
+  "what_failed": "Score 6.5"
+}

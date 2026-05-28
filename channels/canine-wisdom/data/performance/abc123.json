@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.0,
+    "script_eval": 8.0,
+    "title_eval": 8.0
+  },
+  "format": "short",
+  "hook_pattern_used": "",
+  "snapshots": [],
+  "title": "Dog Facts",
+  "title_formula_used": "",
+  "topic": "",
+  "topic_cluster": "",
+  "uploaded_at": "2026-05-17T12:03:09.325362",
+  "video_id": "abc123"
+}

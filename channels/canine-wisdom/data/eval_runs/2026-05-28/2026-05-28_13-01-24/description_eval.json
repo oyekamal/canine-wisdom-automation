@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Strong hashtag coverage (10 relevant tags) and excellent keyword inclusion, but lacks any call-to-action for subscriptions/follows and contains only hashtags with no descriptive text, making it thin on actual description content.",
+  "run_at": "2026-05-28T13:03:38.906243",
+  "score": 6.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-01-24"
+}

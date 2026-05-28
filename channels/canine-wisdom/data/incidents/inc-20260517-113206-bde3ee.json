@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "generate_script.py:prompt",
+  "fix_branch": "harness-auto-fix/inc-20260517-113206-bde3ee",
+  "fix_status": "open",
+  "hypothesis": "Factual accuracy is moderate (dogs do read human faces, but the claim about being the ONLY animals is overstated; novelty is reasonable since no dog-emotion topics were covered recently; however, pacing is poor at ~140 words\u2014nearly 2.5x the 60-word target\u2014making it unsuitable for YouTube Shorts format.",
+  "id": "inc-20260517-113206-bde3ee",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T11:32:06.485497",
+  "trigger": "script_eval",
+  "what_failed": "Score 5.5 after 3 attempts"
+}

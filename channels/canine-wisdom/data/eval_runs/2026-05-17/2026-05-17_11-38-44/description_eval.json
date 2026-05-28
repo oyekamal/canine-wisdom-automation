@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich context and explicit CTA, consisting only of 10 hashtags without descriptive text or call-to-action for follows/subscriptions.",
+  "run_at": "2026-05-17T11:38:58.792638",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_11-38-44"
+}

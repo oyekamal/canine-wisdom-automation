@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260528-130338-516f44",
+  "fix_status": "open",
+  "hypothesis": "Strong hashtag coverage (10 relevant tags) and excellent keyword inclusion, but lacks any call-to-action for subscriptions/follows and contains only hashtags with no descriptive text, making it thin on actual description content.",
+  "id": "inc-20260528-130338-516f44",
+  "resolved_at": null,
+  "timestamp": "2026-05-28T13:03:38.914133",
+  "trigger": "description_eval",
+  "what_failed": "Score 6.5"
+}

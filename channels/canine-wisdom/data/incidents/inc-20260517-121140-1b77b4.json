@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "generate_script.py:prompt",
+  "fix_branch": "harness-auto-fix/inc-20260517-121140-1b77b4",
+  "fix_status": "open",
+  "hypothesis": "Clear curiosity hook with relatable dog behavior, but lacks emotional punch, urgency, or numbers that would make viewers stop scrolling; sits in 'interesting but forgettable' territory for Shorts format.",
+  "id": "inc-20260517-121140-1b77b4",
+  "resolved_at": null,
+  "timestamp": "2026-05-17T12:11:40.228310",
+  "trigger": "title_eval",
+  "what_failed": "Score 6.5 after 3 attempts"
+}

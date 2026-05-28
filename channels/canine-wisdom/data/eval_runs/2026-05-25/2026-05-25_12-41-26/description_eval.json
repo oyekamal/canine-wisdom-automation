@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description has excellent hashtag coverage (10 relevant tags) but lacks keyword-rich text content, missing CTA elements (no subscribe/follow call-to-action), and contains no actual descriptive text to explain video content or engage viewers.",
+  "run_at": "2026-05-25T12:42:07.201706",
+  "score": 4.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-25_12-41-26"
+}

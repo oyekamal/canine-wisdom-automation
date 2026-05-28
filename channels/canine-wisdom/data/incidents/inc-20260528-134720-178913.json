@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "build_video.py",
+  "fix_branch": "harness-auto-fix/inc-20260528-134720-178913",
+  "fix_status": "open",
+  "hypothesis": "Check ffmpeg filter chain",
+  "id": "inc-20260528-134720-178913",
+  "resolved_at": null,
+  "timestamp": "2026-05-28T13:47:20.950577",
+  "trigger": "video_eval",
+  "what_failed": "Wrong resolution: 1280x720 (expected 1920x1080)"
+}

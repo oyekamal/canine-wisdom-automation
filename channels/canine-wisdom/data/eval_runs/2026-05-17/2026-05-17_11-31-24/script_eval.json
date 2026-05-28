@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "Factual accuracy is moderate (dogs do read human faces, but the claim about being the ONLY animals is overstated; novelty is reasonable since no dog-emotion topics were covered recently; however, pacing is poor at ~140 words\u2014nearly 2.5x the 60-word target\u2014making it unsuitable for YouTube Shorts format.",
+  "run_at": "2026-05-17T11:32:06.457851",
+  "score": 5.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-17_11-31-24"
+}
