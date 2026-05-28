@@ -121,3 +121,83 @@ def test_harvest_skips_removed_text(reddit_harvest):
     with patch("requests.get", return_value=fake_resp):
         stories = reddit_harvest.harvest_subreddit("nosleep", limit=5, min_upvotes=100, min_comments=10)
     assert stories == []
+
+
+def test_extract_media_detects_image_post(reddit_harvest):
+    """Posts from i.redd.it with post_hint=image are detected as images."""
+    post = {
+        "url": "https://i.redd.it/abc123.jpg",
+        "domain": "i.redd.it",
+        "post_hint": "image",
+        "is_video": False,
+    }
+    result = reddit_harvest._detect_media(post)
+    assert result is not None
+    assert result["type"] == "image"
+    assert result["url"] == "https://i.redd.it/abc123.jpg"
+
+
+def test_extract_media_detects_imgur(reddit_harvest):
+    """Imgur image domains are detected."""
+    post = {
+        "url": "https://i.imgur.com/xyz.jpg",
+        "domain": "i.imgur.com",
+        "post_hint": "image",
+        "is_video": False,
+    }
+    result = reddit_harvest._detect_media(post)
+    assert result is not None
+    assert result["type"] == "image"
+
+
+def test_extract_media_detects_reddit_video(reddit_harvest):
+    """v.redd.it posts are detected as video."""
+    post = {
+        "url": "https://v.redd.it/abc123",
+        "domain": "v.redd.it",
+        "post_hint": "hosted:video",
+        "is_video": True,
+    }
+    result = reddit_harvest._detect_media(post)
+    assert result is not None
+    assert result["type"] == "video"
+    assert result["url"] == "https://v.redd.it/abc123"
+
+
+def test_extract_media_returns_none_for_text_post(reddit_harvest):
+    """Text-only posts return None."""
+    post = {
+        "url": "https://www.reddit.com/r/nosleep/comments/abc/title/",
+        "domain": "self.nosleep",
+        "post_hint": "self",
+        "is_video": False,
+    }
+    result = reddit_harvest._detect_media(post)
+    assert result is None
+
+
+def test_extract_media_returns_none_for_external_link(reddit_harvest):
+    """External links (not image/video domains) return None."""
+    post = {
+        "url": "https://www.youtube.com/watch?v=abc",
+        "domain": "youtube.com",
+        "post_hint": "rich:video",
+        "is_video": False,
+    }
+    result = reddit_harvest._detect_media(post)
+    assert result is None
+
+
+def test_download_reddit_image_saves_file(reddit_harvest, tmp_path):
+    """_download_reddit_image saves image bytes to disk."""
+    fake_resp = MagicMock()
+    fake_resp.status_code = 200
+    fake_resp.content = b"\xff\xd8\xff" + b"x" * 5000  # fake JPEG bytes
+
+    with patch("requests.get", return_value=fake_resp):
+        output = tmp_path / "test_image.jpg"
+        result = reddit_harvest._download_reddit_image("https://i.redd.it/fake.jpg", output)
+
+    assert result is True
+    assert output.exists()
+    assert output.stat().st_size > 0

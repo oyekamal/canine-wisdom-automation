@@ -111,3 +111,121 @@ def harvest_channel(channel_config) -> list:
 
     all_stories.sort(key=lambda s: s["score"], reverse=True)
     return all_stories
+
+
+# ── Media detection and download ─────────────────────────────────────────────
+
+IMAGE_DOMAINS = {"i.redd.it", "i.imgur.com", "preview.redd.it"}
+VIDEO_DOMAINS = {"v.redd.it"}
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+IMAGE_HINTS = {"image"}
+VIDEO_HINTS = {"hosted:video"}
+
+
+def _detect_media(post: dict) -> dict | None:
+    """
+    Detect whether a Reddit post has attached image or video media.
+
+    Returns {"type": "image"|"video", "url": str} or None.
+    Returns None for text posts and unsupported external links.
+    """
+    url = post.get("url", "")
+    domain = post.get("domain", "")
+    hint = post.get("post_hint", "")
+    is_video = post.get("is_video", False)
+
+    # Reddit-hosted video
+    if domain in VIDEO_DOMAINS:
+        return {"type": "video", "url": url}
+
+    # Direct image from Reddit or Imgur
+    if domain in IMAGE_DOMAINS:
+        return {"type": "image", "url": url}
+
+    # URL ends in an image extension
+    from pathlib import Path as _Path
+    url_clean = url.split("?")[0]
+    if _Path(url_clean).suffix.lower() in IMAGE_EXTENSIONS:
+        return {"type": "image", "url": url}
+
+    # post_hint says image and not a self-post
+    if hint in IMAGE_HINTS and not domain.startswith("self."):
+        return {"type": "image", "url": url}
+
+    return None
+
+
+def _download_reddit_image(url: str, output_path) -> bool:
+    """Download a direct image URL. Returns True on success."""
+    try:
+        r = requests.get(url, timeout=20, headers=HEADERS, stream=True)
+        r.raise_for_status()
+        content = r.content
+        if len(content) < 1000:
+            return False
+        from pathlib import Path as _Path
+        _Path(output_path).write_bytes(content)
+        return True
+    except Exception:
+        return False
+
+
+def _download_reddit_video(url: str, output_path) -> bool:
+    """
+    Download a Reddit-hosted video (v.redd.it) using yt-dlp.
+    These have separate video+audio streams that yt-dlp merges.
+    Returns True on success.
+    """
+    import subprocess
+    from pathlib import Path as _Path
+    try:
+        result = subprocess.run(
+            [
+                "yt-dlp",
+                "--quiet",
+                "--no-warnings",
+                "-f", "bestvideo[height<=1920]+bestaudio/best[height<=1920]",
+                "--merge-output-format", "mp4",
+                "-o", str(output_path),
+                url,
+            ],
+            capture_output=True, text=True, timeout=120,
+        )
+        return result.returncode == 0 and _Path(output_path).exists()
+    except Exception:
+        return False
+
+
+def extract_media(post: dict, save_dir, story_id: str) -> str | None:
+    """
+    If the Reddit post has attached media, download it into save_dir.
+
+    For images: saves as {story_id}_reddit_media.jpg (or original ext)
+    For videos: saves as {story_id}_reddit_media.mp4
+
+    Returns path to downloaded file as str, or None if no media or download fails.
+    """
+    from pathlib import Path as _Path
+    media = _detect_media(post)
+    if media is None:
+        return None
+
+    save_dir = _Path(save_dir)
+    save_dir.mkdir(parents=True, exist_ok=True)
+
+    if media["type"] == "image":
+        ext = _Path(media["url"].split("?")[0]).suffix.lower()
+        if ext not in IMAGE_EXTENSIONS:
+            ext = ".jpg"
+        output_path = save_dir / f"{story_id}_reddit_media{ext}"
+        if output_path.exists():
+            return str(output_path)
+        return str(output_path) if _download_reddit_image(media["url"], output_path) else None
+
+    elif media["type"] == "video":
+        output_path = save_dir / f"{story_id}_reddit_media.mp4"
+        if output_path.exists():
+            return str(output_path)
+        return str(output_path) if _download_reddit_video(media["url"], output_path) else None
+
+    return None
