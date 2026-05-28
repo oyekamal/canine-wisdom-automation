@@ -77,19 +77,30 @@ def run_horror_pipeline(channel_config=None) -> dict:
     if not stories:
         return {"success": False, "video_url": None, "reason": "no stories harvested"}
 
-    # ── Pick best story ───────────────────────────────────────────────────────
-    story = pick_best_story(stories, target=target, used_ids=used_ids)
-    if story is None:
-        return {"success": False, "video_url": None, "reason": "no unused stories available"}
-    log(f"📖 Selected: '{story['title'][:60]}' by u/{story['author']} (r/{story['subreddit']})")
-
-    # ── Rewrite with Claude ───────────────────────────────────────────────────
+    # ── Pick best story + rewrite with Claude (try up to 5 stories) ──────────
     prompt_text = channel_config.prompt_path.read_text(encoding="utf-8")
-    try:
-        script_data = rewrite_story(story, target=target, prompt_text=prompt_text)
-    except ValueError as e:
-        log(f"❌ Rewrite policy error: {e}", level="error")
-        return {"success": False, "video_url": None, "reason": str(e)}
+    script_data = None
+    story = None
+    skipped_ids = set()
+
+    for attempt in range(5):
+        candidate = pick_best_story(stories, target=target, used_ids=used_ids | skipped_ids)
+        if candidate is None:
+            return {"success": False, "video_url": None, "reason": "no unused stories available"}
+        log(f"📖 Trying ({attempt+1}/5): '{candidate['title'][:55]}' by u/{candidate['author']}")
+        try:
+            script_data = rewrite_story(candidate, target=target, prompt_text=prompt_text)
+            story = candidate
+            break
+        except ValueError as e:
+            log(f"⚠️  Policy declined story {candidate['id']} — trying next", level="warning")
+            skipped_ids.add(candidate["id"])
+        except RuntimeError as e:
+            log(f"⚠️  API error on story {candidate['id']} — trying next", level="warning")
+            skipped_ids.add(candidate["id"])
+
+    if script_data is None:
+        return {"success": False, "video_url": None, "reason": "all 5 story candidates failed rewrite"}
     log(f"✍️  Script: {len(script_data['script'].split())} words, mood: {script_data.get('mood', '?')}")
 
     # ── Pick voice based on mood ──────────────────────────────────────────────
@@ -169,13 +180,18 @@ def run_horror_pipeline(channel_config=None) -> dict:
         move_outputs_to_archive(run_id)
         return {"success": False, "video_url": None, "reason": f"video_eval failed: {video_result.reasoning}"}
 
-    # ── Upload ────────────────────────────────────────────────────────────────
-    try:
-        video_url = upload_youtube(channel_config=channel_config)
-    except Exception as e:
-        log(f"❌ Upload failed: {e}", level="error")
-        move_outputs_to_archive(run_id)
-        return {"success": False, "video_url": None, "reason": f"upload failed: {e}"}
+    # ── Upload (skip if HORROR_DRY_RUN=1) ────────────────────────────────────
+    import os as _os
+    if _os.environ.get("HORROR_DRY_RUN"):
+        log("🔕 DRY RUN — skipping YouTube upload")
+        video_url = "https://youtube.com/shorts/DRY_RUN"
+    else:
+        try:
+            video_url = upload_youtube(channel_config=channel_config)
+        except Exception as e:
+            log(f"❌ Upload failed: {e}", level="error")
+            move_outputs_to_archive(run_id)
+            return {"success": False, "video_url": None, "reason": f"upload failed: {e}"}
 
     log(f"🎉 Live: {video_url}")
 

@@ -56,17 +56,28 @@ def rewrite_story(story: dict, target: str, prompt_text: str) -> dict:
     Raises:
         ValueError: if Claude returns a policy error
     """
+    import time
     client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY") or _load_api_key())
+    user_content = _build_rewrite_prompt(story, target)
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=2048,
-        system=prompt_text,
-        messages=[{"role": "user", "content": _build_rewrite_prompt(story, target)}],
-    )
-
-    raw = message.content[0].text.strip()
-    result = json.loads(raw)
+    for attempt in range(3):
+        try:
+            message = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=2048,
+                system=prompt_text,
+                messages=[{"role": "user", "content": user_content}],
+            )
+            raw = message.content[0].text.strip()
+            if not raw:
+                raise json.JSONDecodeError("Empty response", "", 0)
+            result = json.loads(raw)
+            break
+        except json.JSONDecodeError:
+            if attempt < 2:
+                time.sleep(3)
+                continue
+            raise RuntimeError(f"Claude returned empty/invalid JSON after 3 attempts for story {story['id']}")
 
     if result.get("error") == "policy":
         raise ValueError(f"Story declined by policy filter: {story['id']}")
