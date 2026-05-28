@@ -25,6 +25,8 @@ class ChannelConfig:
     data_dir: Path
     state_path: Path
     prompt_path: Path
+    footage_dir: Path
+    music_dir: Path
 
 
 def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> ChannelConfig:
@@ -42,6 +44,14 @@ def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> Chann
     data_dir = channel_dir / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
+    footage_dir_str = settings.get("footage_dir", "dog_footage")
+    footage_dir = (Path(footage_dir_str) if Path(footage_dir_str).is_absolute()
+                   else Path(__file__).parent / footage_dir_str)
+
+    music_dir_str = settings.get("music_dir", "assets/music")
+    music_dir = (Path(music_dir_str) if Path(music_dir_str).is_absolute()
+                 else Path(__file__).parent / music_dir_str)
+
     return ChannelConfig(
         slug=slug,
         channel_name=settings["channel_name"],
@@ -55,4 +65,6 @@ def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> Chann
         data_dir=data_dir,
         state_path=data_dir / "state.json",
         prompt_path=channel_dir / "prompt.txt",
+        footage_dir=footage_dir,
+        music_dir=music_dir,
     )

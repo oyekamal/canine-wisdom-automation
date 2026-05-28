@@ -18,11 +18,15 @@ MUSIC_DIR = Path(__file__).parent / "assets" / "music"
 MUSIC_VOLUME = 0.45  # background music at 45% of voiceover volume
 
 
-def _pick_music_track() -> Path | None:
-    """Pick a random MP3 from assets/music/. Returns None if folder empty."""
-    if not MUSIC_DIR.exists():
+def _pick_music_track(music_dir: Path = None) -> Path | None:
+    """Pick a random MP3 from the given music dir, or the default MUSIC_DIR."""
+    target = music_dir if music_dir is not None else MUSIC_DIR
+    if not target.exists():
         return None
-    tracks = list(MUSIC_DIR.glob("*.mp3"))
+    tracks = list(target.glob("*.mp3"))
+    if not tracks and music_dir is not None:
+        # Fall back to default music dir if channel-specific dir is empty
+        tracks = list(MUSIC_DIR.glob("*.mp3"))
     return random.choice(tracks) if tracks else None
 
 class HardwareAccelerator:
@@ -286,7 +290,7 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
 
 
 def build_video(audio_duration: float, clip_path: str = None,
-                word_timestamps: list = None, hook_overlay: str = None, fmt=None) -> str:
+                word_timestamps: list = None, hook_overlay: str = None, fmt=None, channel_config=None) -> str:
     """
     Build vertical Shorts video with fast hardware-accelerated encoding.
 
@@ -315,7 +319,11 @@ def build_video(audio_duration: float, clip_path: str = None,
         fmt = VideoFormat.SHORT
 
     cfg = load_config()
-    dog_footage_dir = cfg["dog_footage_dir"]
+    if channel_config is not None and hasattr(channel_config, 'footage_dir'):
+        dog_footage_dir = channel_config.footage_dir
+        dog_footage_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        dog_footage_dir = cfg["dog_footage_dir"]
 
     log("🎬 Step 3: Building vertical Shorts video...")
 
@@ -397,7 +405,9 @@ def build_video(audio_duration: float, clip_path: str = None,
 
     video_filter = ",".join(filter_parts)
 
-    music_track = _pick_music_track()
+    music_track = _pick_music_track(
+        music_dir=channel_config.music_dir if channel_config is not None else None
+    )
     if music_track:
         log(f"🎵 Mixing background music: {music_track.name} at {int(MUSIC_VOLUME * 100)}% volume")
         cmd = [

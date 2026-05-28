@@ -156,6 +156,7 @@ def run_horror_pipeline(channel_config=None) -> dict:
             word_timestamps=word_timestamps,
             hook_overlay=metadata["hook_overlay"],
             fmt=fmt,
+            channel_config=channel_config,
         )
     except Exception as e:
         log(f"❌ Video build failed: {e}", level="error")

@@ -286,7 +286,8 @@ def run_pipeline(channel_config=None) -> dict:
         video_path = build_video(audio_duration, clip_path=clip_path,
                                   word_timestamps=word_timestamps,
                                   hook_overlay=metadata.get("hook_overlay"),
-                                  fmt=fmt)
+                                  fmt=fmt,
+                                  channel_config=channel_config)
         video_result = video_eval(Path(video_path), fmt=fmt)
         save_eval_result(video_result, run_id)
         if not video_result.passed:

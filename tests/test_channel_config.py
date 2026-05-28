@@ -55,3 +55,23 @@ def test_data_dir_is_inside_channel_dir(tmp_path):
     assert cfg.data_dir == ch_dir / "data"
     assert cfg.state_path == ch_dir / "data" / "state.json"
     assert cfg.prompt_path == ch_dir / "prompt.txt"
+
+
+def test_channel_config_has_footage_dir(tmp_path):
+    """ChannelConfig must have footage_dir and music_dir fields."""
+    import json
+    from channel_config import load_channel_config
+    ch_dir = tmp_path / "channels" / "test-ch"
+    ch_dir.mkdir(parents=True)
+    (ch_dir / "settings.json").write_text(json.dumps({
+        "channel_name": "T", "niche": "n", "voice_id": "v",
+        "youtube_category_id": "15", "topic_clusters": [],
+        "description_template": "", "affiliate_links": {},
+        "footage_dir": "my_footage",
+        "music_dir": "my_music",
+    }))
+    cfg = load_channel_config("test-ch", channels_root=tmp_path / "channels")
+    assert cfg.footage_dir is not None
+    assert cfg.music_dir is not None
+    assert "my_footage" in str(cfg.footage_dir)
+    assert "my_music" in str(cfg.music_dir)

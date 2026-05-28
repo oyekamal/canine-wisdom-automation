@@ -74,5 +74,7 @@
       "product": "Keep your dog mentally stimulated with this top-rated puzzle toy.",
       "url": "https://amzn.to/4d14ulL"
     }
-  }
+  },
+  "footage_dir": "dog_footage",
+  "music_dir": "assets/music"
 }
