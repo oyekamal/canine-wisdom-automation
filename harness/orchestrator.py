@@ -17,6 +17,8 @@ from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive, 
 from harness.agents.competitor import bootstrap_competitors_if_needed
 from harness.agents.trend import build_topic_queue, pick_best_topic, mark_topic_used
 from harness.tools.footage import fetch_footage_for_topic
+from harness.agents.format_picker import pick_format
+from config import VideoFormat
 
 from harness.evals.audio_eval import audio_eval
 from harness.evals.description_eval import description_eval
@@ -157,11 +159,20 @@ def run_pipeline() -> dict:
             topic_cluster = "dog fun"
             topic_entry = None
 
+        # ── Step 2b: Pick video format ────────────────────────────────────────
+        try:
+            state = atomic_read(STATE_PATH)
+            recent_runs = state.get("recent_runs", [])
+        except Exception:
+            recent_runs = []
+        fmt = pick_format(topic_cluster, recent_runs)
+        log(f"🎬 Format selected: {fmt.value} ({'1920×1080 landscape' if fmt == VideoFormat.LONG else '1080×1920 vertical'})")
+
         # ── Step 3: Download topic-matched footage ────────────────────────────
         log(f"🎥 Fetching footage for: {topic or 'general dog'}")
         clip_path = None
         try:
-            clip_result = fetch_footage_for_topic(topic_cluster, topic or "dog")
+            clip_result = fetch_footage_for_topic(topic_cluster, topic or "dog", fmt=fmt)
             if clip_result:
                 clip_path = str(clip_result)
                 log(f"✅ Footage ready: {clip_result.name}")
@@ -259,8 +270,9 @@ def run_pipeline() -> dict:
         # ── Step 8: Video build + hard eval ──────────────────────────────────
         video_path = build_video(audio_duration, clip_path=clip_path,
                                   word_timestamps=word_timestamps,
-                                  hook_overlay=metadata.get("hook_overlay"))
-        video_result = video_eval(Path(video_path))
+                                  hook_overlay=metadata.get("hook_overlay"),
+                                  fmt=fmt)
+        video_result = video_eval(Path(video_path), fmt=fmt)
         save_eval_result(video_result, run_id)
         if not video_result.passed:
             _write_incident("video_eval", video_result.reasoning, "Check ffmpeg filter chain",
@@ -280,7 +292,7 @@ def run_pipeline() -> dict:
             from harness.agents.analytics import track_video
             track_video(video_id, {
                 "title": metadata.get("title", ""),
-                "format": "short",
+                "format": fmt.value,
                 "topic": metadata.get("topic", topic),
                 "topic_cluster": metadata.get("topic_cluster", topic_cluster),
                 "hook_pattern_used": metadata.get("hook_pattern_used", ""),
@@ -308,6 +320,20 @@ def run_pipeline() -> dict:
                 mark_topic_used(today, topic_entry)
             except Exception as e:
                 log(f"⚠️  mark_topic_used failed (non-blocking): {e}", level="warning")
+
+        # Store this run for format_picker variety logic
+        try:
+            state = atomic_read(STATE_PATH)
+            recent_runs = state.get("recent_runs", [])
+            recent_runs.insert(0, {
+                "topic_cluster": metadata.get("topic_cluster", topic_cluster),
+                "format": fmt.value,
+                "run_id": run_id,
+            })
+            state["recent_runs"] = recent_runs[:50]
+            atomic_write(STATE_PATH, state)
+        except Exception as e:
+            log(f"⚠️  Could not save recent_runs (non-blocking): {e}", level="warning")
 
         # ── Step 11: Analytics pull ────────────────────────────────────────────
         _run_analytics_pull()
