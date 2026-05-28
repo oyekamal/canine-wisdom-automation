@@ -1,5 +1,15 @@
 [
   {
+    "filename": "pexels_10871104_true_scary.mp4",
+    "path": "horror_footage/pexels_10871104_true_scary.mp4",
+    "source": "pexels",
+    "topic_cluster": "true_scary",
+    "duration_secs": 9.775,
+    "width": 1080,
+    "height": 1920,
+    "fps": 29.97
+  },
+  {
     "filename": "pexels_15365457_unsolved_mysteries.mp4",
     "path": "horror_footage/pexels_15365457_unsolved_mysteries.mp4",
     "source": "pexels",
@@ -100,6 +110,16 @@
     "fps": 29.97
   },
   {
+    "filename": "pexels_29603423_paranormal.mp4",
+    "path": "horror_footage/pexels_29603423_paranormal.mp4",
+    "source": "pexels",
+    "topic_cluster": "paranormal",
+    "duration_secs": 8.391717,
+    "width": 2160,
+    "height": 3840,
+    "fps": 59.94
+  },
+  {
     "filename": "pexels_29725270_nosleep.mp4",
     "path": "horror_footage/pexels_29725270_nosleep.mp4",
     "source": "pexels",
@@ -178,6 +198,26 @@
     "width": 1080,
     "height": 1920,
     "fps": 30.0
+  },
+  {
+    "filename": "pexels_37563828_short_horror.mp4",
+    "path": "horror_footage/pexels_37563828_short_horror.mp4",
+    "source": "pexels",
+    "topic_cluster": "short_horror",
+    "duration_secs": 37.25,
+    "width": 2160,
+    "height": 3840,
+    "fps": 24.0
+  },
+  {
+    "filename": "pexels_4904162_paranormal.mp4",
+    "path": "horror_footage/pexels_4904162_paranormal.mp4",
+    "source": "pexels",
+    "topic_cluster": "paranormal",
+    "duration_secs": 36.24,
+    "width": 2160,
+    "height": 4096,
+    "fps": 25.0
   },
   {
     "filename": "pexels_5427490_nosleep.mp4",
