@@ -35,11 +35,14 @@ def _load(name, rel):
 _harvest_mod = _load("reddit_harvest", "reddit_harvest.py")
 _scorer_mod  = _load("story_scorer",   "story_scorer.py")
 _rewriter_mod = _load("story_rewriter", "story_rewriter.py")
+_converter_mod = _load("media_converter", "media_converter.py")
 
 harvest_channel = _harvest_mod.harvest_channel
 pick_best_story = _scorer_mod.pick_best_story
 rewrite_story   = _rewriter_mod.rewrite_story
 pick_voice      = _rewriter_mod.pick_voice
+extract_media   = _harvest_mod.extract_media
+prepare_reddit_media = _converter_mod.prepare_reddit_media
 
 
 def run_horror_pipeline(channel_config=None) -> dict:
@@ -144,20 +147,43 @@ def run_horror_pipeline(channel_config=None) -> dict:
         move_outputs_to_archive(run_id)
         return {"success": False, "video_url": None, "reason": "audio_eval failed"}
 
-    # ── Fetch story-matched footage ───────────────────────────────────────────
+    # ── Fetch footage: Reddit media first, Pexels as fallback ────────────────
     topic_cluster = metadata["topic_cluster"]
     clip_path = None
-    log(f"🎥 Fetching footage for topic: {topic_cluster}")
+
+    # Step A: Try to use media directly attached to the Reddit post
     try:
-        clip_result = fetch_footage_for_topic(topic_cluster, topic_cluster, fmt=fmt,
-                                               save_dir=channel_config.footage_dir)
-        if clip_result:
-            clip_path = str(clip_result)
-            log(f"✅ Footage ready: {clip_result.name}")
-        else:
-            log("⚠️  No footage downloaded — using existing library")
+        reddit_media_path = extract_media(
+            story,
+            save_dir=channel_config.footage_dir,
+            story_id=story["id"],
+        )
+        if reddit_media_path:
+            log(f"📸 Reddit media found: {reddit_media_path}")
+            converted = prepare_reddit_media(
+                reddit_media_path,
+                duration=audio_duration,
+                save_dir=str(channel_config.footage_dir),
+            )
+            if converted:
+                clip_path = converted
+                log(f"✅ Using Reddit post media as footage: {converted}")
     except Exception as e:
-        log(f"⚠️  Footage fetch failed (non-blocking): {e}", level="warning")
+        log(f"⚠️  Reddit media extraction failed (non-blocking): {e}", level="warning")
+
+    # Step B: Fall back to Pexels/Pixabay if no Reddit media
+    if clip_path is None:
+        log(f"🎥 No Reddit media — fetching Pexels footage for: {topic_cluster}")
+        try:
+            clip_result = fetch_footage_for_topic(topic_cluster, topic_cluster, fmt=fmt,
+                                                   save_dir=channel_config.footage_dir)
+            if clip_result:
+                clip_path = str(clip_result)
+                log(f"✅ Footage ready: {clip_result.name}")
+            else:
+                log("⚠️  No footage downloaded — using existing library")
+        except Exception as e:
+            log(f"⚠️  Footage fetch failed (non-blocking): {e}", level="warning")
 
     # ── Video build ───────────────────────────────────────────────────────────
     log("🎬 Building video...")
