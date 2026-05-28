@@ -23,6 +23,56 @@ FOOTAGE_INDEX = BASE_DIR / "harness" / "data" / "footage_index.json"
 # Topic → Pexels search queries mapping
 # When the script topic matches a cluster, we use more specific search terms
 TOPIC_SEARCH_MAP = {
+    # Horror / paranormal clusters
+    "nosleep": [
+        "dark foggy forest night",
+        "abandoned house hallway dark",
+        "empty road night fog",
+        "dark basement stairs",
+        "shadow silhouette night",
+    ],
+    "paranormal": [
+        "foggy graveyard night",
+        "dark haunted house exterior",
+        "misty forest eerie night",
+        "candle flame darkness",
+        "empty corridor dark building",
+    ],
+    "true scary": [
+        "empty dark road night",
+        "abandoned building interior dark",
+        "dark woods trail night",
+        "figure silhouette darkness",
+        "storm approaching dark sky",
+    ],
+    "creepy encounters": [
+        "dark path forest night",
+        "abandoned rural house",
+        "misty lake night",
+        "empty parking lot night",
+        "dark alley city night",
+    ],
+    "short horror": [
+        "dark room single light",
+        "shadow on wall",
+        "foggy night street lamp",
+        "creepy window reflection night",
+        "dark hallway door end",
+    ],
+    "unsolved mysteries": [
+        "crime scene tape dark",
+        "old photograph mystery",
+        "dark detective office noir",
+        "foggy cold case file",
+        "empty road disappearance",
+    ],
+    "night shift stories": [
+        "empty hospital corridor night",
+        "security guard dark building",
+        "night shift worker alone",
+        "empty office building night",
+        "factory worker alone night",
+    ],
     "dog health": [
         "veterinarian examining dog",
         "dog anxiety panting",

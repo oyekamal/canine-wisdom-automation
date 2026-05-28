@@ -20,6 +20,7 @@ from harness.evals.audio_eval import audio_eval
 from harness.evals.video_eval import video_eval
 from harness.evals.base import save_eval_result
 from harness.agents.format_picker import pick_format
+from harness.tools.footage import fetch_footage_for_topic
 from config import VideoFormat
 
 import importlib.util as _ilu
@@ -132,11 +133,26 @@ def run_horror_pipeline(channel_config=None) -> dict:
         move_outputs_to_archive(run_id)
         return {"success": False, "video_url": None, "reason": "audio_eval failed"}
 
+    # ── Fetch story-matched footage ───────────────────────────────────────────
+    topic_cluster = metadata["topic_cluster"]
+    clip_path = None
+    log(f"🎥 Fetching footage for topic: {topic_cluster}")
+    try:
+        clip_result = fetch_footage_for_topic(topic_cluster, topic_cluster, fmt=fmt)
+        if clip_result:
+            clip_path = str(clip_result)
+            log(f"✅ Footage ready: {clip_result.name}")
+        else:
+            log("⚠️  No footage downloaded — using existing library")
+    except Exception as e:
+        log(f"⚠️  Footage fetch failed (non-blocking): {e}", level="warning")
+
     # ── Video build ───────────────────────────────────────────────────────────
     log("🎬 Building video...")
     try:
         video_path = build_video(
             audio_duration,
+            clip_path=clip_path,
             word_timestamps=word_timestamps,
             hook_overlay=metadata["hook_overlay"],
             fmt=fmt,
