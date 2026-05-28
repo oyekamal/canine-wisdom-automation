@@ -110,3 +110,14 @@ def test_harvest_channel_combines_subreddits(reddit_harvest):
 
     # 5 subreddits (3 primary + 2 secondary), each returning 1 post (same id, deduped)
     assert len(stories) == 1
+
+
+def test_harvest_skips_removed_text(reddit_harvest):
+    post = _make_post(text="[removed]")
+    fake_resp = MagicMock()
+    fake_resp.json.return_value = _make_reddit_response([post])
+    fake_resp.status_code = 200
+
+    with patch("requests.get", return_value=fake_resp):
+        stories = reddit_harvest.harvest_subreddit("nosleep", limit=5, min_upvotes=100, min_comments=10)
+    assert stories == []
