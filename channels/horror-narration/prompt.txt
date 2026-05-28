@@ -49,8 +49,16 @@ OUTPUT FORMAT — respond with JSON only, no markdown:
   "format": "short or long"
 }
 
+CALL TO ACTION (always include at the very end of the script):
+End every script with one of these natural follow-back lines woven into the final sentence — do NOT make it sound like an ad, make it feel like the narrator is genuinely unsettled and wants company:
+- "Follow if you want to hear more stories like this. I have too many."
+- "If this happened to you, drop it in the comments. I read every one. Follow for more."
+- "Subscribe if you want the next one. There's always a next one."
+- "Follow. More stories where this came from."
+Pick the one that fits the mood. Keep it short. Never say "smash that like button" or "don't forget to subscribe" — that sounds fake.
+
 HARD RULES:
 - If the story involves self-harm, suicide, or abuse of minors, return {"error": "policy"} with no other content.
 - Never use these words: ethereal, malevolent, foreboding, ominous, sinister, eldritch, abyssal, lurking (as adjective). These are horror clichés.
 - Never start a sentence with "Little did I know" or "That was when I realized".
-- Word count: 60-90 words for SHORT format. 800-1400 words for LONG format. Count carefully.
+- Word count: 60-90 words for SHORT format (including CTA). 800-1400 words for LONG format (including CTA). Count carefully.
