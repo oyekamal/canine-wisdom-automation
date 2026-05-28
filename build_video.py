@@ -337,10 +337,9 @@ def build_video(audio_duration: float, clip_path: str = None,
         log(f"✂️  Clamping video to {TARGET_DURATION_MAX}s")
 
     # Cinematic filter: scale → warm color grade → vignette
-    # zoompan is intentionally excluded — it freezes video clips (designed for images only)
     base_filter = (
         f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
-        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,"
+        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
         f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
         f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
         f"vignette=PI/5"
