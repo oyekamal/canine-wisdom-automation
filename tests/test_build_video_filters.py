@@ -116,3 +116,40 @@ def test_vignette_in_filter():
     parts = base_filter.split(",")
     last = parts[-1]
     assert last.startswith("vignette"), f"vignette must be last filter, got: {last}"
+
+
+from config import VideoFormat, VIDEO_WIDTH, VIDEO_HEIGHT, LONG_VIDEO_WIDTH, LONG_VIDEO_HEIGHT
+
+
+def test_short_format_base_filter():
+    """Short format: scale to 1080x1920, no zoompan."""
+    fmt = VideoFormat.SHORT
+    w = VIDEO_WIDTH if fmt == VideoFormat.SHORT else LONG_VIDEO_WIDTH
+    h = VIDEO_HEIGHT if fmt == VideoFormat.SHORT else LONG_VIDEO_HEIGHT
+    base_filter = (
+        f"scale={w}:{h}:force_original_aspect_ratio=decrease,"
+        f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
+        f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+        f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+        f"vignette=PI/5"
+    )
+    assert "zoompan" not in base_filter
+    assert "scale=1080:1920" in base_filter
+
+
+def test_long_format_base_filter():
+    """Long format: scale to 1920x1080, with zoompan Ken Burns."""
+    fmt = VideoFormat.LONG
+    w = VIDEO_WIDTH if fmt == VideoFormat.SHORT else LONG_VIDEO_WIDTH
+    h = VIDEO_HEIGHT if fmt == VideoFormat.SHORT else LONG_VIDEO_HEIGHT
+    base_filter = (
+        f"scale={w}:{h}:force_original_aspect_ratio=decrease,"
+        f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
+        f"zoompan=z='min(zoom+0.0008,1.3)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+        f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+        f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+        f"vignette=PI/5"
+    )
+    assert "zoompan" in base_filter
+    assert "scale=1920:1080" in base_filter
+    assert "1.3" in base_filter

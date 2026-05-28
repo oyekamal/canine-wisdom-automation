@@ -190,7 +190,7 @@ def _assign_cut_durations(n_clips: int, audio_duration: float) -> list:
     return [r * audio_duration / total for r in raw]
 
 
-def _concat_clips(clip_paths: list, audio_duration: float) -> str:
+def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
     """
     Extract one random-duration segment from each clip and concatenate them.
 
@@ -205,6 +205,12 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
     Returns:
         Path to concatenated temp video as str.
     """
+    from config import VideoFormat, LONG_VIDEO_WIDTH, LONG_VIDEO_HEIGHT
+    if fmt is None:
+        fmt = VideoFormat.SHORT
+    clip_w = LONG_VIDEO_WIDTH if fmt == VideoFormat.LONG else 1080
+    clip_h = LONG_VIDEO_HEIGHT if fmt == VideoFormat.LONG else 1920
+
     temp_dir = Path(tempfile.gettempdir())
     durations = _assign_cut_durations(len(clip_paths), audio_duration)
 
@@ -221,7 +227,7 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
                 "ffmpeg", "-stream_loop", str(loops),
                 "-i", str(clip),
                 "-t", f"{dur:.3f}",
-                "-vf", f"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1",
+                "-vf", f"scale={clip_w}:{clip_h}:force_original_aspect_ratio=decrease,pad={clip_w}:{clip_h}:(ow-iw)/2:(oh-ih)/2,setsar=1",
                 "-r", "30",
                 "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
                 "-pix_fmt", "yuv420p",
@@ -235,7 +241,7 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
                 "-ss", f"{start:.3f}",
                 "-i", str(clip),
                 "-t", f"{dur:.3f}",
-                "-vf", f"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1",
+                "-vf", f"scale={clip_w}:{clip_h}:force_original_aspect_ratio=decrease,pad={clip_w}:{clip_h}:(ow-iw)/2:(oh-ih)/2,setsar=1",
                 "-r", "30",
                 "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
                 "-pix_fmt", "yuv420p",
@@ -268,7 +274,7 @@ def _concat_clips(clip_paths: list, audio_duration: float) -> str:
 
 
 def build_video(audio_duration: float, clip_path: str = None,
-                word_timestamps: list = None, hook_overlay: str = None) -> str:
+                word_timestamps: list = None, hook_overlay: str = None, fmt=None) -> str:
     """
     Build vertical Shorts video with fast hardware-accelerated encoding.
 
@@ -291,6 +297,10 @@ def build_video(audio_duration: float, clip_path: str = None,
     Returns:
         str: Path to final_video.mp4
     """
+
+    from config import VideoFormat, LONG_VIDEO_WIDTH, LONG_VIDEO_HEIGHT
+    if fmt is None:
+        fmt = VideoFormat.SHORT
 
     cfg = load_config()
     dog_footage_dir = cfg["dog_footage_dir"]
@@ -325,7 +335,7 @@ def build_video(audio_duration: float, clip_path: str = None,
     log(f"📹 Multi-clip mode: {len(clips)} cuts from LRU rotation")
     for i, c in enumerate(clips):
         log(f"   [{i+1}] {c.name}")
-    actual_video_path = _concat_clips(clips, audio_duration)
+    actual_video_path = _concat_clips(clips, audio_duration, fmt=fmt)
     log(f"✂️  Concat complete: {actual_video_path}")
 
     # Duration clamp: enforce 25-35s range
@@ -336,14 +346,27 @@ def build_video(audio_duration: float, clip_path: str = None,
         audio_duration = float(TARGET_DURATION_MAX)
         log(f"✂️  Clamping video to {TARGET_DURATION_MAX}s")
 
-    # Cinematic filter: scale → warm color grade → vignette
-    base_filter = (
-        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
-        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
-        f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
-        f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
-        f"vignette=PI/5"
-    )
+    if fmt == VideoFormat.LONG:
+        # Landscape 1920×1080: Ken Burns zoom safe on wide frame
+        bw, bh = LONG_VIDEO_WIDTH, LONG_VIDEO_HEIGHT
+        base_filter = (
+            f"scale={bw}:{bh}:force_original_aspect_ratio=decrease,"
+            f"pad={bw}:{bh}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
+            f"zoompan=z='min(zoom+0.0008,1.3)':d=125:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+            f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+            f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+            f"vignette=PI/5"
+        )
+    else:
+        # Vertical 1080×1920 Short: no zoompan (breaks resolution on narrow frame)
+        bw, bh = VIDEO_WIDTH, VIDEO_HEIGHT
+        base_filter = (
+            f"scale={bw}:{bh}:force_original_aspect_ratio=decrease,"
+            f"pad={bw}:{bh}:(ow-iw)/2:(oh-ih)/2,setsar=1,"
+            f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+            f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+            f"vignette=PI/5"
+        )
 
     # Build ASS subtitle file containing both hook overlay and word captions.
     # ASS avoids the ffmpeg -vf comma/quote parsing issues that affect drawtext.
