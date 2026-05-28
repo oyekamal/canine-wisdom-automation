@@ -19,7 +19,7 @@ _NEVER_USED = "0000-00-00T00:00:00"
 _CUT_DURATION_AVG = 1.5  # seconds per clip segment
 
 
-def get_clips_for_video(footage_dir: Path, audio_duration: float) -> List[Path]:
+def get_clips_for_video(footage_dir: Path, audio_duration: float, cut_duration: float = None) -> List[Path]:
     """
     Select clips for one video using LRU rotation tracked in harness state.
 
@@ -39,7 +39,8 @@ def get_clips_for_video(footage_dir: Path, audio_duration: float) -> List[Path]:
     if not available:
         raise FileNotFoundError(f"No video clips found in {footage_dir}")
 
-    n_clips = math.ceil(audio_duration / _CUT_DURATION_AVG)
+    avg = cut_duration if cut_duration is not None else _CUT_DURATION_AVG
+    n_clips = max(1, math.ceil(audio_duration / avg))
 
     with lock_state() as state:
         usage = state.setdefault("clip_usage", {})

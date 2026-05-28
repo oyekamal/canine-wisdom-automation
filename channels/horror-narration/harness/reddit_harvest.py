@@ -1,12 +1,14 @@
 """
-Harvest horror stories from Reddit using public JSON endpoints.
-No API key or credentials needed — uses Reddit's public .json feed.
+Harvest horror stories from Reddit using PullPush API (no credentials needed).
+Reddit's public JSON endpoints now return 403 — PullPush is the reliable alternative.
 """
 import time
 import requests
 from pathlib import Path
 
 
+# PullPush is a community-maintained Pushshift mirror — free, no auth required
+PULLPUSH_BASE = "https://api.pullpush.io/reddit/search/submission"
 REDDIT_BASE = "https://www.reddit.com"
 HEADERS = {"User-Agent": "horror_harness/1.0"}
 
@@ -20,7 +22,7 @@ def harvest_subreddit(
     opt_out_authors: list = None,
 ) -> list:
     """
-    Fetch top posts from a subreddit via Reddit's public JSON API.
+    Fetch top posts from a subreddit via PullPush API.
     No credentials required.
 
     Returns list of story dicts with keys:
@@ -29,20 +31,23 @@ def harvest_subreddit(
     if opt_out_authors is None:
         opt_out_authors = []
 
-    url = f"{REDDIT_BASE}/r/{subreddit_name}/top.json"
-    params = {"limit": limit, "t": time_filter}
+    params = {
+        "subreddit": subreddit_name,
+        "sort": "score",
+        "sort_type": "score",
+        "size": min(limit, 100),
+    }
 
     try:
-        resp = requests.get(url, headers=HEADERS, params=params, timeout=10)
+        resp = requests.get(PULLPUSH_BASE, headers=HEADERS, params=params, timeout=15)
         resp.raise_for_status()
-        posts = resp.json()["data"]["children"]
+        posts = resp.json().get("data", [])
     except Exception as e:
         return []
 
     stories = []
-    for post in posts:
-        d = post["data"]
-
+    for d in posts:
+        # PullPush returns fields directly (no nested "data" key)
         author = d.get("author", "")
         if not author or author in ("[deleted]", "[removed]", "AutoModerator"):
             continue
@@ -57,15 +62,16 @@ def harvest_subreddit(
         if not text or text in ("[deleted]", "[removed]"):
             continue
 
-        permalink = d.get("permalink", "")
+        post_id = d.get("id", "")
+        permalink = d.get("permalink", f"/r/{subreddit_name}/comments/{post_id}/")
         stories.append({
-            "id": d["id"],
-            "title": d["title"],
+            "id": post_id,
+            "title": d.get("title", ""),
             "text": text,
             "author": author,
             "subreddit": subreddit_name,
-            "score": d["score"],
-            "num_comments": d["num_comments"],
+            "score": d.get("score", 0),
+            "num_comments": d.get("num_comments", 0),
             "permalink": permalink,
             "url": f"{REDDIT_BASE}{permalink}",
             "word_count": len(text.split()),

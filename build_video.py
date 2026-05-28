@@ -351,7 +351,12 @@ def build_video(audio_duration: float, clip_path: str = None,
             shutil.copy2(str(topic_clip), str(dest))
             log(f"📥 Added topic clip to library: {topic_clip.name}")
 
-    clips = get_clips_for_video(dog_footage_dir, audio_duration)
+    cut_duration = None
+    if channel_config is not None:
+        import json as _jcfg
+        _s = _jcfg.loads((channel_config.channel_dir / "settings.json").read_text())
+        cut_duration = _s.get("cut_duration_secs")
+    clips = get_clips_for_video(dog_footage_dir, audio_duration, cut_duration=cut_duration)
     log(f"📹 Multi-clip mode: {len(clips)} cuts from LRU rotation")
     for i, c in enumerate(clips):
         log(f"   [{i+1}] {c.name}")

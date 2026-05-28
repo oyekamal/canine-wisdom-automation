@@ -34,6 +34,7 @@
   "opt_out_authors": [],
   "footage_dir": "horror_footage",
   "music_dir": "assets/music/horror",
+  "cut_duration_secs": 9,
   "voices": {
     "long_form_narrator": "JBFqnCBsd6RMkjVDRZzb",
     "short_creepy": "N2lVS1w4EtoT3dr4eOWO",
