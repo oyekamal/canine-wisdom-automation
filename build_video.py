@@ -32,10 +32,7 @@ class HardwareAccelerator:
     def detect_encoder():
         """Detect best available hardware encoder"""
         encoders_to_try = [
-            ("hevc_nvenc", "NVIDIA GPU (fastest)"),
-            ("hevc_amf", "AMD GPU"),
-            ("hevc_qsv", "Intel QuickSync"),
-            ("libx265", "CPU H.265 (fast)"),
+            ("libx264", "CPU H.264"),
         ]
 
         for encoder, name in encoders_to_try:
@@ -100,24 +97,11 @@ class VideoOptimizer:
 
     def get_encoding_params(self):
         """Get optimized encoding parameters"""
-        if self.encoder.startswith("hevc"):
-            return {
-                "codec": self.encoder,
-                "crf": "28",
-                "preset": "fast" if "nvenc" in self.encoder else "medium"
-            }
-        elif self.encoder == "libx265":
-            return {
-                "codec": "libx265",
-                "crf": "26",
-                "preset": "ultrafast"
-            }
-        else:
-            return {
-                "codec": "libx264",
-                "crf": "26",
-                "preset": "ultrafast"
-            }
+        return {
+            "codec": "libx264",
+            "crf": "18",
+            "preset": "slow"
+        }
 
     def trim_video_segment(self, audio_duration: float) -> str:
         """
@@ -352,11 +336,11 @@ def build_video(audio_duration: float, clip_path: str = None,
         audio_duration = float(TARGET_DURATION_MAX)
         log(f"✂️  Clamping video to {TARGET_DURATION_MAX}s")
 
-    # Cinematic filter: Ken Burns slow zoom → scale → warm color grade → vignette
+    # Cinematic filter: scale → warm color grade → vignette
+    # zoompan is intentionally excluded — it freezes video clips (designed for images only)
     base_filter = (
-        "zoompan=z='min(zoom+0.0015,1.5)':d=150"
-        ":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
-        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT},"
+        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
+        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,"
         f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
         f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
         f"vignette=PI/5"
