@@ -1,16 +1,87 @@
-> **New entry point (harness):** The harness orchestrator replaces `main.py`. Run with:
-> ```bash
-> python -m harness.orchestrator
-> ```
-> See [`harness/README.md`](harness/README.md) for full documentation, eval table, and cron setup.
+# Multi-Channel YouTube Automation Pipeline
+
+This repo runs **multiple YouTube channels** from one codebase. Each channel is fully isolated with its own footage, music, prompt, OAuth credentials, and state.
 
 ---
 
-# Canine Wisdom by King — YouTube Shorts Automation Pipeline
+## Running a Channel
 
-**Automatically generate viral dog fact YouTube Shorts and publish them with a single command.**
+```bash
+# Canine Wisdom (dog facts)
+source venv/bin/activate
+python3 -m harness.orchestrator --channel canine-wisdom
 
-Turn your dog footage into engaging, AI-narrated YouTube Shorts that educate and entertain. No editing skills required. One command: `python main.py` → Your Short goes live in minutes.
+# Horror Narration (Reddit horror stories — no YouTube upload)
+HORROR_DRY_RUN=1 python3 channels/horror-narration/harness/orchestrator.py
+
+# Horror Narration (with YouTube upload — requires OAuth in channels/horror-narration/)
+python3 channels/horror-narration/harness/orchestrator.py
+```
+
+---
+
+## Channel Directory Structure
+
+```
+channels/
+  canine-wisdom/           ← Dog facts channel
+    settings.json          ← Voice, niche, affiliate links, footage_dir, music_dir
+    prompt.txt             ← Claude script prompt
+    token.json             ← YouTube OAuth (symlink to root)
+    client_secrets.json    ← YouTube OAuth (symlink to root)
+    data/                  ← State, learnings, evals, analytics
+
+  horror-narration/        ← Horror/paranormal narration channel
+    settings.json          ← Voice, subreddits, cut_duration_secs=9, footage_dir, music_dir
+    prompt.txt             ← Mr. Nightmare style Claude prompt
+    token.json             ← YouTube OAuth for horror channel (add when ready)
+    client_secrets.json    ← YouTube OAuth for horror channel (add when ready)
+    data/                  ← Per-channel state (used story IDs, recent runs)
+    harness/               ← Channel-specific pipeline modules
+      orchestrator.py      ← Entry point
+      reddit_harvest.py    ← Fetches stories from Reddit via PullPush API
+      story_scorer.py      ← Ranks stories by hook strength + length fit
+      story_rewriter.py    ← Claude rewrites story + picks ElevenLabs voice
+```
+
+---
+
+## Footage Libraries (kept separate — never mixed)
+
+```
+dog_footage/               ← Canine Wisdom clips only (portrait, dog content)
+horror_footage/            ← Horror channel clips only (dark atmospheric)
+assets/music/              ← Dog channel music (upbeat Kevin MacLeod)
+assets/music/horror/       ← Horror channel music (Danse Macabre, Lightless Dawn, etc.)
+```
+
+---
+
+## Adding a New Channel
+
+1. Create `channels/<slug>/settings.json` with: `channel_name`, `niche`, `voice_id`, `youtube_category_id`, `topic_clusters`, `description_template`, `affiliate_links`, `footage_dir`, `music_dir`, `cut_duration_secs`
+2. Create `channels/<slug>/prompt.txt` with the Claude prompt
+3. Place `client_secrets.json` + `token.json` in the channel dir
+4. Run: `python3 -m harness.orchestrator --channel <slug>`
+
+No code changes needed.
+
+---
+
+## Horror Channel — How It Works
+
+1. **Harvest** — Fetches top Reddit stories from r/nosleep, r/shortscarystories, r/TwoSentenceHorror, r/LetsNotMeet, r/Paranormal via [PullPush API](https://api.pullpush.io) (no Reddit credentials needed)
+2. **Score** — Ranks by hook words in title + word count fit + upvote signal. Skips already-used stories.
+3. **Rewrite** — Claude rewrites story in Mr. Nightmare style: first-person, short punchy sentences, concrete details, no clichés
+4. **Voice** — Automatically picks ElevenLabs voice based on mood: George (dread/long), Callum (eerie/short), Harry (intense), Sarah (paranormal)
+5. **Footage** — Downloads dark atmospheric clips from Pexels matching the story's topic cluster (nosleep, paranormal, etc.)
+6. **Cut pacing** — 9 seconds per clip (3–4 cuts for a Short) for slow atmospheric horror, not fast TikTok cuts
+7. **Music** — Dark ambient tracks: Danse Macabre, Lightless Dawn, Unseen Horrors, etc.
+8. **Upload** — YouTube via OAuth (set `HORROR_DRY_RUN=1` to skip upload for testing)
+
+---
+
+## Canine Wisdom — Original Pipeline
 
 ---
 

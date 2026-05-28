@@ -149,7 +149,8 @@ def run_horror_pipeline(channel_config=None) -> dict:
     clip_path = None
     log(f"🎥 Fetching footage for topic: {topic_cluster}")
     try:
-        clip_result = fetch_footage_for_topic(topic_cluster, topic_cluster, fmt=fmt)
+        clip_result = fetch_footage_for_topic(topic_cluster, topic_cluster, fmt=fmt,
+                                               save_dir=channel_config.footage_dir)
         if clip_result:
             clip_path = str(clip_result)
             log(f"✅ Footage ready: {clip_result.name}")

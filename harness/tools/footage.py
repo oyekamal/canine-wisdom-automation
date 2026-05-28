@@ -315,10 +315,13 @@ def _record_footage(clip_path: Path, source: str, topic_cluster: str, query: str
     tmp.replace(FOOTAGE_INDEX)
 
 
-def fetch_footage_for_topic(topic_cluster: str, topic: str, fmt=VideoFormat.SHORT) -> Path | None:
+def fetch_footage_for_topic(topic_cluster: str, topic: str, fmt=VideoFormat.SHORT, save_dir: Path = None) -> Path | None:
     """
-    Main entry point. Find and download a dog clip relevant to the topic.
+    Main entry point. Find and download a clip relevant to the topic.
     Returns path to downloaded clip, or None if all sources failed.
+
+    Args:
+        save_dir: Directory to save clip into. Defaults to DOG_FOOTAGE_DIR.
 
     Priority:
     1. Pexels portrait/landscape clip matching topic cluster queries
@@ -328,30 +331,34 @@ def fetch_footage_for_topic(topic_cluster: str, topic: str, fmt=VideoFormat.SHOR
     orientation_pexels  = "portrait"   if fmt == VideoFormat.SHORT else "landscape"
     orientation_pixabay = "vertical"   if fmt == VideoFormat.SHORT else "horizontal"
 
-    DOG_FOOTAGE_DIR.mkdir(exist_ok=True)
+    footage_dir = save_dir if save_dir is not None else DOG_FOOTAGE_DIR
+    footage_dir.mkdir(parents=True, exist_ok=True)
     api_key = _load_api_key()
 
     # Build query list for this topic cluster
-    # Primary query: full topic string for maximum specificity
-    primary = "dog " + topic.replace("_", " ").strip()
-    # Secondary: topic-cluster queries, randomised
     cluster_queries = TOPIC_SEARCH_MAP.get(topic_cluster, DEFAULT_QUERIES).copy()
     random.shuffle(cluster_queries)
-    queries = [primary] + cluster_queries
+    # Don't prepend "dog" prefix when using non-dog topic maps
+    dog_topics = {"dog health","dog behavior","dog breeds","dog training","dog history","dog science","dog fun",
+                  "dog anxiety","dog calming","dog separation anxiety","senior dog","dog joint health","dog nutrition","dog safety"}
+    if topic_cluster in dog_topics:
+        primary = "dog " + topic.replace("_", " ").strip()
+        queries = [primary] + cluster_queries
+    else:
+        queries = cluster_queries  # horror topics — no "dog" prefix
 
     for query in queries:
         clips = _search_pexels(query, api_key, orientation=orientation_pexels)
         if not clips:
             continue
 
-        # Prefer clips 10-60s (good for Shorts background)
         good_clips = [c for c in clips if 8 <= c["duration"] <= 90]
         if not good_clips:
             good_clips = clips
 
         clip = random.choice(good_clips[:5])
         filename = f"pexels_{clip['pexels_id']}_{topic_cluster.replace(' ', '_')}.mp4"
-        output_path = DOG_FOOTAGE_DIR / filename
+        output_path = footage_dir / filename
 
         if output_path.exists():
             print(f"[footage] Already have: {filename}")
@@ -375,7 +382,7 @@ def fetch_footage_for_topic(topic_cluster: str, topic: str, fmt=VideoFormat.SHOR
                 good_clips = clips
             clip = random.choice(good_clips[:5])
             filename = f"pixabay_{clip['pexels_id'].replace('pixabay_', '')}_{topic_cluster.replace(' ', '_')}.mp4"
-            output_path = DOG_FOOTAGE_DIR / filename
+            output_path = footage_dir / filename
             if output_path.exists():
                 print(f"[footage] Already have (Pixabay): {filename}")
                 _record_footage(output_path, "pixabay", topic_cluster, query)
