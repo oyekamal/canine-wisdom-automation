@@ -54,3 +54,4 @@ def test_data_dir_is_inside_channel_dir(tmp_path):
     cfg = load_channel_config("test-channel", channels_root=tmp_path / "channels")
     assert cfg.data_dir == ch_dir / "data"
     assert cfg.state_path == ch_dir / "data" / "state.json"
+    assert cfg.prompt_path == ch_dir / "prompt.txt"
