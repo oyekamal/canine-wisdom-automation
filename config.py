@@ -5,6 +5,7 @@ Handles environment loading, validation, and provides API constants.
 """
 
 import os
+from enum import Enum
 from pathlib import Path
 from typing import Dict, Any
 from dotenv import load_dotenv
@@ -47,6 +48,15 @@ VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 VIDEO_CRF = 20
 VIDEO_PRESET = "fast"
+
+
+class VideoFormat(Enum):
+    SHORT = "short"   # vertical 1080×1920 YouTube Short
+    LONG  = "long"    # landscape 1920×1080 long-form video
+
+
+LONG_VIDEO_WIDTH  = 1920
+LONG_VIDEO_HEIGHT = 1080
 
 # Target Short duration
 TARGET_DURATION_MIN = 25   # seconds
