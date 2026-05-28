@@ -5,6 +5,7 @@ Replaces main.py as the entry point. Wraps existing pipeline with eval gating.
 import sys
 import json
 import uuid
+import argparse
 from datetime import datetime
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from generate_script import generate_script
 from build_video import build_video
 from upload_youtube import upload_youtube
 from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive, retry_with_backoff
+from channel_config import load_channel_config
 
 from harness.agents.competitor import bootstrap_competitors_if_needed
 from harness.agents.trend import build_topic_queue, pick_best_topic, mark_topic_used
@@ -28,9 +30,19 @@ from harness.evals.thumbnail_eval import thumbnail_eval
 from harness.evals.title_eval import title_eval
 from harness.evals.video_eval import video_eval
 from harness.evals.base import save_eval_result
-from harness.storage import atomic_write, atomic_read, DATA_DIR, STATE_PATH
+from harness.storage import atomic_write, atomic_read, DATA_DIR, STATE_PATH, get_state_path
 
 MAX_LLM_RETRIES = 3
+
+
+def _load_channel_from_args():
+    """Parse --channel slug from CLI args and return its ChannelConfig."""
+    import channel_config as _cc_module
+    parser = argparse.ArgumentParser(description="Canine Wisdom Harness", add_help=False)
+    parser.add_argument("--channel", default="canine-wisdom",
+                        help="Channel slug to run (must exist under channels/)")
+    args, _ = parser.parse_known_args()
+    return load_channel_config(args.channel, channels_root=_cc_module.CHANNELS_ROOT)
 
 
 def _write_incident(trigger: str, what_failed: str, hypothesis: str, code_path: str) -> str:
@@ -122,13 +134,16 @@ def _run_analytics_pull() -> None:
         log(f"⚠️  Analytics pull failed (non-blocking): {e}", level="warning")
 
 
-def run_pipeline() -> dict:
+def run_pipeline(channel_config=None) -> dict:
     """
     Run the full harness pipeline with eval gating.
 
     Returns:
         dict with keys: success (bool), video_url (str|None), reason (str|None)
     """
+    if channel_config is None:
+        channel_config = _load_channel_from_args()
+    _state_path = get_state_path(channel_config)
     run_id = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     today = datetime.now().strftime("%Y-%m-%d")
     init_logger(run_id)
@@ -161,7 +176,7 @@ def run_pipeline() -> dict:
 
         # ── Step 2b: Pick video format ────────────────────────────────────────
         try:
-            state = atomic_read(STATE_PATH)
+            state = atomic_read(_state_path)
             recent_runs = state.get("recent_runs", [])
         except Exception:
             recent_runs = []
@@ -188,7 +203,7 @@ def run_pipeline() -> dict:
 
         for attempt in range(MAX_LLM_RETRIES):
             try:
-                metadata = generate_script()
+                metadata = generate_script(channel_config=channel_config)
             except Exception as e:
                 log(f"⚠️  Script generation failed (attempt {attempt+1}): {e}", level="warning")
                 if attempt == MAX_LLM_RETRIES - 1:
@@ -281,7 +296,7 @@ def run_pipeline() -> dict:
             return {"success": False, "video_url": None, "reason": f"video_eval failed: {video_result.reasoning}"}
 
         # ── Step 9: Upload ────────────────────────────────────────────────────
-        video_url = upload_youtube()
+        video_url = upload_youtube(channel_config=channel_config)
         video_id = video_url.split("/")[-1]
         log(f"🎉 Short is LIVE: {video_url}")
         if skipped_evals:
@@ -323,7 +338,7 @@ def run_pipeline() -> dict:
 
         # Store this run for format_picker variety logic
         try:
-            state = atomic_read(STATE_PATH)
+            state = atomic_read(_state_path)
             recent_runs = state.get("recent_runs", [])
             recent_runs.insert(0, {
                 "topic_cluster": metadata.get("topic_cluster", topic_cluster),
@@ -331,7 +346,7 @@ def run_pipeline() -> dict:
                 "run_id": run_id,
             })
             state["recent_runs"] = recent_runs[:50]
-            atomic_write(STATE_PATH, state)
+            atomic_write(_state_path, state)
         except Exception as e:
             log(f"⚠️  Could not save recent_runs (non-blocking): {e}", level="warning")
 
@@ -356,7 +371,8 @@ def run_pipeline() -> dict:
 
 
 if __name__ == "__main__":
-    result = run_pipeline()
+    _cfg = _load_channel_from_args()
+    result = run_pipeline(channel_config=_cfg)
     if not result["success"]:
         log(f"❌ Pipeline failed: {result['reason']}", level="error")
         sys.exit(1)
