@@ -235,7 +235,10 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
                 "-t", f"{dur:.3f}",
                 "-vf", scale_filter,
                 "-r", "30",
+                "-vsync", "cfr",
                 "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
+                "-bf", "0",
+                "-g", "30",
                 "-pix_fmt", "yuv420p",
                 "-an", "-y", str(seg_out),
             ]
@@ -249,7 +252,10 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
                 "-t", f"{dur:.3f}",
                 "-vf", scale_filter,
                 "-r", "30",
+                "-vsync", "cfr",
                 "-c:v", "libx264", "-crf", "26", "-preset", "ultrafast",
+                "-bf", "0",
+                "-g", "30",
                 "-pix_fmt", "yuv420p",
                 "-an", "-y", str(seg_out),
             ]
