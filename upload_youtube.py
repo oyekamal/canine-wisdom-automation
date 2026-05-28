@@ -19,7 +19,7 @@ from utils import log, retry_with_backoff
 # PART 1: OAuth2 AUTHENTICATION
 # ============================================================================
 
-def get_youtube_service():
+def get_youtube_service(channel_config=None):
     """
     Get authenticated YouTube API service.
 
@@ -43,7 +43,7 @@ def get_youtube_service():
     # Step 1: Define Paths
     # ========================================================================
 
-    base_dir = Path(__file__).parent
+    base_dir = channel_config.channel_dir if channel_config is not None else Path(__file__).parent
     token_file = base_dir / "token.json"
     client_secrets_file = base_dir / "client_secrets.json"
 
@@ -155,7 +155,7 @@ def get_analytics_service():
 # PART 2: VIDEO UPLOAD
 # ============================================================================
 
-def upload_youtube() -> str:
+def upload_youtube(channel_config=None) -> str:
     """
     Upload final video to YouTube as a Short.
 
@@ -180,6 +180,8 @@ def upload_youtube() -> str:
     # ========================================================================
 
     log("📤 Step 4: Uploading to YouTube Shorts...")
+
+    base_dir = channel_config.channel_dir if channel_config is not None else Path(__file__).parent
 
     # ========================================================================
     # Step 2: Load Configuration
@@ -223,13 +225,20 @@ def upload_youtube() -> str:
     hashtags_str = " ".join(f"#{tag}" for tag in hashtags)
 
     # Load YouTube settings (description template, affiliate links, etc.)
-    base_dir = Path(__file__).parent
     youtube_settings_file = base_dir / "youtube_settings.json"
 
-    if youtube_settings_file.exists():
+    if channel_config is not None:
+        yt_settings = {
+            "description_template": channel_config.description_template,
+            "affiliate_links": channel_config.affiliate_links,
+        }
+    elif youtube_settings_file.exists():
         with open(youtube_settings_file, "r") as f:
             yt_settings = json.load(f)
+    else:
+        yt_settings = {}
 
+    if yt_settings:
         # Build topic-matched affiliate block
         affiliate_links = yt_settings.get("affiliate_links", {})
         topic_cluster = metadata.get("topic_cluster", "default")
@@ -275,7 +284,7 @@ def upload_youtube() -> str:
         """
 
         # Get authenticated service
-        youtube = get_youtube_service()
+        youtube = get_youtube_service(channel_config)
 
         # ====================================================================
         # Build Request Body
@@ -286,7 +295,7 @@ def upload_youtube() -> str:
                 "title": metadata.get("title", "Dog Fact"),
                 "description": description,
                 "tags": metadata.get("hashtags", []),
-                "categoryId": "15"  # Pets & Animals
+                "categoryId": channel_config.youtube_category_id if channel_config else "15"  # Pets & Animals
             },
             "status": {
                 "privacyStatus": "public",
