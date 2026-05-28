@@ -352,11 +352,14 @@ def build_video(audio_duration: float, clip_path: str = None,
         audio_duration = float(TARGET_DURATION_MAX)
         log(f"✂️  Clamping video to {TARGET_DURATION_MAX}s")
 
-    # Base scale + color grading
+    # Cinematic filter: Ken Burns slow zoom → scale → warm color grade → vignette
     base_filter = (
-        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:force_original_aspect_ratio=decrease,"
-        f"pad={VIDEO_WIDTH}:{VIDEO_HEIGHT}:(ow-iw)/2:(oh-ih)/2,"
-        f"eq=brightness=0.02:saturation=1.4:contrast=1.1"
+        "zoompan=z='min(zoom+0.0015,1.5)':d=150"
+        ":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+        f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT},"
+        f"eq=brightness=0.04:saturation=1.25:contrast=1.15,"
+        f"colorbalance=rs=0.08:gs=0:bs=-0.08,"
+        f"vignette=PI/5"
     )
 
     # Build ASS subtitle file containing both hook overlay and word captions.
