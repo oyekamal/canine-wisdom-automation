@@ -55,3 +55,17 @@ def lock_state():
         finally:
             atomic_write(STATE_PATH, state)
             fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def get_data_dir(channel_config) -> Path:
+    """Return the data directory for the given channel, or global DATA_DIR if None."""
+    if channel_config is not None:
+        return channel_config.data_dir
+    return DATA_DIR
+
+
+def get_state_path(channel_config) -> Path:
+    """Return the state.json path for the given channel, or global STATE_PATH if None."""
+    if channel_config is not None:
+        return channel_config.state_path
+    return STATE_PATH
