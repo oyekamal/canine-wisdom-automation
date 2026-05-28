@@ -1,0 +1,9 @@
+{
+  "eval": "hook_eval",
+  "passed": true,
+  "reasoning": "Creates immediate curiosity and mild anxiety ('judging RIGHT NOW') that stops scrolling, uses second-person direct address ('YOUR DOG'), and promises surprising insider knowledge about dog behavior\u2014strong alignment with top-performing patterns that leverage mystery and personal relevance.",
+  "run_at": "2026-05-28T13:42:25.375602",
+  "score": 8.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-41-37"
+}

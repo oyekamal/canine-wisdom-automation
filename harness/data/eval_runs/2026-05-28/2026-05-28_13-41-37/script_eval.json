@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "Factual accuracy is moderate (dogs do read expressions, but the 200ms claim and 'dedicated brain region' are overstated), novelty is critically weak (directly repeats 'dogs reading facial expressions' from last 30 days), and pacing is good (59 words, energetic), but the repetition heavily penalizes the overall score.",
+  "run_at": "2026-05-28T13:42:27.650859",
+  "score": 2.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-41-37"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "video_eval",
+  "passed": false,
+  "reasoning": "Wrong resolution: 1280x720 (expected 1920x1080)",
+  "run_at": "2026-05-28T13:47:20.942486",
+  "score": 0.0,
+  "threshold": 1.0,
+  "video_id": "2026-05-28_13-45-24"
+}

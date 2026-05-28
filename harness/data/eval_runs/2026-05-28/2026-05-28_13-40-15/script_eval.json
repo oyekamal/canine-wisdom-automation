@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "The script repeats the recently covered topic of dogs reading facial expressions (covered 30 days ago), severely penalizing novelty despite decent factual accuracy and good pacing; the left-side scanning claim is also questionable and unsubstantiated.",
+  "run_at": "2026-05-28T13:40:36.619786",
+  "score": 2.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-40-15"
+}

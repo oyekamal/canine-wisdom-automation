@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "While facial expression reading has scientific basis (partial accuracy), this script directly repeats the 'dogs reading facial expressions' topic covered in the last 30 days, severely penalizing novelty; pacing is acceptable at ~60 words but factual claims about 200ms processing and 'right side first' scanning lack strong empirical support.",
+  "run_at": "2026-05-28T13:03:34.876956",
+  "score": 2.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-01-24"
+}

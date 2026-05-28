@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich text content (only hashtags), missing clear CTA for subscriptions/follows, exceeds ideal length at 142 characters but provides 10 relevant hashtags which partially offsets other deficiencies.",
+  "run_at": "2026-05-28T13:53:16.459171",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-51-37"
+}

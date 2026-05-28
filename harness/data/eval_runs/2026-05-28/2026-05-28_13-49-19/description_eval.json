@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Strong hashtag count (10) and relevant dog-facts keywords, but lacks any CTA (no follow/subscribe request) and contains only hashtags with no descriptive text, falling short of the 50-300 character length requirement for Shorts descriptions.",
+  "run_at": "2026-05-28T13:50:27.977574",
+  "score": 4.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-49-19"
+}

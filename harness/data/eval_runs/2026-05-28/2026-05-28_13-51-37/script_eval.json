@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script repeats the covered topic 'dogs reading facial expressions' (penalizing novelty heavily), contains questionable claims about brain regions and 200ms processing times that lack scientific support (factual accuracy issues), and while paced well at ~55 words (good pacing), the repetition and credibility concerns dominate the evaluation.",
+  "run_at": "2026-05-28T13:53:12.171910",
+  "score": 2.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_13-51-37"
+}

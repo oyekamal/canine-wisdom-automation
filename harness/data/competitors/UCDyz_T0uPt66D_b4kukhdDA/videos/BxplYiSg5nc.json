@@ -1,15 +1,15 @@
 {
   "channel_id": "UCDyz_T0uPt66D_b4kukhdDA",
-  "comment_count": 51,
-  "comment_rate": 0.0027367856184598873,
+  "comment_count": 84,
+  "comment_rate": 0.0031722054380664655,
   "description": "She helps take down predators so why is her puppy running the house?\nIn this episode of Walking with Cesar, I walked with actress Marisol Nichols (Riverdale), who not only plays powerful roles on screen, but also goes undercover to help rescue children and support operations that catch predators.\n\u00a0\nThrough her foundation, Slavery Free World, Marisol partners with law enforcement in undercover sting operations targeting human trafficking and child exploitation. She can stay calm in high-stakes si",
-  "hook": "FetchedTranscriptSnippet(text='Before him, I had a 100 pound black', start=0.0, duration=4.56) FetchedTranscriptSnippet(text='German Shepherd rescue.', start=2.24, duration=3.599)",
-  "like_count": 788,
-  "like_rate": 0.04228602092836061,
+  "hook": "",
+  "like_count": 1043,
+  "like_rate": 0.03938821752265861,
   "publish_dow": "Sat",
   "publish_hour_utc": 17,
   "published_at": "2026-05-23T17:00:14Z",
-  "scraped_at": "2026-05-25T12:35:44.449783",
+  "scraped_at": "2026-05-28T13:39:09.146899",
   "tags": [
     "cesar millan",
     "dog whisperer",
@@ -35,8 +35,8 @@
   ],
   "thumbnail_path": "competitors/UCDyz_T0uPt66D_b4kukhdDA/thumbnails/BxplYiSg5nc.jpg",
   "title": "She Goes Undercover\u2026 But Her Puppy Won\u2019t Behave | Walking With Cesar EP 14 - Marisol Nichols",
-  "transcript_status": "available",
+  "transcript_status": "unavailable",
   "video_id": "BxplYiSg5nc",
-  "view_count": 18635,
-  "views_per_sub": 0.0053242857142857146
+  "view_count": 26480,
+  "views_per_sub": 0.007565714285714286
 }

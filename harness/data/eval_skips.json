@@ -47,5 +47,31 @@
     ],
     "timestamp": "2026-05-23T12:49:41.959088",
     "video_url": "https://youtube.com/shorts/FjXwq0IInt0"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-05-28_13-41-37",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 2.5 below threshold",
+        "score": 2.5
+      }
+    ],
+    "timestamp": "2026-05-28T13:45:00.552135",
+    "video_url": "https://youtube.com/shorts/kw9N2DDtC7Q"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-05-28_13-51-37",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 2.5 below threshold",
+        "score": 2.5
+      }
+    ],
+    "timestamp": "2026-05-28T13:55:07.562650",
+    "video_url": "https://youtube.com/shorts/BrUai8Ale2A"
   }
 ]

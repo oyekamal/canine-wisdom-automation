@@ -1,15 +1,15 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
-  "comment_count": 18,
-  "comment_rate": 0.00933125972006221,
+  "comment_count": 50,
+  "comment_rate": 0.012976901116013496,
   "description": "Tell me why I\u2019m wrong \ud83d\ude43\u2935\ufe0f\n\nFree 30 day training guide: https://pupford.com/training",
-  "hook": "FetchedTranscriptSnippet(text='Stop trying to be an alpha. Dominance', start=0.0, duration=3.24) FetchedTranscriptSnippet(text=\"theory in dog training isn't just\",",
-  "like_count": 88,
-  "like_rate": 0.04561949196474858,
+  "hook": "",
+  "like_count": 150,
+  "like_rate": 0.03893070334804049,
   "publish_dow": "Sun",
   "publish_hour_utc": 21,
   "published_at": "2026-05-24T21:19:49Z",
-  "scraped_at": "2026-05-25T12:35:37.330729",
+  "scraped_at": "2026-05-28T13:38:47.451842",
   "tags": [
     "Dog training",
     "Dog trainer",
@@ -22,8 +22,8 @@
   ],
   "thumbnail_path": "competitors/UCZzFRKsgVMhGTxffpzgTJlQ/thumbnails/XDNhHIAONEg.jpg",
   "title": "STOP Trying to be an Alpha",
-  "transcript_status": "available",
+  "transcript_status": "unavailable",
   "video_id": "XDNhHIAONEg",
-  "view_count": 1929,
-  "views_per_sub": 0.0005171581769436997
+  "view_count": 3853,
+  "views_per_sub": 0.001032975871313673
 }

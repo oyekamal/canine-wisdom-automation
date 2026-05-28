@@ -1,27 +1,33 @@
 {
   "clip_usage": {
-    "30 Funny Pet Videos Animal Compilation 2016.mp4": "2026-05-25T07:42:09",
-    "pexels_10976410_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_16622195_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_29357047_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_31546556_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_32092762_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_34300590_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_34688820_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_34710283_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_34802275_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_35290088_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_35290093_dog_fun.mp4": "2026-05-25T07:37:32",
-    "pexels_35548522_dog_fun.mp4": "2026-05-25T07:37:32",
-    "pexels_35605530_dog_fun.mp4": "2026-05-25T07:37:32",
-    "pexels_35868040_dog_fun.mp4": "2026-05-25T07:37:32",
-    "pexels_36210001_dog_fun.mp4": "2026-05-25T07:37:32",
-    "pexels_36413850_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_36609977_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_6568516_dog_science.mp4": "2026-05-25T07:42:09",
-    "pexels_6568973_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_7516662_dog_fun.mp4": "2026-05-25T07:42:09",
-    "pexels_9425984_dog_fun.mp4": "2026-05-25T07:42:09"
+    "30 Funny Pet Videos Animal Compilation 2016.mp4": "2026-05-28T08:53:19",
+    "my_topic_clip.mp4": "2026-05-28T08:48:18",
+    "pexels_10976410_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_11920071_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_16622195_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_27237346_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_29357047_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_31546556_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_32092762_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_34300590_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_34688820_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_34710283_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_34802275_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_35289404_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_35290088_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_35290093_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_35548522_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_35605530_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_35868040_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_36210001_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_36413850_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_36609977_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_6568516_dog_science.mp4": "2026-05-28T08:53:19",
+    "pexels_6568973_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_7516662_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_8730838_dog_fun.mp4": "2026-05-28T08:50:30",
+    "pexels_9245135_dog_fun.mp4": "2026-05-28T08:53:19",
+    "pexels_9425984_dog_fun.mp4": "2026-05-28T08:53:19"
   },
   "competitor_channels": [
     "UClQ3mKZEkYO2qqn5vcIZrFQ",
@@ -43,5 +49,17 @@
     "watch_time_minutes_7d": null
   },
   "last_run": null,
-  "last_weekly_eval": null
+  "last_weekly_eval": null,
+  "recent_runs": [
+    {
+      "format": "long",
+      "run_id": "2026-05-28_13-51-37",
+      "topic_cluster": "dog science"
+    },
+    {
+      "format": "short",
+      "run_id": "2026-05-28_13-41-37",
+      "topic_cluster": "dog science"
+    }
+  ]
 }
