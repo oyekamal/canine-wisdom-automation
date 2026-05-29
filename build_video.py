@@ -3,6 +3,7 @@ Optimized Video Assembly with Hardware Acceleration
 Fast encoding with GPU support and simplified filters.
 """
 
+import os
 import subprocess
 import json
 import psutil
