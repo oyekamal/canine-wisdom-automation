@@ -7,6 +7,11 @@ from overlay_renderer import render_overlay, OverlayConfig
 
 def test_render_overlay_returns_webm_path(tmp_path):
     """render_overlay returns the output path when render succeeds."""
+    # Create a minimal template file
+    templates_dir = tmp_path / "templates" / "canine-wisdom"
+    templates_dir.mkdir(parents=True)
+    (templates_dir / "hook.html").write_text("{{HOOK_TEXT}} {{EMOJI}} {{DURATION}}")
+
     fake_webm = tmp_path / "overlay.webm"
     fake_webm.write_bytes(b"fake")
 
@@ -20,7 +25,8 @@ def test_render_overlay_returns_webm_path(tmp_path):
         output_path=str(fake_webm),
     )
 
-    with patch("overlay_renderer._call_node_renderer", return_value=0):
+    with patch("overlay_renderer.TEMPLATES_DIR", tmp_path / "templates"), \
+         patch("overlay_renderer._call_node_renderer", return_value=0):
         result = render_overlay(config)
 
     assert result == str(fake_webm)
@@ -60,6 +66,10 @@ def test_render_overlay_raises_on_missing_template(tmp_path):
 
 def test_placeholder_substitution(tmp_path):
     """render_overlay substitutes all placeholders in the HTML before rendering."""
+    templates_dir = tmp_path / "templates" / "canine-wisdom"
+    templates_dir.mkdir(parents=True)
+    (templates_dir / "hook.html").write_text("{{HOOK_TEXT}} {{EMOJI}} {{DURATION}}")
+
     fake_webm = tmp_path / "overlay.webm"
     fake_webm.write_bytes(b"fake")
 
@@ -80,7 +90,8 @@ def test_placeholder_substitution(tmp_path):
         output_path=str(fake_webm),
     )
 
-    with patch("overlay_renderer._call_node_renderer", side_effect=fake_renderer):
+    with patch("overlay_renderer.TEMPLATES_DIR", tmp_path / "templates"), \
+         patch("overlay_renderer._call_node_renderer", side_effect=fake_renderer):
         render_overlay(config)
 
     assert "Amazing fact!" in captured_html[0]
