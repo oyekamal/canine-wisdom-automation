@@ -1,20 +1,21 @@
 # Multi-Channel YouTube Automation Pipeline
 
-This repo runs **multiple YouTube channels** from one codebase. Each channel is fully isolated with its own footage, music, prompt, OAuth credentials, and state.
+This repo runs **multiple YouTube channels** from one codebase. Each channel is fully isolated — its own footage, music, OAuth credentials, Claude prompt, and state. Adding a new channel requires zero code changes.
 
 ---
 
-## Running a Channel
+## Quick Start — Run a Channel
 
 ```bash
-# Canine Wisdom (dog facts)
 source venv/bin/activate
+
+# Canine Wisdom (dog facts → YouTube Shorts)
 python3 -m harness.orchestrator --channel canine-wisdom
 
-# Horror Narration (Reddit horror stories — no YouTube upload)
+# Horror Narration — test without uploading
 HORROR_DRY_RUN=1 python3 channels/horror-narration/harness/orchestrator.py
 
-# Horror Narration (with YouTube upload — requires OAuth in channels/horror-narration/)
+# Horror Narration — upload to YouTube (requires OAuth in channels/horror-narration/)
 python3 channels/horror-narration/harness/orchestrator.py
 ```
 
@@ -24,417 +25,145 @@ python3 channels/horror-narration/harness/orchestrator.py
 
 ```
 channels/
-  canine-wisdom/           ← Dog facts channel
-    settings.json          ← Voice, niche, affiliate links, footage_dir, music_dir
-    prompt.txt             ← Claude script prompt
-    token.json             ← YouTube OAuth (symlink to root)
-    client_secrets.json    ← YouTube OAuth (symlink to root)
-    data/                  ← State, learnings, evals, analytics
+  canine-wisdom/
+    settings.json          ← niche, voice_id, topic_clusters, affiliate_links,
+                              footage_dir="dog_footage", music_dir="assets/music"
+    prompt.txt             ← Claude script prompt (dog facts style)
+    token.json             ← YouTube OAuth (symlink → root token.json)
+    client_secrets.json    ← YouTube OAuth (symlink → root client_secrets.json)
+    data/                  ← state.json, learnings.json, evals, analytics, incidents
 
-  horror-narration/        ← Horror/paranormal narration channel
-    settings.json          ← Voice, subreddits, cut_duration_secs=9, footage_dir, music_dir
-    prompt.txt             ← Mr. Nightmare style Claude prompt
+  horror-narration/
+    settings.json          ← voice_id, subreddits, cut_duration_secs=20,
+                              footage_dir="horror_footage", music_dir="assets/music/horror"
+    prompt.txt             ← Mr. Nightmare style prompt (first-person, no clichés, CTA)
     token.json             ← YouTube OAuth for horror channel (add when ready)
     client_secrets.json    ← YouTube OAuth for horror channel (add when ready)
-    data/                  ← Per-channel state (used story IDs, recent runs)
-    harness/               ← Channel-specific pipeline modules
-      orchestrator.py      ← Entry point
-      reddit_harvest.py    ← Fetches stories from Reddit via PullPush API
-      story_scorer.py      ← Ranks stories by hook strength + length fit
-      story_rewriter.py    ← Claude rewrites story + picks ElevenLabs voice
+    data/                  ← per-channel state (used_story_ids, recent_runs)
+    harness/
+      orchestrator.py      ← entry point
+      reddit_harvest.py    ← PullPush API scraper + Reddit media downloader
+      story_scorer.py      ← ranks stories by hook words, length, upvotes
+      story_rewriter.py    ← Claude rewrite + ElevenLabs voice picker by mood
+      media_converter.py   ← converts Reddit images → video (Ken Burns zoom)
 ```
 
 ---
 
-## Footage Libraries (kept separate — never mixed)
+## Footage & Music Libraries (never mixed between channels)
 
 ```
-dog_footage/               ← Canine Wisdom clips only (portrait, dog content)
-horror_footage/            ← Horror channel clips only (dark atmospheric)
-assets/music/              ← Dog channel music (upbeat Kevin MacLeod)
-assets/music/horror/       ← Horror channel music (Danse Macabre, Lightless Dawn, etc.)
+dog_footage/               ← Canine Wisdom only — portrait dog clips from Pexels
+horror_footage/            ← Horror channel only — dark atmospheric clips
+assets/music/              ← Dog channel music (upbeat Kevin MacLeod CC-BY tracks)
+assets/music/horror/       ← Horror channel music (dark ambient: Danse Macabre,
+                              Lightless Dawn, Unseen Horrors, Dark Times, etc.)
 ```
+
+### Why the dog channel doesn't auto-download new music
+
+The dog channel uses Kevin MacLeod tracks already in `assets/music/`. These are CC-BY licensed and were placed there manually. The channel doesn't need new music per run — it rotates randomly from the existing library.
+
+If you want to add more dog-channel music: drop any CC-BY `.mp3` into `assets/music/` and it gets picked up automatically on the next run.
+
+### Why the dog channel doesn't always download new footage
+
+It does — on every run it calls `fetch_footage_for_topic()` which downloads one fresh clip from Pexels matching the topic (e.g. "dog facts" → dog portrait clip). But it also reuses existing clips from `dog_footage/` via LRU rotation so the same clip doesn't repeat too often. You'll see `[footage] Already have: ...` when the clip was already downloaded, or `[footage] Downloading ...` when it's fresh.
+
+To force fresh downloads: delete clips from `dog_footage/` and the next run will re-download.
+
+---
+
+## Canine Wisdom — How It Works
+
+1. **Topic Queue** — Builds a list of trending dog topics from Google autocomplete + competitor analysis
+2. **Format** — Harness decides Short (1080×1920) or Long-form (1920×1080) based on topic cluster
+3. **Script** — Claude generates a viral dog facts script with hook, captions, hashtags
+4. **Evals** — Script scored for hook strength, novelty, title quality (retries up to 3×)
+5. **Footage** — Downloads one fresh Pexels clip + mixes with existing `dog_footage/` library
+6. **Audio** — ElevenLabs TTS with word-level timestamps for captions
+7. **Video** — ffmpeg: scale → warm color grade → vignette, libx264 CRF 18
+8. **Music** — Random upbeat track from `assets/music/` (Kevin MacLeod CC-BY)
+9. **Upload** — YouTube Shorts via OAuth, with affiliate links auto-matched to topic
+
+---
+
+## Horror Channel — How It Works
+
+1. **Harvest** — Fetches top Reddit stories from r/nosleep, r/shortscarystories, r/TwoSentenceHorror, r/LetsNotMeet, r/Paranormal via [PullPush API](https://api.pullpush.io) — no credentials needed
+2. **Media check** — If the Reddit post has an attached image (`i.redd.it`, imgur) or video (`v.redd.it`), it's downloaded and used as the primary footage
+3. **Score** — Ranks stories by hook words in title + word count fit + upvote signal. Skips already-used stories.
+4. **Rewrite** — Claude rewrites in Mr. Nightmare style: first-person confessional, short punchy sentences, concrete details ("3:47 AM", "the third stair"), no clichés (banned: ethereal, malevolent, eldritch, etc.)
+5. **CTA** — Every script ends with a natural follow-back line ("Follow if you want to hear more stories like this. I have too many.")
+6. **Voice** — Auto-picks ElevenLabs voice by mood: George/dread, Callum/eerie, Harry/intense, Sarah/paranormal
+7. **Footage** — Reddit post media first; falls back to Pexels atmospheric clips matched to topic cluster
+8. **Image conversion** — Reddit images converted to video with slow Ken Burns zoom (ffmpeg `-loop 1`)
+9. **Cut pacing** — `cut_duration_secs: 20` → 2 cuts per Short (slow, atmospheric — not TikTok fast)
+10. **Music** — Dark ambient from `assets/music/horror/` (Danse Macabre, Crossing the Chasm, etc.)
+11. **Upload** — YouTube via OAuth (`HORROR_DRY_RUN=1` to skip upload for testing)
 
 ---
 
 ## Adding a New Channel
 
-1. Create `channels/<slug>/settings.json` with: `channel_name`, `niche`, `voice_id`, `youtube_category_id`, `topic_clusters`, `description_template`, `affiliate_links`, `footage_dir`, `music_dir`, `cut_duration_secs`
+1. Create `channels/<slug>/settings.json`:
+```json
+{
+  "channel_name": "My Channel",
+  "niche": "description of what this channel is about",
+  "voice_id": "ElevenLabs_voice_id",
+  "youtube_category_id": "22",
+  "topic_clusters": ["topic a", "topic b"],
+  "description_template": "{video_title}\n\n{video_script}\n\n{hashtags}",
+  "affiliate_links": {"default": {"product": "...", "url": "https://amzn.to/..."}},
+  "footage_dir": "my_channel_footage",
+  "music_dir": "assets/music/my_channel",
+  "cut_duration_secs": 5
+}
+```
 2. Create `channels/<slug>/prompt.txt` with the Claude prompt
-3. Place `client_secrets.json` + `token.json` in the channel dir
+3. Place `client_secrets.json` + `token.json` (YouTube OAuth) in the channel dir
 4. Run: `python3 -m harness.orchestrator --channel <slug>`
 
 No code changes needed.
 
 ---
 
-## Horror Channel — How It Works
-
-1. **Harvest** — Fetches top Reddit stories from r/nosleep, r/shortscarystories, r/TwoSentenceHorror, r/LetsNotMeet, r/Paranormal via [PullPush API](https://api.pullpush.io) (no Reddit credentials needed)
-2. **Score** — Ranks by hook words in title + word count fit + upvote signal. Skips already-used stories.
-3. **Rewrite** — Claude rewrites story in Mr. Nightmare style: first-person, short punchy sentences, concrete details, no clichés
-4. **Voice** — Automatically picks ElevenLabs voice based on mood: George (dread/long), Callum (eerie/short), Harry (intense), Sarah (paranormal)
-5. **Footage** — Downloads dark atmospheric clips from Pexels matching the story's topic cluster (nosleep, paranormal, etc.)
-6. **Cut pacing** — 9 seconds per clip (3–4 cuts for a Short) for slow atmospheric horror, not fast TikTok cuts
-7. **Music** — Dark ambient tracks: Danse Macabre, Lightless Dawn, Unseen Horrors, etc.
-8. **Upload** — YouTube via OAuth (set `HORROR_DRY_RUN=1` to skip upload for testing)
-
----
-
-## Canine Wisdom — Original Pipeline
-
----
-
-## How It Works
-
-The pipeline automates four steps—from dog footage to a published YouTube Short:
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                           │
-│  1. SCRIPT GENERATION        2. AUDIO CREATION       3. VIDEO BUILD      │
-│  (Claude AI)                 (ElevenLabs TTS)        (ffmpeg editing)    │
-│       │                            │                         │           │
-│       ├─ Random dog fact      ├─ Natural voice       ├─ Dog footage     │
-│       ├─ Catchy hook          ├─ 10-15 sec narration ├─ Audio sync      │
-│       └─ YouTube captions     └─ MP3 file            └─ 1080x1920 format│
-│            │                        │                         │           │
-│            └────────────────────────┴─────────────────────────┘           │
-│                                     │                                     │
-│  4. UPLOAD TO YOUTUBE                                                    │
-│  (Google OAuth)                                                          │
-│       │                                                                  │
-│       ├─ Auto-title                                                      │
-│       ├─ Auto-description                                               │
-│       ├─ Auto-tags                                                       │
-│       └─ Publish (LIVE!)                                                │
-│                                                                           │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-**Each run:** ~2-5 minutes, fully automated, no manual editing.
-
----
-
-## What You Get
-
-✅ **Original scripts** — New dog fact every time (powered by Claude AI)  
-✅ **Professional audio** — Natural voice narration (ElevenLabs)  
-✅ **Engaging visuals** — Your dog footage synced with captions  
-✅ **Optimal format** — 1080x1920 vertical (YouTube Shorts standard)  
-✅ **Instant publishing** — Auto-upload to your YouTube channel  
-✅ **No editing** — Hands-off automation  
-
----
-
-## Quick Start
-
-**3 steps to your first Short:**
-
-### 1. Install & Configure
-```bash
-# Clone or navigate to project
-cd canine-wisdom-automation
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Install ffmpeg (if not already installed)
-# Mac: brew install ffmpeg
-# Linux: sudo apt install ffmpeg
-# Windows: Download from ffmpeg.org
-
-# Copy and edit .env
-cp .env.example .env
-# → Add your API keys (see SETUP.md for details)
-```
-
-### 2. Add Dog Footage
-```bash
-# Create folder (if not exists) and add videos
-mkdir -p dog_footage
-# Copy your .mp4 or .mov files here
-```
-
-### 3. Run
-
-**With the harness (recommended — eval-gated, self-improving):**
-```bash
-source venv/bin/activate
-python -m harness.orchestrator
-```
-
-**Legacy (raw pipeline, no evals):**
-```bash
-source venv/bin/activate
-python main.py
-```
-
-**That's it.** Your Short publishes in 2-5 minutes.
-
----
-
-## Setup & Configuration
-
-**New to this?** Follow the [SETUP.md](./SETUP.md) guide (takes ~15 minutes).
-
-**Already set up?** Here's the quick reference:
-
-### Required API Keys
-
-You need three API keys in your `.env` file:
-
-| Key | Where to Get | What It Does |
-|-----|--------------|--------------|
-| `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com/keys) | Generates dog facts (Claude AI) |
-| `ELEVENLABS_API_KEY` | [elevenlabs.io/settings](https://elevenlabs.io/settings/api-keys) | Creates voice narration |
-| `ELEVENLABS_VOICE_ID` | [elevenlabs.io/voices](https://elevenlabs.io/voices) (optional, has default) | Which voice reads the facts |
-
-### Google OAuth Credentials
-
-YouTube uploads require `client_secrets.json`:
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Enable **YouTube Data API v3**
-3. Create **OAuth 2.0 Desktop Application** credentials
-4. Download JSON file → save as `client_secrets.json` in project root
-
-**First run:** You'll be prompted to authorize in your browser. Grant access, and `token.pickle` is saved for future runs.
-
-### Environment Variables
+## Maintenance & Utilities
 
 ```bash
-# .env file (copy from .env.example)
+# Download fresh horror footage (run once or when library is low)
+python3 -m harness.tools.horror_footage_downloader
 
-# Anthropic Claude API
-ANTHROPIC_API_KEY=sk-ant-your-key-here
+# Download horror ambient music
+python3 -m harness.tools.horror_music_downloader
 
-# ElevenLabs Text-to-Speech
-ELEVENLABS_API_KEY=sk_your-key-here
-ELEVENLABS_VOICE_ID=pNInz6obpgDQGcFmaJgB  # Default: Joshua (male voice)
+# Rebuild footage index after manual additions
+python3 -c "from footage_db import build_footage_index; from pathlib import Path; \
+  build_footage_index(Path('horror_footage'), Path('horror_footage/footage_index.json'))"
 ```
 
 ---
 
-## How to Change Settings
+## Key Settings per Channel
 
-### Change Voice
-
-Each dog fact is narrated by an AI voice. To pick a different voice:
-
-1. Visit [elevenlabs.io/voices](https://elevenlabs.io/voices)
-2. Click a voice to preview
-3. Copy its **Voice ID** (shown in the preview panel)
-4. Edit `.env` and update `ELEVENLABS_VOICE_ID`
-
-**Popular voices:**
-- `pNInz6obpgDQGcFmaJgB` — Joshua (warm male)
-- `9BWtsMINqrJLrRacOk9x` — Ava (clear female)
-- `EXAVITQu4vr4xnSDxMaL` — Bella (expressive female)
-
-### Add or Change Dog Footage
-
-1. Add new `.mp4` or `.mov` files to `dog_footage/`
-2. The pipeline picks a random clip each run
-3. Recommended: 60+ seconds per clip (pipeline auto-clips to 59-60 sec)
-
-### Adjust Video Quality
-
-Edit `config.py` if needed:
-
-```python
-VIDEO_WIDTH = 1080      # 1080 is YouTube Shorts standard
-VIDEO_HEIGHT = 1920     # Vertical format
-VIDEO_CRF = 20          # Quality (0=highest, 51=lowest; 20 is good)
-VIDEO_PRESET = "fast"   # Speed (ultrafast, superfast, fast, medium, slow)
-
-AUDIO_BITRATE = "192k"  # 192k is high quality
-```
-
-### Schedule Daily Posts
-
-Run the harness automatically every day via cron. The harness handles everything:
-topic selection → script → audio → video → evals → upload → incident logging.
-
-**Mac/Linux (Cron):**
-```bash
-crontab -e
-# Add this line (adjust path):
-0 9 * * * cd /path/to/canine-wisdom-automation && source venv/bin/activate && python -m harness.orchestrator >> run_logs/cron.log 2>&1
-```
-
-**What happens each day at 9am:**
-1. Script is generated and scored (hook, script quality, title CTR)
-2. Audio is generated and validated (duration check)
-3. Video is built and validated (resolution check)
-4. Short is uploaded to YouTube
-5. Eval scores are saved to `harness/data/eval_runs/`
-6. If anything fails after 3 retries → incident written to `harness/data/incidents/`
-
-**Windows (Task Scheduler):**
-1. Open Task Scheduler
-2. Create Basic Task → Daily at 9:00 AM
-3. Action: Run `python -m harness.orchestrator` in project folder (with venv activated)
+| Setting | Canine Wisdom | Horror |
+|---|---|---|
+| `footage_dir` | `dog_footage` | `horror_footage` |
+| `music_dir` | `assets/music` | `assets/music/horror` |
+| `cut_duration_secs` | not set (1.5s default — fast cuts) | `20` (slow, 2 cuts) |
+| `voice_id` | `pNInz6obpgDQGcFmaJgB` | auto-picked by mood |
+| YouTube category | `15` (Pets & Animals) | `24` (Entertainment) |
 
 ---
 
-## Project Structure
+## Environment Variables
 
 ```
-canine-wisdom-automation/
-│
-├── harness/                     # ← NEW: autonomous harness layer
-│   ├── orchestrator.py          #   Daily entry point (replaces main.py)
-│   ├── storage.py               #   Atomic JSON read/write
-│   ├── evals/                   #   8 eval modules (LLM + deterministic)
-│   ├── tests/                   #   Full test suite (39 tests)
-│   └── data/                    #   All persistent state (JSON)
-│       ├── eval_runs/           #     Scores per video per eval
-│       ├── incidents/           #     Failure reports
-│       ├── state.json           #     Global KPIs + config
-│       └── ...                  #     (competitors, topics, etc. — Sessions 2–4)
-│
-├── main.py                      # Legacy runner (no evals — use harness instead)
-├── config.py                    # Load API keys & validate setup
-├── generate_script.py           # Step 1: Claude generates dog fact
-├── generate_audio.py            # Step 2: ElevenLabs creates narration
-├── build_video.py               # Step 3: ffmpeg edits video + audio
-├── upload_youtube.py            # Step 4: Google OAuth uploads to YouTube
-├── utils.py                     # Helpers (logging, file ops)
-│
-├── .env.example                 # Template for API keys
-├── .env                         # Your actual API keys (DO NOT commit)
-├── client_secrets.json          # Google OAuth (DO NOT commit)
-├── token.json                   # YouTube auth token (DO NOT commit)
-│
-├── dog_footage/                 # Your dog video clips (.mp4/.mov)
-├── outputs/                     # Temp files during current run
-├── archive/                     # Completed videos (timestamped folders)
-├── run_logs/                    # Detailed logs for each execution
-│
-├── requirements.txt             # Python dependencies
-├── SETUP.md                     # Detailed setup guide (~15 min)
-└── README.md                    # This file
+ANTHROPIC_API_KEY=       Claude API key
+ELEVENLABS_API_KEY=      ElevenLabs TTS key
+ELEVENLABS_VOICE_ID=     Default voice (overridden per channel)
+PEXELS_API_KEY=          Pexels footage API
+PIXABAY_API_KEY=         Pixabay footage fallback
+HORROR_DRY_RUN=1         Skip YouTube upload for horror channel testing
 ```
-
----
-
-## Logs & Debugging
-
-### Where Logs Live
-
-- **Run logs:** `run_logs/` folder contains detailed logs for each execution
-- **Archive:** `archive/` contains completed videos with metadata (timestamped folders)
-- **Output temp files:** `outputs/` (cleared at start of each run)
-
-### Typical Log Format
-
-Each run creates a log file: `run_logs/2026-04-24_14-30-15.log`
-
-```
-2026-04-24 14:30:15 — 🚀 Canine Wisdom — VIRAL SHORTS Pipeline
-2026-04-24 14:30:15 — Validating configuration...
-2026-04-24 14:30:16 — ✅ Configuration valid
-2026-04-24 14:30:16 — ✅ Outputs directory cleared
-2026-04-24 14:30:17 — [Step 1/4] Generating script...
-2026-04-24 14:30:22 — ✅ Script generated (145 chars, ~12 sec narration)
-2026-04-24 14:30:23 — [Step 2/4] Generating audio...
-2026-04-24 14:30:29 — ✅ Audio created: outputs/narration.mp3 (12.3 sec)
-2026-04-24 14:30:30 — [Step 3/4] Building video...
-2026-04-24 14:31:08 — ✅ Video built: outputs/short.mp4
-2026-04-24 14:31:09 — [Step 4/4] Uploading to YouTube...
-2026-04-24 14:31:45 — ✅ Video uploaded successfully
-2026-04-24 14:31:45 — 🎉 Your Short is LIVE! Go check your channel!
-2026-04-24 14:31:45 — 📺 Watch here: https://www.youtube.com/shorts/dQw4w9WgXcQ
-```
-
-### Debug: Check a Specific Step
-
-If something fails, look at the log to see which step:
-
-1. **Script generation failed?** → Check `ANTHROPIC_API_KEY` and API credits
-2. **Audio creation failed?** → Check `ELEVENLABS_API_KEY` and credits
-3. **Video build failed?** → Check `ffmpeg` installation and dog footage format
-4. **YouTube upload failed?** → Check `client_secrets.json` and YouTube auth
-
----
-
-## FAQ
-
-### Q: Can I change the voice?
-**A:** Yes! See "How to Change Settings" → Voice. You can use any of 100+ voices from ElevenLabs.
-
-### Q: How long is each Short?
-**A:** 45-60 seconds. The pipeline generates a 10-15 second script and fills the rest with dog footage and captions. You can edit the script length in `generate_script.py`.
-
-### Q: What does this cost?
-**A:** Depends on your usage:
-- **Anthropic** — ~$0.003 per Short (Claude API)
-- **ElevenLabs** — ~$0.05 per Short (voice synthesis)
-- **YouTube** — Free (you own the channel)
-- **Total:** ~$0.053 per Short (less than $2 per month at 1 daily)
-
-### Q: Can I run it daily automatically?
-**A:** Yes! See "How to Change Settings" → Schedule Daily Posts (cron or Task Scheduler).
-
-### Q: Do I need my own YouTube channel?
-**A:** Yes. Set up a free channel at [youtube.com](https://youtube.com). This pipeline uploads to **your** channel only.
-
-### Q: What if I don't have dog footage?
-**A:** Search YouTube for free dog clips (Creative Commons) or record your own. Any dog video works. Minimum 60 seconds recommended, but any length works.
-
-### Q: Can I monetize the Shorts?
-**A:** Yes. YouTube Shorts is part of YouTube Partner Program. Once eligible, all ad revenue is yours.
-
-### Q: What if the script is boring?
-**A:** Each run generates a new, random fact. Unhappy with one? Just run again. Different script, different video.
-
-### Q: Can I edit the script before upload?
-**A:** Not currently (fully automated). To customize: edit `generate_script.py` to modify the prompt Claude receives.
-
-### Q: Is my dog footage uploaded anywhere?
-**A:** No. Your dog footage stays on your computer. Only the final YouTube Short is uploaded to YouTube.
-
----
-
-## Troubleshooting & Support
-
-### Common Errors
-
-| Error | Solution |
-|-------|----------|
-| `ANTHROPIC_API_KEY is not set` | Check `.env` file exists and API key is correctly pasted |
-| `No .mp4 or .mov video clips found` | Add videos to `dog_footage/` folder |
-| `ffmpeg not found` | Reinstall ffmpeg (Step 2 in SETUP.md) |
-| `YouTube authentication failed` | Delete `token.pickle`, re-run, authorize in browser |
-| `Video upload timeout` | Check internet, try again; uploads take 1-2 min |
-| `Audio is silent` | Verify ElevenLabs API key and account has credits |
-
-### Get More Help
-
-1. **Check logs:** Look in `run_logs/` for detailed error messages
-2. **Read SETUP.md:** Detailed setup steps and troubleshooting
-3. **Verify APIs:** Check [console.anthropic.com](https://console.anthropic.com) and [elevenlabs.io](https://elevenlabs.io) to confirm credentials
-4. **Test ffmpeg:** Run `ffmpeg -version` to confirm installation
-
----
-
-## Built With
-
-- **Claude AI** (Anthropic) — Script generation
-- **ElevenLabs** — Text-to-speech narration
-- **ffmpeg** — Video and audio editing
-- **Google APIs** — YouTube upload
-- **Python** — Orchestration
-
----
-
-## License
-
-This project is provided as-is. Use freely for personal or commercial purposes.
-
----
-
-**Ready to go viral?** Start with [SETUP.md](./SETUP.md), then run `python main.py`. Your first Short publishes in minutes. 🐶🎬
-
-**Questions?** Check the FAQ or troubleshooting section above.
