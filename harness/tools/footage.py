@@ -294,11 +294,13 @@ def _yt_dlp_cc_fallback(query: str) -> Path | None:
 
 
 def _record_footage(clip_path: Path, source: str, topic_cluster: str, query: str) -> None:
-    """Record downloaded clip in footage_index.json."""
+    """Record downloaded clip in a per-directory footage_index.json."""
+    # Store index in same directory as the clip (per-channel, not global)
+    index_path = clip_path.parent / "footage_index.json"
     index = {}
-    if FOOTAGE_INDEX.exists():
+    if index_path.exists():
         try:
-            index = json.loads(FOOTAGE_INDEX.read_text())
+            index = json.loads(index_path.read_text())
         except Exception:
             index = {}
 
@@ -309,10 +311,9 @@ def _record_footage(clip_path: Path, source: str, topic_cluster: str, query: str
         "query": query,
         "downloaded_at": datetime.now().isoformat(),
     }
-    FOOTAGE_INDEX.parent.mkdir(parents=True, exist_ok=True)
-    tmp = FOOTAGE_INDEX.with_suffix(".tmp")
+    tmp = index_path.with_suffix(".tmp")
     tmp.write_text(json.dumps(index, indent=2, sort_keys=True))
-    tmp.replace(FOOTAGE_INDEX)
+    tmp.replace(index_path)
 
 
 def fetch_footage_for_topic(topic_cluster: str, topic: str, fmt=VideoFormat.SHORT, save_dir: Path = None) -> Path | None:

@@ -356,7 +356,9 @@ def build_video(audio_duration: float, clip_path: str = None,
         import json as _jcfg
         _s = _jcfg.loads((channel_config.channel_dir / "settings.json").read_text())
         cut_duration = _s.get("cut_duration_secs")
-    clips = get_clips_for_video(dog_footage_dir, audio_duration, cut_duration=cut_duration)
+    state_path = channel_config.state_path if channel_config is not None else None
+    clips = get_clips_for_video(dog_footage_dir, audio_duration, cut_duration=cut_duration,
+                                 state_path=state_path)
     log(f"📹 Multi-clip mode: {len(clips)} cuts from LRU rotation")
     for i, c in enumerate(clips):
         log(f"   [{i+1}] {c.name}")
