@@ -27,6 +27,7 @@ class ChannelConfig:
     prompt_path: Path
     footage_dir: Path
     music_dir: Path
+    overlay_templates: dict
 
 
 def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> ChannelConfig:
@@ -67,4 +68,8 @@ def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> Chann
         prompt_path=channel_dir / "prompt.txt",
         footage_dir=footage_dir,
         music_dir=music_dir,
+        overlay_templates={
+            "hook": settings.get("overlay_hook_template", "hook"),
+            "lower_third": settings.get("overlay_lower_third_template", "lower-third"),
+        },
     )
