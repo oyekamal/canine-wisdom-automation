@@ -167,3 +167,57 @@ PEXELS_API_KEY=          Pexels footage API
 PIXABAY_API_KEY=         Pixabay footage fallback
 HORROR_DRY_RUN=1         Skip YouTube upload for horror channel testing
 ```
+
+---
+
+## Server Deployment (Hetzner / Ubuntu VPS)
+
+### One-time setup
+
+```bash
+# 1. Clone repo
+git clone <repo_url> canine-wisdom-automation
+cd canine-wisdom-automation
+
+# 2. Install system dependencies
+sudo apt update
+sudo apt install -y python3.11 python3.11-venv ffmpeg yt-dlp
+
+# 3. Create virtual environment and install all packages
+python3.11 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 4. Add credentials
+cp .env.example .env          # fill in your API keys
+# Copy OAuth files for each channel:
+cp /your/local/token.json channels/canine-wisdom/token.json
+cp /your/local/client_secrets.json channels/canine-wisdom/client_secrets.json
+
+# 5. Pre-download Supertonic model (~50MB, cached at ~/.cache/supertonic-mnn/)
+python3 -c "from supertonic_mnn import SupertonicTTS; SupertonicTTS()"
+```
+
+### Cron setup (daily runs)
+
+```bash
+crontab -e
+
+# Canine Wisdom — 9 AM daily
+0 9 * * * cd /path/to/canine-wisdom-automation && source venv/bin/activate && python3 -m harness.orchestrator --channel canine-wisdom >> run_logs/cron_dog.log 2>&1
+
+# Horror channel — 8 PM daily
+0 20 * * * cd /path/to/canine-wisdom-automation && source venv/bin/activate && python3 channels/horror-narration/harness/orchestrator.py >> run_logs/cron_horror.log 2>&1
+```
+
+### TTS Fallback
+
+ElevenLabs is the primary TTS. If it fails (API down, key expired, rate limited), the pipeline **automatically falls back to Supertonic** — free, runs on CPU, no API key needed.
+
+| | ElevenLabs | Supertonic (fallback) |
+|---|---|---|
+| Cost | ~$0.30/30s | Free |
+| Quality | High | Good |
+| Word timestamps | Exact | Approximate (evenly spaced) |
+| Requires internet | Yes | No (after first download) |
+| Voices | 10+ | M1, M2, F1, F2 |
