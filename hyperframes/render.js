@@ -26,7 +26,6 @@ const { values } = parseArgs({
     height:   { type: 'string', default: '1920' },
     fps:      { type: 'string', default: '30' },
     quality:  { type: 'string', default: 'standard' },
-    duration: { type: 'string', default: '5' },
   }
 });
 
@@ -49,11 +48,17 @@ const job = createRenderJob({
   entryFile,
 });
 
-await executeRenderJob(job, projectDir, outputPath, (progress) => {
-  if (progress.percent !== undefined) {
-    process.stderr.write(`\r${Math.round(progress.percent * 100)}%`);
-  }
-});
+try {
+  await executeRenderJob(job, projectDir, outputPath, (progress) => {
+    if (progress.percent !== undefined) {
+      process.stderr.write(`\r${Math.round(progress.percent * 100)}%`);
+    }
+  });
+} catch (err) {
+  process.stderr.write('\n');
+  console.error('ERROR: ' + (err?.message ?? err));
+  process.exit(1);
+}
 
 process.stderr.write('\n');
 console.log('OK: ' + outputPath);
