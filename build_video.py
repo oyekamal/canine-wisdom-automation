@@ -304,6 +304,7 @@ def composite_overlay(base_video: str, overlay_webm: str, output_path: str) -> s
         "-preset", "slow",
         "-c:a", "copy",
         "-pix_fmt", "yuv420p",
+        "-shortest",
         output_path,
     ]
     subprocess.run(cmd, check=True, timeout=300)
@@ -509,43 +510,46 @@ def build_video(audio_duration: float, clip_path: str = None,
     if script_data:
         hook_text = script_data.get("hook", "") or script_data.get("hook_text", "")
         if hook_text:
-            overlay_webm = final_video.replace(".mp4", "_overlay.webm")
-            composited = final_video.replace(".mp4", "_composited.mp4")
-
-            if channel_slug == "horror-narration":
-                placeholders = {
-                    "{{HOOK_TEXT}}": hook_text,
-                    "{{SUBTITLE}}": script_data.get("subtitle", ""),
-                    "{{DURATION}}": "4",
-                }
-                overlay_duration = 4.0
-            else:
-                placeholders = {
-                    "{{HOOK_TEXT}}": hook_text,
-                    "{{EMOJI}}": script_data.get("emoji", "🐕"),
-                    "{{DURATION}}": "3",
-                }
-                overlay_duration = 3.0
-
-            overlay_cfg = OverlayConfig(
-                channel_slug=channel_slug,
-                template_name="hook",
-                placeholders=placeholders,
-                width=1080,
-                height=1920,
-                duration=overlay_duration,
-                output_path=overlay_webm,
-            )
-            import os
-            log("🎨 Rendering HyperFrames overlay...")
             try:
-                render_overlay(overlay_cfg)
-                log("🎞️  Compositing overlay onto video...")
-                composite_overlay(final_video, overlay_webm, composited)
-                os.replace(composited, final_video)
-            finally:
-                if os.path.exists(overlay_webm):
-                    os.unlink(overlay_webm)
-            log("✅ HyperFrames overlay composited!")
+                overlay_webm = final_video.replace(".mp4", "_overlay.webm")
+                composited = final_video.replace(".mp4", "_composited.mp4")
+
+                if channel_slug == "horror-narration":
+                    placeholders = {
+                        "{{HOOK_TEXT}}": hook_text,
+                        "{{SUBTITLE}}": script_data.get("subtitle", ""),
+                        "{{DURATION}}": "4",
+                    }
+                    overlay_duration = 4.0
+                else:
+                    placeholders = {
+                        "{{HOOK_TEXT}}": hook_text,
+                        "{{EMOJI}}": script_data.get("emoji", "🐕"),
+                        "{{DURATION}}": "3",
+                    }
+                    overlay_duration = 3.0
+
+                overlay_cfg = OverlayConfig(
+                    channel_slug=channel_slug,
+                    template_name="hook",
+                    placeholders=placeholders,
+                    width=1080,
+                    height=1920,
+                    duration=overlay_duration,
+                    output_path=overlay_webm,
+                )
+                import os
+                log("🎨 Rendering HyperFrames overlay...")
+                try:
+                    render_overlay(overlay_cfg)
+                    log("🎞️  Compositing overlay onto video...")
+                    composite_overlay(final_video, overlay_webm, composited)
+                    os.replace(composited, final_video)
+                finally:
+                    if os.path.exists(overlay_webm):
+                        os.unlink(overlay_webm)
+                log("✅ HyperFrames overlay composited!")
+            except Exception as overlay_err:
+                print(f"[WARNING] HyperFrames overlay failed, continuing without it: {overlay_err}")
 
     return final_video
