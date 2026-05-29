@@ -291,10 +291,15 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
 
 
 def composite_overlay(base_video: str, overlay_webm: str, output_path: str) -> str:
-    """Composite a transparent WebM overlay over a base MP4."""
+    """Composite a transparent VP9 WebM overlay over a base MP4.
+
+    -vcodec libvpx-vp9 before the WebM input forces FFmpeg to decode the
+    alpha plane; without it FFmpeg silently ignores alpha and renders black.
+    """
     cmd = [
         "ffmpeg", "-y",
         "-i", base_video,
+        "-vcodec", "libvpx-vp9",
         "-i", overlay_webm,
         "-filter_complex", "[0:v][1:v]overlay=0:0[v]",
         "-map", "[v]",
