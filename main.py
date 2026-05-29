@@ -53,7 +53,12 @@ def main():
 
         # Step 3: Build video
         log("")
-        video_path = build_video(audio_duration, word_timestamps=word_timestamps)
+        video_path = build_video(
+            audio_duration,
+            word_timestamps=word_timestamps,
+            script_data=metadata,
+            channel_slug=config.get("channel_slug", "canine-wisdom"),
+        )
 
         # Step 4: Upload to YouTube (optional)
         log("")

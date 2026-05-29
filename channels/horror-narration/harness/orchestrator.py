@@ -195,6 +195,8 @@ def run_horror_pipeline(channel_config=None) -> dict:
             hook_overlay=metadata["hook_overlay"],
             fmt=fmt,
             channel_config=channel_config,
+            script_data=script_data,
+            channel_slug=channel_config.slug if channel_config else "horror-narration",
         )
     except Exception as e:
         log(f"❌ Video build failed: {e}", level="error")

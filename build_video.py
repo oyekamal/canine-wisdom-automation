@@ -13,6 +13,7 @@ from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRES
 from utils import log, get_random_dog_clip
 from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
+from overlay_renderer import render_overlay, OverlayConfig
 
 MUSIC_DIR = Path(__file__).parent / "assets" / "music"
 MUSIC_VOLUME = 0.45  # background music at 45% of voiceover volume
@@ -289,8 +290,29 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
     return str(concat_out)
 
 
+def composite_overlay(base_video: str, overlay_webm: str, output_path: str) -> str:
+    """Composite a transparent WebM overlay over a base MP4."""
+    cmd = [
+        "ffmpeg", "-y",
+        "-i", base_video,
+        "-i", overlay_webm,
+        "-filter_complex", "[0:v][1:v]overlay=0:0[v]",
+        "-map", "[v]",
+        "-map", "0:a",
+        "-c:v", "libx264",
+        "-crf", "18",
+        "-preset", "slow",
+        "-c:a", "copy",
+        "-pix_fmt", "yuv420p",
+        output_path,
+    ]
+    subprocess.run(cmd, check=True)
+    return output_path
+
+
 def build_video(audio_duration: float, clip_path: str = None,
-                word_timestamps: list = None, hook_overlay: str = None, fmt=None, channel_config=None) -> str:
+                word_timestamps: list = None, hook_overlay: str = None, fmt=None, channel_config=None,
+                script_data=None, channel_slug="canine-wisdom") -> str:
     """
     Build vertical Shorts video with fast hardware-accelerated encoding.
 
@@ -482,5 +504,45 @@ def build_video(audio_duration: float, clip_path: str = None,
     log(f"✅ Video saved to {final_video}")
     log(f"📦 Output size: {final_size_mb:.1f} MB")
     log("✅ Vertical Shorts video built!")
+
+    # HyperFrames animated hook overlay
+    if script_data:
+        hook_text = script_data.get("hook", "") or script_data.get("hook_text", "")
+        if hook_text:
+            overlay_webm = final_video.replace(".mp4", "_overlay.webm")
+            composited = final_video.replace(".mp4", "_composited.mp4")
+
+            if channel_slug == "horror-narration":
+                placeholders = {
+                    "{{HOOK_TEXT}}": hook_text,
+                    "{{SUBTITLE}}": script_data.get("subtitle", ""),
+                    "{{DURATION}}": "4",
+                }
+                overlay_duration = 4.0
+            else:
+                placeholders = {
+                    "{{HOOK_TEXT}}": hook_text,
+                    "{{EMOJI}}": script_data.get("emoji", "🐕"),
+                    "{{DURATION}}": "3",
+                }
+                overlay_duration = 3.0
+
+            overlay_cfg = OverlayConfig(
+                channel_slug=channel_slug,
+                template_name="hook",
+                placeholders=placeholders,
+                width=1080,
+                height=1920,
+                duration=overlay_duration,
+                output_path=overlay_webm,
+            )
+            log("🎨 Rendering HyperFrames overlay...")
+            render_overlay(overlay_cfg)
+            log("🎞️  Compositing overlay onto video...")
+            composite_overlay(final_video, overlay_webm, composited)
+            import os
+            os.replace(composited, final_video)
+            os.unlink(overlay_webm)
+            log("✅ HyperFrames overlay composited!")
 
     return final_video
