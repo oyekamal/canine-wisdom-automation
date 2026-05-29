@@ -26,6 +26,7 @@ const { values } = parseArgs({
     height:   { type: 'string', default: '1920' },
     fps:      { type: 'string', default: '30' },
     quality:  { type: 'string', default: 'standard' },
+    duration: { type: 'string', default: '5' },
   }
 });
 
