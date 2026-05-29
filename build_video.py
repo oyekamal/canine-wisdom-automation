@@ -3,7 +3,6 @@ Optimized Video Assembly with Hardware Acceleration
 Fast encoding with GPU support and simplified filters.
 """
 
-import os
 import subprocess
 import json
 import psutil
@@ -14,7 +13,6 @@ from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRES
 from utils import log, get_random_dog_clip
 from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
-from overlay_library import get_or_render_overlay, OverlayRequest
 
 MUSIC_DIR = Path(__file__).parent / "assets" / "music"
 MUSIC_VOLUME = 0.45  # background music at 45% of voiceover volume
@@ -291,31 +289,6 @@ def _concat_clips(clip_paths: list, audio_duration: float, fmt=None) -> str:
     return str(concat_out)
 
 
-def composite_overlay(base_video: str, overlay_webm: str, output_path: str) -> str:
-    """Composite a transparent VP9 WebM overlay over a base MP4.
-
-    -vcodec libvpx-vp9 before the WebM input forces FFmpeg to decode the
-    alpha plane; without it FFmpeg silently ignores alpha and renders black.
-    """
-    cmd = [
-        "ffmpeg", "-y",
-        "-i", base_video,
-        "-vcodec", "libvpx-vp9",
-        "-i", overlay_webm,
-        "-filter_complex", "[0:v][1:v]overlay=0:0[v]",
-        "-map", "[v]",
-        "-map", "0:a?",
-        "-c:v", "libx264",
-        "-crf", "18",
-        "-preset", "slow",
-        "-c:a", "copy",
-        "-pix_fmt", "yuv420p",
-        "-shortest",
-        output_path,
-    ]
-    subprocess.run(cmd, check=True, timeout=300)
-    return output_path
-
 
 def build_video(audio_duration: float, clip_path: str = None,
                 word_timestamps: list = None, hook_overlay: str = None, fmt=None, channel_config=None,
@@ -511,45 +484,5 @@ def build_video(audio_duration: float, clip_path: str = None,
     log(f"✅ Video saved to {final_video}")
     log(f"📦 Output size: {final_size_mb:.1f} MB")
     log("✅ Vertical Shorts video built!")
-
-    # HyperFrames animated hook overlay — uses asset library (cached per content)
-    if script_data:
-        hook_text = script_data.get("hook_overlay", "") or script_data.get("hook", "") or script_data.get("hook_text", "")
-        if hook_text:
-            try:
-                composited = final_video.replace(".mp4", "_composited.mp4")
-
-                if channel_slug == "horror-narration":
-                    placeholders = {
-                        "{{HOOK_TEXT}}": hook_text,
-                        "{{SUBTITLE}}": script_data.get("subtitle", ""),
-                        "{{DURATION}}": "4",
-                    }
-                    overlay_duration = 4.0
-                else:
-                    placeholders = {
-                        "{{HOOK_TEXT}}": hook_text,
-                        "{{EMOJI}}": script_data.get("emoji", "🐕"),
-                        "{{DURATION}}": "3",
-                    }
-                    overlay_duration = 3.0
-
-                req = OverlayRequest(
-                    channel_slug=channel_slug,
-                    template_name="hook",
-                    placeholders=placeholders,
-                    width=1080,
-                    height=1920,
-                    duration=overlay_duration,
-                )
-                log("🎨 Getting overlay from asset library...")
-                overlay_webm = get_or_render_overlay(req)
-                log("🎞️  Compositing overlay onto video...")
-                composited_path = final_video.replace(".mp4", "_composited.mp4")
-                composite_overlay(final_video, overlay_webm, composited_path)
-                os.replace(composited_path, final_video)
-                log("✅ HyperFrames overlay composited!")
-            except Exception as overlay_err:
-                print(f"[WARNING] HyperFrames overlay failed, continuing without it: {overlay_err}")
 
     return final_video
