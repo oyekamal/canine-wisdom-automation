@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif; }
+  .lower {
+    position: absolute;
+    bottom: 320px;
+    left: 60px; right: 60px;
+    background: rgba(255, 165, 0, 0.88);
+    border-radius: 20px;
+    padding: 24px 36px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: slideRight 0.4s 0.1s ease-out forwards;
+  }
+  .lower-icon { font-size: 52px; flex-shrink: 0; }
+  .lower-text {
+    font-size: 38px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.3;
+  }
+  @keyframes slideRight {
+    to { opacity: 1; transform: translateX(0); }
+  }
+</style>
+</head>
+<body data-composition-id="root" data-duration="{{DURATION}}">
+  <div class="lower" data-start="{{START}}s" data-duration="{{DURATION}}s">
+    <div class="lower-icon">{{ICON}}</div>
+    <div class="lower-text">{{CALLOUT}}</div>
+  </div>
+</body>
+</html>
