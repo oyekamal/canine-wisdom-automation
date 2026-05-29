@@ -294,13 +294,17 @@ def _yt_dlp_cc_fallback(query: str) -> Path | None:
 
 
 def _record_footage(clip_path: Path, source: str, topic_cluster: str, query: str) -> None:
-    """Record downloaded clip in a per-directory footage_index.json."""
-    # Store index in same directory as the clip (per-channel, not global)
+    """Record downloaded clip in a per-directory footage_index.json (dict keyed by filename)."""
     index_path = clip_path.parent / "footage_index.json"
     index = {}
     if index_path.exists():
         try:
-            index = json.loads(index_path.read_text())
+            existing = json.loads(index_path.read_text())
+            # footage_db writes a list; _record_footage uses a dict — convert if needed
+            if isinstance(existing, list):
+                index = {item["filename"]: item for item in existing if "filename" in item}
+            elif isinstance(existing, dict):
+                index = existing
         except Exception:
             index = {}
 
