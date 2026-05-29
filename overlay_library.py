@@ -30,7 +30,11 @@ def get_or_render_overlay(req: OverlayRequest) -> str:
     Return path to a rendered WebM overlay for the given request.
     Renders and caches to assets/overlays/<channel>/<type>/<hash>.webm on first call;
     returns cached path on subsequent calls with identical content.
+    Uses atomic rename to avoid partial-write races between concurrent processes.
     """
+    import os
+    import tempfile
+
     cache_key = _content_hash(req.placeholders)
     output_path = OVERLAYS_DIR / req.channel_slug / req.template_name / f"{cache_key}.webm"
 
@@ -39,14 +43,26 @@ def get_or_render_overlay(req: OverlayRequest) -> str:
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    config = OverlayConfig(
-        channel_slug=req.channel_slug,
-        template_name=req.template_name,
-        placeholders=req.placeholders,
-        width=req.width,
-        height=req.height,
-        duration=req.duration,
-        output_path=str(output_path),
-    )
-    render_overlay(config)
+    with tempfile.NamedTemporaryFile(
+        dir=output_path.parent, suffix=".webm.tmp", delete=False
+    ) as tmp:
+        tmp_path = tmp.name
+
+    try:
+        config = OverlayConfig(
+            channel_slug=req.channel_slug,
+            template_name=req.template_name,
+            placeholders=req.placeholders,
+            width=req.width,
+            height=req.height,
+            duration=req.duration,
+            output_path=tmp_path,
+        )
+        render_overlay(config)
+        os.replace(tmp_path, output_path)
+    except Exception:
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
+        raise
+
     return str(output_path)
