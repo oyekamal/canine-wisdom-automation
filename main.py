@@ -4,6 +4,7 @@ Canine Wisdom by King — YouTube Shorts Automation Pipeline
 Master runner that orchestrates all four steps.
 """
 
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -57,7 +58,7 @@ def main():
             audio_duration,
             word_timestamps=word_timestamps,
             script_data=metadata,
-            channel_slug=config.get("channel_slug", "canine-wisdom"),
+            channel_slug=os.environ.get("CHANNEL_SLUG", "canine-wisdom"),
         )
 
         # Step 4: Upload to YouTube (optional)

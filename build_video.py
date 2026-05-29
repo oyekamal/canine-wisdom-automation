@@ -306,7 +306,7 @@ def composite_overlay(base_video: str, overlay_webm: str, output_path: str) -> s
         "-pix_fmt", "yuv420p",
         output_path,
     ]
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, timeout=300)
     return output_path
 
 
@@ -536,13 +536,16 @@ def build_video(audio_duration: float, clip_path: str = None,
                 duration=overlay_duration,
                 output_path=overlay_webm,
             )
-            log("🎨 Rendering HyperFrames overlay...")
-            render_overlay(overlay_cfg)
-            log("🎞️  Compositing overlay onto video...")
-            composite_overlay(final_video, overlay_webm, composited)
             import os
-            os.replace(composited, final_video)
-            os.unlink(overlay_webm)
+            log("🎨 Rendering HyperFrames overlay...")
+            try:
+                render_overlay(overlay_cfg)
+                log("🎞️  Compositing overlay onto video...")
+                composite_overlay(final_video, overlay_webm, composited)
+                os.replace(composited, final_video)
+            finally:
+                if os.path.exists(overlay_webm):
+                    os.unlink(overlay_webm)
             log("✅ HyperFrames overlay composited!")
 
     return final_video
