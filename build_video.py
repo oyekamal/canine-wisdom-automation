@@ -13,7 +13,7 @@ from config import load_config, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_CRF, VIDEO_PRES
 from utils import log, get_random_dog_clip
 from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
-from overlay_renderer import render_overlay, OverlayConfig
+from overlay_library import get_or_render_overlay, OverlayRequest
 
 MUSIC_DIR = Path(__file__).parent / "assets" / "music"
 MUSIC_VOLUME = 0.45  # background music at 45% of voiceover volume
@@ -511,12 +511,11 @@ def build_video(audio_duration: float, clip_path: str = None,
     log(f"📦 Output size: {final_size_mb:.1f} MB")
     log("✅ Vertical Shorts video built!")
 
-    # HyperFrames animated hook overlay
+    # HyperFrames animated hook overlay — uses asset library (cached per content)
     if script_data:
         hook_text = script_data.get("hook_overlay", "") or script_data.get("hook", "") or script_data.get("hook_text", "")
         if hook_text:
             try:
-                overlay_webm = final_video.replace(".mp4", "_overlay.webm")
                 composited = final_video.replace(".mp4", "_composited.mp4")
 
                 if channel_slug == "horror-narration":
@@ -534,25 +533,20 @@ def build_video(audio_duration: float, clip_path: str = None,
                     }
                     overlay_duration = 3.0
 
-                overlay_cfg = OverlayConfig(
+                req = OverlayRequest(
                     channel_slug=channel_slug,
                     template_name="hook",
                     placeholders=placeholders,
                     width=1080,
                     height=1920,
                     duration=overlay_duration,
-                    output_path=overlay_webm,
                 )
-                import os
-                log("🎨 Rendering HyperFrames overlay...")
-                try:
-                    render_overlay(overlay_cfg)
-                    log("🎞️  Compositing overlay onto video...")
-                    composite_overlay(final_video, overlay_webm, composited)
-                    os.replace(composited, final_video)
-                finally:
-                    if os.path.exists(overlay_webm):
-                        os.unlink(overlay_webm)
+                log("🎨 Getting overlay from asset library...")
+                overlay_webm = get_or_render_overlay(req)
+                log("🎞️  Compositing overlay onto video...")
+                composited_path = final_video.replace(".mp4", "_composited.mp4")
+                composite_overlay(final_video, overlay_webm, composited_path)
+                os.replace(composited_path, final_video)
                 log("✅ HyperFrames overlay composited!")
             except Exception as overlay_err:
                 print(f"[WARNING] HyperFrames overlay failed, continuing without it: {overlay_err}")
