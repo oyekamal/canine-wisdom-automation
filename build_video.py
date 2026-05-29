@@ -508,7 +508,7 @@ def build_video(audio_duration: float, clip_path: str = None,
 
     # HyperFrames animated hook overlay
     if script_data:
-        hook_text = script_data.get("hook", "") or script_data.get("hook_text", "")
+        hook_text = script_data.get("hook_overlay", "") or script_data.get("hook", "") or script_data.get("hook_text", "")
         if hook_text:
             try:
                 overlay_webm = final_video.replace(".mp4", "_overlay.webm")
