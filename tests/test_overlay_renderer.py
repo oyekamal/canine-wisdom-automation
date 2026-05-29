@@ -75,7 +75,7 @@ def test_placeholder_substitution(tmp_path):
 
     captured_html = []
 
-    def fake_renderer(template, output, width, height, duration):
+    def fake_renderer(template, output, width, height):
         with open(template) as f:
             captured_html.append(f.read())
         return 0

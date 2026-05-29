@@ -298,7 +298,7 @@ def composite_overlay(base_video: str, overlay_webm: str, output_path: str) -> s
         "-i", overlay_webm,
         "-filter_complex", "[0:v][1:v]overlay=0:0[v]",
         "-map", "[v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-crf", "18",
         "-preset", "slow",

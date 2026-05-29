@@ -44,7 +44,6 @@ def render_overlay(config: OverlayConfig) -> str:
             output=config.output_path,
             width=config.width,
             height=config.height,
-            duration=config.duration,
         )
         if exit_code != 0:
             raise RuntimeError(f"HyperFrames render failed (exit {exit_code}): {config.output_path}")
@@ -54,7 +53,7 @@ def render_overlay(config: OverlayConfig) -> str:
     return config.output_path
 
 
-def _call_node_renderer(template: str, output: str, width: int, height: int, duration: float) -> int:
+def _call_node_renderer(template: str, output: str, width: int, height: int) -> int:
     render_js = HYPERFRAMES_DIR / "render.js"
     repo_root = Path(__file__).parent
     result = subprocess.run(
@@ -64,8 +63,7 @@ def _call_node_renderer(template: str, output: str, width: int, height: int, dur
          "--template", template,
          "--output", output,
          "--width", str(width),
-         "--height", str(height),
-         "--duration", str(duration)],
+         "--height", str(height)],
         capture_output=True,
         text=True,
         cwd=str(repo_root),
