@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Georgia', serif; }
+  .lower {
+    position: absolute;
+    bottom: 300px;
+    left: 60px; right: 60px;
+    background: rgba(10, 0, 0, 0.85);
+    border-left: 6px solid #e00;
+    border-radius: 6px;
+    padding: 20px 30px;
+    opacity: 0;
+    animation: fadeSlide 0.4s 0.1s ease-out forwards;
+  }
+  .lower-text {
+    font-size: 36px;
+    color: #ddd;
+    font-style: italic;
+    line-height: 1.4;
+    text-shadow: 1px 1px 3px rgba(200,0,0,0.5);
+  }
+  @keyframes fadeSlide {
+    0%  { opacity: 0; transform: translateY(10px); }
+    100%{ opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body data-composition-id="root" data-duration="{{DURATION}}">
+  <div class="lower" data-start="{{START}}s" data-duration="{{DURATION}}s">
+    <div class="lower-text">{{CALLOUT}}</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = gsap.timeline({ paused: true });
+  </script>
+</body>
+</html>
