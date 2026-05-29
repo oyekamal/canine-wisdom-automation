@@ -1,0 +1,11 @@
+{
+  "name": "hyperframes-renderer",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "render": "node --require ./preload-require.cjs render.js"
+  },
+  "dependencies": {
+    "@hyperframes/producer": "latest"
+  }
+}
