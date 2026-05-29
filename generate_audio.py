@@ -33,8 +33,16 @@ def generate_audio(script: str = None, voice_id: str = None) -> tuple:
 
     if script is None:
         script_path = outputs_dir / "script.txt"
-        with open(script_path, "r", encoding="utf-8") as f:
-            script = f.read().strip()
+        metadata_path = outputs_dir / "metadata.json"
+        if script_path.exists():
+            with open(script_path, "r", encoding="utf-8") as f:
+                script = f.read().strip()
+        elif metadata_path.exists():
+            import json as _json
+            meta = _json.loads(metadata_path.read_text(encoding="utf-8"))
+            script = meta["script"]
+        else:
+            raise FileNotFoundError(f"No script found at {script_path} or {metadata_path}")
 
     script_text = script
 
