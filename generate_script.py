@@ -161,10 +161,17 @@ def generate_script(channel_config=None) -> dict:
         # Build prompt (handles learnings context internally)
         prompt = _build_prompt(channel_config)
 
+        # Allow channel to override max_tokens (horror needs 2000+, dog facts 500)
+        max_tokens = (
+            channel_config.anthropic_max_tokens
+            if channel_config is not None
+            else ANTHROPIC_MAX_TOKENS
+        )
+
         # Call Claude API
         message = client.messages.create(
             model=ANTHROPIC_MODEL,
-            max_tokens=ANTHROPIC_MAX_TOKENS,
+            max_tokens=max_tokens,
             messages=[
                 {
                     "role": "user",
@@ -176,7 +183,8 @@ def generate_script(channel_config=None) -> dict:
         # Extract text response, strip markdown code fences if present
         response_text = message.content[0].text.strip()
         if response_text.startswith("```"):
-            response_text = response_text.split("```", 2)[-1]
+            # Split on first fence: ['', 'json\n{...}\n```']  → take [1]
+            response_text = response_text.split("```", 1)[1]
             if response_text.startswith("json"):
                 response_text = response_text[4:]
             response_text = response_text.rsplit("```", 1)[0].strip()
@@ -190,9 +198,8 @@ def generate_script(channel_config=None) -> dict:
                 f"Response text: {response_text}"
             )
 
-        # Validate required fields
-        required_fields = {"script", "title", "hook_overlay", "hashtags", "topic", "topic_cluster",
-                           "hook_pattern_used", "title_formula_used"}
+        # Validate required fields — only fields every channel must return
+        required_fields = {"script", "title", "hook_overlay", "hashtags", "topic_cluster"}
         missing_fields = required_fields - set(metadata.keys())
 
         if missing_fields:

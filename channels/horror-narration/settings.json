@@ -12,7 +12,7 @@
     "unsolved mysteries",
     "night shift stories"
   ],
-  "description_template": "🌑 {video_title}\n\n{video_script}\n\nStories are dramatized and rewritten from posts on Reddit with original narration and commentary. Original sources linked above.\n\n{hashtags}\n\n🔔 Subscribe for new horror narrations every week.",
+  "description_template": "\ud83c\udf11 {video_title}\n\n{video_script}\n\nStories are dramatized and rewritten from posts on Reddit with original narration and commentary. Original sources linked above.\n\n{hashtags}\n\n\ud83d\udd14 Subscribe for new horror narrations every week.",
   "affiliate_links": {
     "nosleep": {
       "product": "Can't sleep? These noise-cancelling headphones help.",
@@ -24,13 +24,26 @@
     }
   },
   "subreddits": {
-    "primary": ["nosleep", "shortscarystories", "TwoSentenceHorror"],
-    "secondary": ["LetsNotMeet", "Paranormal"]
+    "primary": [
+      "nosleep",
+      "shortscarystories",
+      "TwoSentenceHorror"
+    ],
+    "secondary": [
+      "LetsNotMeet",
+      "Paranormal"
+    ]
   },
   "min_upvotes": 100,
   "min_comments": 10,
-  "short_word_range": [40, 120],
-  "longform_word_range": [600, 1800],
+  "short_word_range": [
+    40,
+    120
+  ],
+  "longform_word_range": [
+    600,
+    1800
+  ],
   "opt_out_authors": [],
   "footage_dir": "horror_footage",
   "music_dir": "assets/music/horror",
@@ -40,5 +53,6 @@
     "short_creepy": "N2lVS1w4EtoT3dr4eOWO",
     "intense": "SOYHLrjzK2X1ezoPC6cr",
     "paranormal_female": "EXAVITQu4vr4xnSDxMaL"
-  }
+  },
+  "anthropic_max_tokens": 2000
 }

@@ -28,6 +28,7 @@ class ChannelConfig:
     footage_dir: Path
     music_dir: Path
     overlay_templates: dict
+    anthropic_max_tokens: int
 
 
 def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> ChannelConfig:
@@ -72,4 +73,5 @@ def load_channel_config(slug: str, channels_root: Path = CHANNELS_ROOT) -> Chann
             "hook": settings.get("overlay_hook_template", "hook"),
             "lower_third": settings.get("overlay_lower_third_template", "lower-third"),
         },
+        anthropic_max_tokens=settings.get("anthropic_max_tokens", 500),
     )
