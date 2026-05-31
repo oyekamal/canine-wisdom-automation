@@ -1,6 +1,12 @@
 import importlib.util
 from pathlib import Path
 import pytest
+import sys
+
+sys.path.insert(0, str(Path(__file__).parents[4]))
+sys.path.insert(0, str(Path(__file__).parents[1]))
+
+from harness.story_scorer import score_story, _arousal_score
 
 
 def _load_module(module_path, module_name):
@@ -26,6 +32,10 @@ def _make_story(**kwargs):
     }
     base.update(kwargs)
     return base
+
+
+def _story(title, score=500, word_count=80):
+    return {"id": "x1", "title": title, "score": score, "word_count": word_count}
 
 
 def test_score_story_returns_float_between_0_and_10(story_scorer):
@@ -70,3 +80,28 @@ def test_hook_words_in_title_boost_score(story_scorer):
     plain = _make_story(title="A dog story", score=1000)
     hooked = _make_story(title="What was watching from the dark", score=1000)
     assert story_scorer.score_story(hooked, target="short", used_ids=set()) > story_scorer.score_story(plain, target="short", used_ids=set())
+
+
+def test_arousal_score_high_for_action_titles():
+    """Titles with immediate threat/action words should score > 0.5"""
+    s = _story("I followed the sound and found it still breathing")
+    assert _arousal_score(s["title"]) > 0.5
+
+
+def test_arousal_score_low_for_passive_titles():
+    """Titles with passive, atmospheric language should score < 0.3"""
+    s = _story("The old house had a strange feeling")
+    assert _arousal_score(s["title"]) < 0.3
+
+
+def test_arousal_contributes_to_total_score():
+    """A high-arousal story should outscore an otherwise identical low-arousal story"""
+    high = _story("I ran but it was already inside", score=500, word_count=80)
+    low  = _story("The atmosphere seemed unsettling", score=500, word_count=80)
+    assert score_story(high, "short", set()) > score_story(low, "short", set())
+
+
+def test_used_id_still_zero():
+    """Used stories score 0 regardless of arousal"""
+    s = _story("I ran but it was already inside")
+    assert score_story(s, "short", {"x1"}) == 0.0
