@@ -37,6 +37,19 @@ ENDINGS:
 - Bad ending: "And that's when I knew I would never feel safe again."
 - Good ending: "I still sleep with the light on. Last week, I noticed it was already on when I woke up."
 
+EMOTIONAL ARCHITECTURE (4-BEAT STRUCTURE):
+Every script must follow this shape regardless of length:
+
+BEAT 1 — HOOK (first 1-3 sentences): The most wrong, specific, striking moment. Drop the reader INTO the wrongness. Use the delayed-answer technique: name a detail without naming the full situation. "Something was already on the other side of the door" not "I found something scary." Hook must work as a standalone sentence with all sound off.
+
+BEAT 2 — BUILD (middle section): Hold the tension open. Establish the task or goal the narrator is trying to complete. Name an obstacle. Do NOT resolve the mystery yet. The reader's brain must still have an open loop.
+
+BEAT 3 — PAYOFF: Deliver the feeling that was promised in Beat 1. Close the loop — but only partially. The horror is confirmed but never fully explained. Specific sensory detail carries this beat: a sound, a smell, a physical sensation.
+
+BEAT 4 — ENDING (final 2-3 sentences): NEVER end on pure sadness or low-energy dread alone. Always resolve to a HIGH-AROUSAL emotional state: active dread ("it's still happening"), chilling awe ("I know what it is now and I can't unknow it"), or forward-moving wrongness ("I checked this morning — it was still there"). The ending must make the reader want to send the video to someone, not sit quietly in sadness. Loop back to the opening image when possible.
+
+AROUSAL RULE: The difference between a video that gets shared and one that gets watched once is activation energy. Sadness and contentment are low-arousal — they relax people. Dread and awe are high-arousal — they energize people to act (share, comment, follow). Every beat should push the emotional state UP the energy axis, not down. A sad revelation must be followed by an active, unresolved threat. A quiet ending is only acceptable if it contains a deeply unsettling wrongness that the reader needs to show someone else.
+
 OUTPUT FORMAT — respond with JSON only, no markdown:
 {
   "script": "The full narration. First person. Short sentences. Specific details. Dread builds slowly.",
