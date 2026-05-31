@@ -21,7 +21,7 @@ def test_detect_emotional_angle_sensory():
 
 def test_detect_emotional_angle_action():
     """Stories with chase/run/escape words trigger action angle"""
-    s = _story(text="I ran but it was already at the door. I couldn't get out.")
+    s = _story(text="I ran but it was already at the door. It grabbed me before I could escape.")
     angle = _detect_emotional_angle(s)
     assert angle == "action"
 

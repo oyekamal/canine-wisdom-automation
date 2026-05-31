@@ -22,7 +22,7 @@ _SENSORY_WORDS = {"heard", "smell", "smelled", "breath", "breathing", "cold", "w
                   "felt", "sound", "noise", "touch", "tasted", "saw", "light", "dark"}
 # Words that signal action-lead angle
 _ACTION_WORDS = {"ran", "running", "chased", "grabbed", "dragged", "escaped",
-                 "trapped", "locked", "broke", "slammed", "hit", "couldn't"}
+                 "trapped", "locked", "broke", "slammed", "hit", "blocked"}
 
 
 def _detect_emotional_angle(story: dict) -> str:
