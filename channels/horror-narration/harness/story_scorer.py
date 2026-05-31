@@ -8,6 +8,7 @@ Scoring (0–10 total):
 - Upvote signal (2 pts): log-scaled score
 """
 import math
+import re
 
 SHORT_WORD_RANGE = (40, 120)
 LONG_WORD_RANGE  = (600, 1800)
@@ -25,8 +26,8 @@ AROUSAL_WORDS = {
     "ran", "running", "chased", "grabbed", "dragged", "pulled", "pushed",
     "broke", "shattered", "crashed", "slammed", "hit", "cut", "bleeding",
     "breathing", "screaming", "clawing", "crawling", "moving", "staring",
-    "opened", "inside", "already", "still", "again", "following", "watching",
-    "woke", "woken", "left", "gone", "taken", "escaped", "trapped", "locked",
+    "opened", "already", "still", "again", "following",
+    "woke", "woken", "left", "gone", "taken", "locked",
 }
 
 
@@ -39,13 +40,13 @@ def _length_score(word_count: int, target: str) -> float:
 
 
 def _hook_score(title: str) -> float:
-    words = set(title.lower().split())
+    words = set(re.sub(r"[^\w\s]", "", title.lower()).split())
     return min(1.0, len(words & HOOK_WORDS) / 2)
 
 
 def _arousal_score(title: str) -> float:
     """Score 0-1: how many high-activation words appear in the title."""
-    words = set(title.lower().split())
+    words = set(re.sub(r"[^\w\s]", "", title.lower()).split())
     return min(1.0, len(words & AROUSAL_WORDS) / 2)
 
 
