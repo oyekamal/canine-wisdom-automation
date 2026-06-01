@@ -1,15 +1,15 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
   "comment_count": 23,
-  "comment_rate": 0.011143410852713179,
+  "comment_rate": 0.010757717492984098,
   "description": "As advocates fighting against coercion in the dog world, uncritically celebrating military and police dogs creates a glaring inconsistency - it treats sentient beings as tools for colonization and suppression.\n\nWe cannot oppose coercion while celebrating the weaponization of dogs for police and military use. These systems are built on coercion, control, and carceral force against humans too. \n\nModern trainers understand that coercion is wrong. It does not become ethical just because the dogs wer",
-  "hook": "",
-  "like_count": 81,
-  "like_rate": 0.03924418604651163,
+  "hook": "FetchedTranscriptSnippet(text='Memorial Day is a time of profound grief', start=0.0, duration=3.76) FetchedTranscriptSnippet(text='for those who have lost",
+  "like_count": 83,
+  "like_rate": 0.03882132834424696,
   "publish_dow": "Mon",
   "publish_hour_utc": 17,
   "published_at": "2026-05-25T17:20:55Z",
-  "scraped_at": "2026-05-28T13:38:57.085274",
+  "scraped_at": "2026-05-29T14:57:11.198587",
   "tags": [
     "Memorial Day",
     "Soldier",
@@ -47,8 +47,8 @@
   ],
   "thumbnail_path": "competitors/UCZzFRKsgVMhGTxffpzgTJlQ/thumbnails/xrpk5O5nMmc.jpg",
   "title": "Honoring Military Working Dogs",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "xrpk5O5nMmc",
-  "view_count": 2064,
-  "views_per_sub": 0.0005533512064343164
+  "view_count": 2138,
+  "views_per_sub": 0.0005731903485254691
 }

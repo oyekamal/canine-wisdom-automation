@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script directly repeats the 'dogs detecting human deception' topic from the last 30 days (already covered), contains unsupported claims about micro-expressions and face-side processing that lack scientific grounding, and exceeds 60 words at 87 words total.",
+  "run_at": "2026-05-28T19:47:27.311053",
+  "score": 1.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_19-46-07"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich text content and CTA (only hashtags present), making it weak for discoverability and engagement despite having 10 relevant hashtags; optimal Shorts descriptions should include 50-300 character body text with a call-to-action before hashtags.",
+  "run_at": "2026-05-29T10:10:26.124671",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_10-09-33"
+}

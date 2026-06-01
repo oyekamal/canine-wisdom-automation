@@ -1,242 +1,246 @@
-[
-  {
+{
+  "pexels_10871104_true_scary.mp4": {
+    "duration_secs": 9.775,
     "filename": "pexels_10871104_true_scary.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_10871104_true_scary.mp4",
     "source": "pexels",
     "topic_cluster": "true_scary",
-    "duration_secs": 9.775,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_15365457_unsolved_mysteries.mp4": {
+    "duration_secs": 16.048333,
     "filename": "pexels_15365457_unsolved_mysteries.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_15365457_unsolved_mysteries.mp4",
     "source": "pexels",
     "topic_cluster": "unsolved_mysteries",
-    "duration_secs": 16.048333,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_19157962_nosleep.mp4": {
+    "duration_secs": 18.6,
     "filename": "pexels_19157962_nosleep.mp4",
+    "fps": 30.0,
+    "height": 1920,
     "path": "horror_footage/pexels_19157962_nosleep.mp4",
     "source": "pexels",
     "topic_cluster": "nosleep",
-    "duration_secs": 18.6,
-    "width": 1080,
-    "height": 1920,
-    "fps": 30.0
+    "width": 1080
   },
-  {
+  "pexels_19436637_short_horror.mp4": {
+    "duration_secs": 14.96,
     "filename": "pexels_19436637_short_horror.mp4",
+    "fps": 50.0,
+    "height": 1920,
     "path": "horror_footage/pexels_19436637_short_horror.mp4",
     "source": "pexels",
     "topic_cluster": "short_horror",
-    "duration_secs": 14.96,
-    "width": 1080,
-    "height": 1920,
-    "fps": 50.0
+    "width": 1080
   },
-  {
+  "pexels_19997487_paranormal.mp4": {
+    "duration_secs": 15.315,
     "filename": "pexels_19997487_paranormal.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_19997487_paranormal.mp4",
     "source": "pexels",
     "topic_cluster": "paranormal",
-    "duration_secs": 15.315,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_20100166_nosleep.mp4": {
+    "duration_secs": 30.9,
     "filename": "pexels_20100166_nosleep.mp4",
+    "fps": 30.0,
+    "height": 2304,
     "path": "horror_footage/pexels_20100166_nosleep.mp4",
     "source": "pexels",
     "topic_cluster": "nosleep",
-    "duration_secs": 30.9,
-    "width": 1296,
-    "height": 2304,
-    "fps": 30.0
+    "width": 1296
   },
-  {
+  "pexels_24800301_short_horror.mp4": {
+    "duration_secs": 19.853167,
     "filename": "pexels_24800301_short_horror.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_24800301_short_horror.mp4",
     "source": "pexels",
     "topic_cluster": "short_horror",
-    "duration_secs": 19.853167,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_26617030_creepy_encounters.mp4": {
+    "duration_secs": 56.389667,
     "filename": "pexels_26617030_creepy_encounters.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_26617030_creepy_encounters.mp4",
     "source": "pexels",
     "topic_cluster": "creepy_encounters",
-    "duration_secs": 56.389667,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_26617030_night_shift_stories.mp4": {
+    "duration_secs": 56.389667,
     "filename": "pexels_26617030_night_shift_stories.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_26617030_night_shift_stories.mp4",
     "source": "pexels",
     "topic_cluster": "night_shift_stories",
-    "duration_secs": 56.389667,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_27258261_short_horror.mp4": {
+    "duration_secs": 10.4,
     "filename": "pexels_27258261_short_horror.mp4",
+    "fps": 30.0,
+    "height": 3840,
     "path": "horror_footage/pexels_27258261_short_horror.mp4",
     "source": "pexels",
     "topic_cluster": "short_horror",
-    "duration_secs": 10.4,
-    "width": 2160,
-    "height": 3840,
-    "fps": 30.0
+    "width": 2160
   },
-  {
+  "pexels_28010460_true_scary.mp4": {
+    "duration_secs": 50.183467,
     "filename": "pexels_28010460_true_scary.mp4",
+    "fps": 29.97,
+    "height": 1920,
     "path": "horror_footage/pexels_28010460_true_scary.mp4",
     "source": "pexels",
     "topic_cluster": "true_scary",
-    "duration_secs": 50.183467,
-    "width": 1080,
-    "height": 1920,
-    "fps": 29.97
+    "width": 1080
   },
-  {
+  "pexels_29603423_paranormal.mp4": {
+    "duration_secs": 8.391717,
     "filename": "pexels_29603423_paranormal.mp4",
+    "fps": 59.94,
+    "height": 3840,
     "path": "horror_footage/pexels_29603423_paranormal.mp4",
     "source": "pexels",
     "topic_cluster": "paranormal",
-    "duration_secs": 8.391717,
-    "width": 2160,
-    "height": 3840,
-    "fps": 59.94
+    "width": 2160
   },
-  {
+  "pexels_29725270_nosleep.mp4": {
+    "duration_secs": 9.48,
     "filename": "pexels_29725270_nosleep.mp4",
+    "fps": 50.0,
+    "height": 3840,
     "path": "horror_footage/pexels_29725270_nosleep.mp4",
     "source": "pexels",
     "topic_cluster": "nosleep",
-    "duration_secs": 9.48,
-    "width": 2160,
-    "height": 3840,
-    "fps": 50.0
+    "width": 2160
   },
-  {
-    "filename": "pexels_29725270_paranormal.mp4",
-    "path": "horror_footage/pexels_29725270_paranormal.mp4",
+  "pexels_29725270_paranormal.mp4": {
+    "downloaded_at": "2026-05-31T11:55:23.114625",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/horror_footage/pexels_29725270_paranormal.mp4",
+    "query": "foggy graveyard night",
     "source": "pexels",
-    "topic_cluster": "paranormal",
-    "duration_secs": 9.48,
-    "width": 2160,
-    "height": 3840,
-    "fps": 50.0
+    "topic_cluster": "paranormal"
   },
-  {
+  "pexels_31059898_paranormal.mp4": {
+    "downloaded_at": "2026-05-31T15:55:34.107889",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/horror_footage/pexels_31059898_paranormal.mp4",
+    "query": "foggy graveyard night",
+    "source": "pexels",
+    "topic_cluster": "paranormal"
+  },
+  "pexels_32583498_nosleep.mp4": {
+    "duration_secs": 15.666667,
     "filename": "pexels_32583498_nosleep.mp4",
+    "fps": 30.0,
+    "height": 3840,
     "path": "horror_footage/pexels_32583498_nosleep.mp4",
     "source": "pexels",
     "topic_cluster": "nosleep",
-    "duration_secs": 15.666667,
-    "width": 2160,
-    "height": 3840,
-    "fps": 30.0
+    "width": 2160
   },
-  {
+  "pexels_32583498_unsolved_mysteries.mp4": {
+    "duration_secs": 15.666667,
     "filename": "pexels_32583498_unsolved_mysteries.mp4",
+    "fps": 30.0,
+    "height": 3840,
     "path": "horror_footage/pexels_32583498_unsolved_mysteries.mp4",
     "source": "pexels",
     "topic_cluster": "unsolved_mysteries",
-    "duration_secs": 15.666667,
-    "width": 2160,
-    "height": 3840,
-    "fps": 30.0
+    "width": 2160
   },
-  {
+  "pexels_35165834_creepy_encounters.mp4": {
+    "duration_secs": 32.1,
     "filename": "pexels_35165834_creepy_encounters.mp4",
+    "fps": 120.0,
+    "height": 1920,
     "path": "horror_footage/pexels_35165834_creepy_encounters.mp4",
     "source": "pexels",
     "topic_cluster": "creepy_encounters",
-    "duration_secs": 32.1,
-    "width": 1440,
-    "height": 1920,
-    "fps": 120.0
+    "width": 1440
   },
-  {
+  "pexels_35863230_paranormal.mp4": {
+    "duration_secs": 15.766667,
     "filename": "pexels_35863230_paranormal.mp4",
+    "fps": 30.0,
+    "height": 3840,
     "path": "horror_footage/pexels_35863230_paranormal.mp4",
     "source": "pexels",
     "topic_cluster": "paranormal",
-    "duration_secs": 15.766667,
-    "width": 2160,
-    "height": 3840,
-    "fps": 30.0
+    "width": 2160
   },
-  {
+  "pexels_36637655_night_shift_stories.mp4": {
+    "duration_secs": 14.280933,
     "filename": "pexels_36637655_night_shift_stories.mp4",
+    "fps": 59.94,
+    "height": 3840,
     "path": "horror_footage/pexels_36637655_night_shift_stories.mp4",
     "source": "pexels",
     "topic_cluster": "night_shift_stories",
-    "duration_secs": 14.280933,
-    "width": 2160,
-    "height": 3840,
-    "fps": 59.94
+    "width": 2160
   },
-  {
+  "pexels_37398776_true_scary.mp4": {
+    "duration_secs": 17.533333,
     "filename": "pexels_37398776_true_scary.mp4",
+    "fps": 30.0,
+    "height": 1920,
     "path": "horror_footage/pexels_37398776_true_scary.mp4",
     "source": "pexels",
     "topic_cluster": "true_scary",
-    "duration_secs": 17.533333,
-    "width": 1080,
-    "height": 1920,
-    "fps": 30.0
+    "width": 1080
   },
-  {
+  "pexels_37563828_short_horror.mp4": {
+    "duration_secs": 37.25,
     "filename": "pexels_37563828_short_horror.mp4",
+    "fps": 24.0,
+    "height": 3840,
     "path": "horror_footage/pexels_37563828_short_horror.mp4",
     "source": "pexels",
     "topic_cluster": "short_horror",
-    "duration_secs": 37.25,
-    "width": 2160,
-    "height": 3840,
-    "fps": 24.0
+    "width": 2160
   },
-  {
+  "pexels_4904162_paranormal.mp4": {
+    "duration_secs": 36.24,
     "filename": "pexels_4904162_paranormal.mp4",
+    "fps": 25.0,
+    "height": 4096,
     "path": "horror_footage/pexels_4904162_paranormal.mp4",
     "source": "pexels",
     "topic_cluster": "paranormal",
-    "duration_secs": 36.24,
-    "width": 2160,
-    "height": 4096,
-    "fps": 25.0
+    "width": 2160
   },
-  {
+  "pexels_5427490_nosleep.mp4": {
+    "duration_secs": 12.36,
     "filename": "pexels_5427490_nosleep.mp4",
+    "fps": 25.0,
+    "height": 4096,
     "path": "horror_footage/pexels_5427490_nosleep.mp4",
     "source": "pexels",
     "topic_cluster": "nosleep",
-    "duration_secs": 12.36,
-    "width": 2160,
-    "height": 4096,
-    "fps": 25.0
+    "width": 2160
   },
-  {
+  "pexels_5435717_unsolved_mysteries.mp4": {
+    "duration_secs": 25.76,
     "filename": "pexels_5435717_unsolved_mysteries.mp4",
+    "fps": 25.0,
+    "height": 4096,
     "path": "horror_footage/pexels_5435717_unsolved_mysteries.mp4",
     "source": "pexels",
     "topic_cluster": "unsolved_mysteries",
-    "duration_secs": 25.76,
-    "width": 2160,
-    "height": 4096,
-    "fps": 25.0
+    "width": 2160
   }
-]
+}

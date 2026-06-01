@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich text content and CTA, relying only on 10 hashtags; while hashtags are relevant and numerous, the absence of descriptive text explaining the video content and no call-to-action to follow/subscribe significantly weakens SEO effectiveness and engagement potential.",
+  "run_at": "2026-05-28T19:47:31.005141",
+  "score": 4.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-28_19-46-07"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script repeats the 'dogs reading facial expressions' topic covered in the last 30 days, contains some exaggerated/unverified claims (70% faster processing, left eyebrow raises specifically when smiling), and while pacing is acceptable at ~60 words, the novelty penalty for repetition is severe.",
+  "run_at": "2026-05-29T09:52:22.286965",
+  "score": 2.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_09-51-06"
+}

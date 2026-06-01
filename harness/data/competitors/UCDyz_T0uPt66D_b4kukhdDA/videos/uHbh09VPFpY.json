@@ -1,15 +1,15 @@
 {
   "channel_id": "UCDyz_T0uPt66D_b4kukhdDA",
-  "comment_count": 83,
-  "comment_rate": 0.004705215419501134,
+  "comment_count": 96,
+  "comment_rate": 0.003666081112044604,
   "description": "Obsessive barking isn't just annoying; it\u2019s a symptom of a pack in chaos. In this special compilation, we\u2019re looking back at the most extreme barking cases in show history: dogs that barked at doorbells, vacuums, and even their own shadows for up to 7 years straight.\nDesperate owners on the verge of eviction brought in Cesar Millan for what they thought was an \"unfixable\" problem. Watch as Cesar reveals the secret formula of Spirit \u2192 Instinct \u2192 Heart \u2192 Mind to flip the switch from nuclear noise ",
-  "hook": "",
-  "like_count": 872,
-  "like_rate": 0.04943310657596372,
+  "hook": "FetchedTranscriptSnippet(text='Oh my god, this is the worst part right', start=6.879, duration=4.441) FetchedTranscriptSnippet(text='here.', start=8.32, duration=3.0) FetchedTranscriptSnippet(text='>>",
+  "like_count": 1150,
+  "like_rate": 0.04391659665470098,
   "publish_dow": "Wed",
   "publish_hour_utc": 13,
   "published_at": "2026-05-27T13:00:29Z",
-  "scraped_at": "2026-05-28T13:39:13.991430",
+  "scraped_at": "2026-05-29T14:57:18.534332",
   "tags": [
     "cesar millan",
     "dog whisperer",
@@ -35,8 +35,8 @@
   ],
   "thumbnail_path": "competitors/UCDyz_T0uPt66D_b4kukhdDA/thumbnails/uHbh09VPFpY.jpg",
   "title": "Cesar Millan Fixes 8 Obsessive Barking Dogs",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "uHbh09VPFpY",
-  "view_count": 17640,
-  "views_per_sub": 0.00504
+  "view_count": 26186,
+  "views_per_sub": 0.007481714285714286
 }

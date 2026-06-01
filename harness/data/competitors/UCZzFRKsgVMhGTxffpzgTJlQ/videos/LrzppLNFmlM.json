@@ -1,15 +1,15 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
   "comment_count": 21,
-  "comment_rate": 0.005443234836702955,
+  "comment_rate": 0.005370843989769821,
   "description": "If someone is using techniques that are known to be harmful on your dog, that is not just a \u201cdifference of opinion\u201d. \n\nDo you agree that dog training has become a consumer protection issue?\n\n\nGet instant access to my free 30 day training guide \ud83d\udc49 https://pupford.com/training",
-  "hook": "",
-  "like_count": 169,
-  "like_rate": 0.04380508035251426,
+  "hook": "FetchedTranscriptSnippet(text='Tell me if you agree or disagree with', start=0.0, duration=3.2) FetchedTranscriptSnippet(text='this. A frightened dog bites",
+  "like_count": 170,
+  "like_rate": 0.043478260869565216,
   "publish_dow": "Sun",
   "publish_hour_utc": 14,
   "published_at": "2026-05-24T14:00:18Z",
-  "scraped_at": "2026-05-28T13:38:45.305286",
+  "scraped_at": "2026-05-29T14:56:50.110489",
   "tags": [
     "Dog training",
     "Dog bite",
@@ -42,8 +42,8 @@
   ],
   "thumbnail_path": "competitors/UCZzFRKsgVMhGTxffpzgTJlQ/thumbnails/LrzppLNFmlM.jpg",
   "title": "The Public Has No Idea",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "LrzppLNFmlM",
-  "view_count": 3858,
-  "views_per_sub": 0.0010343163538873994
+  "view_count": 3910,
+  "views_per_sub": 0.0010482573726541555
 }

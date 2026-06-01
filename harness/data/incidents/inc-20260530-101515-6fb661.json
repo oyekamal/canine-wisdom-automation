@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260530-101515-6fb661",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword coverage (no dog-facts keywords present), contains no CTA, is too short at only 5 hashtags with no descriptive text, and hashtags are irrelevant to the stated dog-facts evaluation context.",
+  "id": "inc-20260530-101515-6fb661",
+  "resolved_at": null,
+  "timestamp": "2026-05-30T10:15:15.345608",
+  "trigger": "description_eval",
+  "what_failed": "Score 2.5"
+}

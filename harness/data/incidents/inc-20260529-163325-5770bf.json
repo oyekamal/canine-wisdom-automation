@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "orchestrator.py",
+  "fix_branch": "harness-auto-fix/inc-20260529-163325-5770bf",
+  "fix_status": "open",
+  "hypothesis": "Unexpected error in pipeline step",
+  "id": "inc-20260529-163325-5770bf",
+  "resolved_at": null,
+  "timestamp": "2026-05-29T16:33:25.367272",
+  "trigger": "unhandled_exception",
+  "what_failed": "Invalid JSON response from Claude: Expecting value: line 1 column 1 (char 0)\nResponse text: "
+}

@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "orchestrator.py",
+  "fix_branch": "harness-auto-fix/inc-20260529-150929-8b2e28",
+  "fix_status": "open",
+  "hypothesis": "Unexpected error in pipeline step",
+  "id": "inc-20260529-150929-8b2e28",
+  "resolved_at": null,
+  "timestamp": "2026-05-29T15:09:29.300870",
+  "trigger": "unhandled_exception",
+  "what_failed": "Concat failed:  3.100\nInput #0, concat, from '/tmp/canine_concat_list.txt':\n  Duration: N/A, bitrate: N/A\nOutput #0, mp4, to '/tmp/canine_concat.mp4':\n[out#0/mp4 @ 0x6287fd89e9c0] Output file does not contain any stream\nError opening output file /tmp/canine_concat.mp4.\nError opening output files: Invalid argument\n"
+}

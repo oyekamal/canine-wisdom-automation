@@ -1,0 +1,9 @@
+{
+  "eval": "audio_eval",
+  "passed": true,
+  "reasoning": "Audio OK: 27.6s",
+  "run_at": "2026-05-28T22:52:10.210234",
+  "score": 10.0,
+  "threshold": 1.0,
+  "video_id": "2026-05-28_22-51-11"
+}

@@ -1,15 +1,15 @@
 {
   "channel_id": "UCDyz_T0uPt66D_b4kukhdDA",
-  "comment_count": 10,
-  "comment_rate": 0.00081913499344692,
+  "comment_count": 11,
+  "comment_rate": 0.0008305020762551906,
   "description": "When dogs become overweight, even basic movement becomes a struggle.\nWeak joints, low energy, hesitation\u2026 and every step feels harder than the last.\nBut the moment movement becomes safe, structured, and supported\u2026 everything changes. \ud83c\udf1f\n\nCuando los perros tienen sobrepeso, hasta el movimiento m\u00e1s b\u00e1sico se convierte en un verdadero desaf\u00edo.\nArticulaciones d\u00e9biles, poca energ\u00eda, duda\u2026 y cada paso se siente m\u00e1s dif\u00edcil que el anterior.\nPero en el momento en que el movimiento se vuelve seguro, con e",
-  "hook": "",
-  "like_count": 592,
-  "like_rate": 0.04849279161205767,
+  "hook": "FetchedTranscriptSnippet(text=\"There he's coming out.\", start=3.12, duration=4.16) FetchedTranscriptSnippet(text='He fart.', start=5.28, duration=4.545) FetchedTranscriptSnippet(text='That was a good fart.',",
+  "like_count": 628,
+  "like_rate": 0.04741411853529634,
   "publish_dow": "Tue",
   "publish_hour_utc": 18,
   "published_at": "2026-05-26T18:00:29Z",
-  "scraped_at": "2026-05-28T13:39:20.006197",
+  "scraped_at": "2026-05-29T14:57:23.077456",
   "tags": [
     "cesar millan",
     "dog whisperer",
@@ -35,8 +35,8 @@
   ],
   "thumbnail_path": "competitors/UCDyz_T0uPt66D_b4kukhdDA/thumbnails/V9m9ycgkZ4g.jpg",
   "title": "Helping an Obese Dog Lose Weight | Better Human Better Dog",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "V9m9ycgkZ4g",
-  "view_count": 12208,
-  "views_per_sub": 0.003488
+  "view_count": 13245,
+  "views_per_sub": 0.0037842857142857144
 }

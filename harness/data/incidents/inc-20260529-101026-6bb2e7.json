@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260529-101026-6bb2e7",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword-rich text content and CTA (only hashtags present), making it weak for discoverability and engagement despite having 10 relevant hashtags; optimal Shorts descriptions should include 50-300 character body text with a call-to-action before hashtags.",
+  "id": "inc-20260529-101026-6bb2e7",
+  "resolved_at": null,
+  "timestamp": "2026-05-29T10:10:26.127729",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "Factual accuracy is moderate (micro-expressions and dog perception are real, but the 67% statistic appears invented), novelty is severely penalized (dogs detecting human deception was explicitly covered 30 days ago), and pacing is good (energetic, 57 words), but the repeat topic and unsourced claims significantly undermine the score.",
+  "run_at": "2026-05-29T15:08:47.672523",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_14-52-39"
+}

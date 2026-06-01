@@ -9,7 +9,7 @@
     "avg_watch_time_min": null,
     "subscribers_gained": null
   },
-  "total_videos_tracked": 18,
+  "total_videos_tracked": 23,
   "updated_at": null,
   "videos": [
     {
@@ -101,6 +101,31 @@
       "format": "long",
       "uploaded_at": "2026-05-28T13:55:07.572626",
       "video_id": "BrUai8Ale2A"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-28T19:49:23.874484",
+      "video_id": "--yaafabZ3c"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-29T09:54:59.210781",
+      "video_id": "L2WL-ydhxQM"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-29T10:12:11.008552",
+      "video_id": "htHa9PAvjlk"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-29T15:02:33.949407",
+      "video_id": "19M1Td1ugD4"
+    },
+    {
+      "format": "short",
+      "uploaded_at": "2026-05-30T10:43:29.646925",
+      "video_id": "jZSbp14-_8c"
     }
   ]
 }

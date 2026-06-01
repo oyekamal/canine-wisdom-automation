@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 0.5,
+    "title_eval": 8.2
+  },
+  "format": "short",
+  "hook_pattern_used": "Accusation/secret: YOUR DOG IS HIDING THIS FROM YOU style - adapted to YOUR DOG KNOWS WHEN YOU'RE LYING",
+  "snapshots": [],
+  "title": "Your Dog Catches Every Lie You Tell",
+  "title_formula_used": "No data yet - created original formula: Your Dog [Surprising Action] Every [Thing] You [Do]",
+  "topic": "dogs detecting human deception",
+  "topic_cluster": "dog science",
+  "uploaded_at": "2026-05-29T15:02:33.944621",
+  "video_id": "19M1Td1ugD4"
+}

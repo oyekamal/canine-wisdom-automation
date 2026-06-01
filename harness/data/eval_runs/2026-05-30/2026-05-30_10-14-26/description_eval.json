@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword coverage (no dog-facts keywords present), contains no CTA, is too short at only 5 hashtags with no descriptive text, and hashtags are irrelevant to the stated dog-facts evaluation context.",
+  "run_at": "2026-05-30T10:15:15.336432",
+  "score": 2.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-30_10-14-26"
+}

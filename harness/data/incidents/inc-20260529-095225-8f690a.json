@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260529-095225-8f690a",
+  "fix_status": "open",
+  "hypothesis": "Description lacks keyword-rich content and CTA (no follow/subscribe request), contains only hashtags with good quantity (10) but no actual descriptive text to explain video content or engage viewers with actionable messaging.",
+  "id": "inc-20260529-095225-8f690a",
+  "resolved_at": null,
+  "timestamp": "2026-05-29T09:52:25.648842",
+  "trigger": "description_eval",
+  "what_failed": "Score 3.5"
+}

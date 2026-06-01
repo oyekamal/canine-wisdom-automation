@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 8.2,
+    "title_eval": 7.5
+  },
+  "format": "short",
+  "hook_pattern_used": "Accusation/secret: YOUR DOG IS HIDING THIS FROM YOU",
+  "snapshots": [],
+  "title": "Your Dog's \"Guilty Face\" Is Actually Fear",
+  "title_formula_used": "No data yet",
+  "topic": "dog guilty look myth",
+  "topic_cluster": "dog behavior",
+  "uploaded_at": "2026-05-30T10:43:29.636338",
+  "video_id": "jZSbp14-_8c"
+}

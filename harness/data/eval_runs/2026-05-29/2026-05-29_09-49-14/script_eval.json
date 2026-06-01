@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": true,
+  "reasoning": "Factually accurate (dogs do process faces quickly and show responsiveness to expressions), novel topic avoiding recent repeats, but pacing is slightly rushed at 59 words with some claims needing nuance (the 70% figure and eyebrow-raising specifics lack clear scientific backing).",
+  "run_at": "2026-05-29T09:49:27.268985",
+  "score": 7.2,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_09-49-14"
+}

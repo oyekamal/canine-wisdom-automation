@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260529-094935-dffb91",
+  "fix_status": "open",
+  "hypothesis": "Description lacks actual text content and keyword coverage (only hashtags), has no CTA to follow/subscribe, but includes 10 relevant hashtags and fits length requirements.",
+  "id": "inc-20260529-094935-dffb91",
+  "resolved_at": null,
+  "timestamp": "2026-05-29T09:49:35.256124",
+  "trigger": "description_eval",
+  "what_failed": "Score 4.5"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich text content and CTA (only hashtags present), contains 10 hashtags which exceeds quality over quantity best practices, and missing actual descriptive text within the ideal 50-300 character range.",
+  "run_at": "2026-05-29T15:00:19.540168",
+  "score": 3.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_14-59-32"
+}

@@ -1,10 +1,24 @@
 {
+  "pexels_10871104_true_scary.mp4": {
+    "downloaded_at": "2026-05-28T23:13:12.182879",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_10871104_true_scary.mp4",
+    "query": "dog true scary",
+    "source": "pexels",
+    "topic_cluster": "true scary"
+  },
   "pexels_10976410_dog_fun.mp4": {
     "downloaded_at": "2026-05-25T12:41:31.584956",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_10976410_dog_fun.mp4",
     "query": "dog and fun",
     "source": "pexels",
     "topic_cluster": "dog fun"
+  },
+  "pexels_11349390_paranormal.mp4": {
+    "downloaded_at": "2026-05-28T23:41:57.993091",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/horror_footage/pexels_11349390_paranormal.mp4",
+    "query": "foggy graveyard night",
+    "source": "pexels",
+    "topic_cluster": "paranormal"
   },
   "pexels_11920071_dog_fun.mp4": {
     "downloaded_at": "2026-05-28T13:40:16.759892",
@@ -34,6 +48,13 @@
     "source": "pexels",
     "topic_cluster": "dog fun"
   },
+  "pexels_29603423_paranormal.mp4": {
+    "downloaded_at": "2026-05-28T22:53:25.691165",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_29603423_paranormal.mp4",
+    "query": "dog paranormal",
+    "source": "pexels",
+    "topic_cluster": "paranormal"
+  },
   "pexels_31546556_dog_fun.mp4": {
     "downloaded_at": "2026-05-17T12:21:23.996254",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_31546556_dog_fun.mp4",
@@ -47,6 +68,13 @@
     "query": "dog shorts",
     "source": "pexels",
     "topic_cluster": "dog fun"
+  },
+  "pexels_32583498_paranormal.mp4": {
+    "downloaded_at": "2026-05-28T23:55:27.802675",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/horror_footage/pexels_32583498_paranormal.mp4",
+    "query": "empty corridor dark building",
+    "source": "pexels",
+    "topic_cluster": "paranormal"
   },
   "pexels_34300590_dog_fun.mp4": {
     "downloaded_at": "2026-05-17T12:28:05.858916",
@@ -83,17 +111,31 @@
     "source": "pexels",
     "topic_cluster": "dog fun"
   },
+  "pexels_35290087_dog_fun.mp4": {
+    "downloaded_at": "2026-05-28T19:41:53.338664",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_35290087_dog_fun.mp4",
+    "query": "dog video",
+    "source": "pexels",
+    "topic_cluster": "dog fun"
+  },
   "pexels_35290088_dog_fun.mp4": {
-    "downloaded_at": "2026-05-28T13:41:39.091857",
+    "downloaded_at": "2026-05-29T09:49:17.182144",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_35290088_dog_fun.mp4",
-    "query": "dog and fun",
+    "query": "dog dog facts",
+    "source": "pexels",
+    "topic_cluster": "dog fun"
+  },
+  "pexels_35290090_dog_fun.mp4": {
+    "downloaded_at": "2026-05-28T19:46:51.173867",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_35290090_dog_fun.mp4",
+    "query": "dog video",
     "source": "pexels",
     "topic_cluster": "dog fun"
   },
   "pexels_35290093_dog_fun.mp4": {
-    "downloaded_at": "2026-05-28T13:39:28.513572",
+    "downloaded_at": "2026-05-28T19:44:06.106351",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_35290093_dog_fun.mp4",
-    "query": "dog and fun",
+    "query": "dog video",
     "source": "pexels",
     "topic_cluster": "dog fun"
   },
@@ -133,11 +175,25 @@
     "topic_cluster": "dog fun"
   },
   "pexels_36609977_dog_fun.mp4": {
-    "downloaded_at": "2026-05-22T10:46:02.235399",
+    "downloaded_at": "2026-05-29T09:32:05.615767",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_36609977_dog_fun.mp4",
     "query": "dog dog facts",
     "source": "pexels",
     "topic_cluster": "dog fun"
+  },
+  "pexels_37563828_short_horror.mp4": {
+    "downloaded_at": "2026-05-28T22:01:31.524803",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_37563828_short_horror.mp4",
+    "query": "dog short horror",
+    "source": "pexels",
+    "topic_cluster": "short horror"
+  },
+  "pexels_4904162_paranormal.mp4": {
+    "downloaded_at": "2026-05-28T23:22:04.861778",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/horror_footage/pexels_4904162_paranormal.mp4",
+    "query": "dark haunted house exterior",
+    "source": "pexels",
+    "topic_cluster": "paranormal"
   },
   "pexels_6568516_dog_science.mp4": {
     "downloaded_at": "2026-05-17T11:56:59.662595",
@@ -156,6 +212,13 @@
   "pexels_7516662_dog_fun.mp4": {
     "downloaded_at": "2026-05-17T12:23:07.573053",
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_7516662_dog_fun.mp4",
+    "query": "dog dog facts",
+    "source": "pexels",
+    "topic_cluster": "dog fun"
+  },
+  "pexels_7516667_dog_fun.mp4": {
+    "downloaded_at": "2026-05-29T09:51:26.257459",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_7516667_dog_fun.mp4",
     "query": "dog dog facts",
     "source": "pexels",
     "topic_cluster": "dog fun"
@@ -179,6 +242,13 @@
     "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pexels_9425984_dog_fun.mp4",
     "query": "dog for kids",
     "source": "pexels",
+    "topic_cluster": "dog fun"
+  },
+  "pixabay_14869_dog_fun.mp4": {
+    "downloaded_at": "2026-05-29T09:47:25.065435",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/dog_footage/pixabay_14869_dog_fun.mp4",
+    "query": "dog dog facts",
+    "source": "pixabay",
     "topic_cluster": "dog fun"
   }
 }

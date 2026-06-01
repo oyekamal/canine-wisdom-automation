@@ -1,15 +1,15 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
   "comment_count": 12,
-  "comment_rate": 0.0038860103626943004,
+  "comment_rate": 0.00366412213740458,
   "description": "We need to stop talking about canine anxiety like it\u2019s just a behavior issue \ud83d\udea8\n\nDon\u2019t let the dog training industry guilt you. You aren't a bad dog guardian for having to work 40 hours a week just to survive.\n\nGet instant (free!) access to 30 Day Perfect Pup at https://pupford.com/training",
-  "hook": "",
-  "like_count": 128,
-  "like_rate": 0.04145077720207254,
+  "hook": "FetchedTranscriptSnippet(text='We need to stop talking about dog', start=0.0, duration=3.4) FetchedTranscriptSnippet(text=\"anxiety like it's some behavior issue\",",
+  "like_count": 134,
+  "like_rate": 0.040916030534351146,
   "publish_dow": "Mon",
   "publish_hour_utc": 14,
   "published_at": "2026-05-25T14:13:12Z",
-  "scraped_at": "2026-05-28T13:38:49.808637",
+  "scraped_at": "2026-05-29T14:56:55.105575",
   "tags": [
     "Dog training",
     "Anxiety",
@@ -33,8 +33,8 @@
   ],
   "thumbnail_path": "competitors/UCZzFRKsgVMhGTxffpzgTJlQ/thumbnails/qgQ930gIy8w.jpg",
   "title": "This Conversation is Long Overdue.",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "qgQ930gIy8w",
-  "view_count": 3088,
-  "views_per_sub": 0.000827882037533512
+  "view_count": 3275,
+  "views_per_sub": 0.0008780160857908847
 }

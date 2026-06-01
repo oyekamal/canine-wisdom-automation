@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks actual text content and keyword coverage (only hashtags), has no CTA to follow/subscribe, but includes 10 relevant hashtags and fits length requirements.",
+  "run_at": "2026-05-29T09:49:35.239891",
+  "score": 4.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_09-49-14"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "Factual accuracy is solid (dogs do have specialized facial processing abilities and show left-gaze bias), but novelty is compromised since 'dogs reading facial expressions' was recently covered, pacing is engaging and under 60 words, making this a borderline repeat with good execution.",
+  "run_at": "2026-05-29T09:48:11.728973",
+  "score": 6.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_09-39-57"
+}

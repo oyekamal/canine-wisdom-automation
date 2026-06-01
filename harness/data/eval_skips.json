@@ -73,5 +73,57 @@
     ],
     "timestamp": "2026-05-28T13:55:07.562650",
     "video_url": "https://youtube.com/shorts/BrUai8Ale2A"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-05-28_19-46-07",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 1.5 below threshold",
+        "score": 1.5
+      }
+    ],
+    "timestamp": "2026-05-28T19:49:23.807188",
+    "video_url": "https://youtube.com/shorts/--yaafabZ3c"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-05-29_09-51-06",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 2.5 below threshold",
+        "score": 2.5
+      }
+    ],
+    "timestamp": "2026-05-29T09:54:59.183411",
+    "video_url": "https://youtube.com/shorts/L2WL-ydhxQM"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-05-29_10-09-33",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 1.5 below threshold",
+        "score": 1.5
+      }
+    ],
+    "timestamp": "2026-05-29T10:12:10.992136",
+    "video_url": "https://youtube.com/shorts/htHa9PAvjlk"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-05-29_14-59-32",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 0.5 below threshold",
+        "score": 0.5
+      }
+    ],
+    "timestamp": "2026-05-29T15:02:33.934754",
+    "video_url": "https://youtube.com/shorts/19M1Td1ugD4"
   }
 ]

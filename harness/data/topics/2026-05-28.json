@@ -43,7 +43,8 @@
       "score": 10,
       "source": "autocomplete",
       "topic": "video",
-      "topic_cluster": "dog fun"
+      "topic_cluster": "dog fun",
+      "used": true
     },
     {
       "autocomplete_freq": 1,
@@ -206,5 +207,5 @@
       "topic_cluster": "dog health"
     }
   ],
-  "used": "you didn't know"
+  "used": "video"
 }

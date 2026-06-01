@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "orchestrator.py",
+  "fix_branch": "harness-auto-fix/inc-20260529-163209-eea94d",
+  "fix_status": "open",
+  "hypothesis": "Unexpected error in pipeline step",
+  "id": "inc-20260529-163209-eea94d",
+  "resolved_at": null,
+  "timestamp": "2026-05-29T16:32:09.411335",
+  "trigger": "unhandled_exception",
+  "what_failed": "Invalid JSON response from Claude: Unterminated string starting at: line 2 column 13 (char 14)\nResponse text: {\n  \"script\": \"The night shift at the gas station was supposed to be boring. It was. Until it wasn't.\\n\\nI worked the 11 PM to 7 AM at a Sinclair off Route 9. Middle of nowhere. Maybe three customers a night. Most of the time I just watched videos on my phone and restocked cigarettes.\\n\\nThe first weird thing happened on a Tuesday. Around 2:15 AM, a woman walked in. She was maybe 50, gray hair, wearing a nightgown. No shoes. I figured sleepwalker, maybe confused. It happens.\\n\\nShe walked straight to the back cooler. Stood there for almost twenty minutes. Didn't grab anything. Just stood there, facing the glass, not moving.\\n\\nI called out to her. Asked if she needed help. She didn't turn around.\\n\\nI walked over. Got about ten feet away when she finally spoke. Her voice was flat. No emotion at all.\\n\\n\\\"He's in the car.\\\"\\n\\nI looked out the window. The parking lot was empty. No car. I told her that.\\n\\nShe turned around. Her face was completely blank. Not scared. Not confused. Just nothing.\\n\\n\\\"He's in your car.\\\"\\n\\nI didn't have a car. I walked to work. Lived about half a mile down the road.\\n\\nShe walked out. Barefoot on the asphalt. I watched her cross the lot and disappear into the tree line past the pumps. Never saw which direction she actually went.\\n\\nI told my manager the next morning. He checked the cameras. The footage showed me standing by the cooler, talking to no one. I was alone the whole time.\\n\\nI quit that night. Told them I had a family emergency.\\n\\nTwo weeks later, I got my first car. Used Honda Civic. Blue. Bought it from a guy on Craigslist.\\n\\nThe first night I drove it home, I noticed something in the rearview mirror. A shape in the backseat. When I turned around, nothing was there.\\n\\nBut the seat was warm.\\n\\n"
+}

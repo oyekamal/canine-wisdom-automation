@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks keyword-rich content and CTA, consisting only of 10 hashtags (good quantity) but missing descriptive text, educational context, and viewer engagement prompts needed for Shorts discoverability.",
+  "run_at": "2026-05-29T15:08:51.560866",
+  "score": 4.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_14-52-39"
+}

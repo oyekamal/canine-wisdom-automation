@@ -90,6 +90,31 @@
       "posted": "2026-05-28",
       "topic": "dogs reading facial expressions",
       "video_id": "BrUai8Ale2A"
+    },
+    {
+      "posted": "2026-05-28",
+      "topic": "dogs detecting human deception",
+      "video_id": "--yaafabZ3c"
+    },
+    {
+      "posted": "2026-05-29",
+      "topic": "dogs reading facial expressions",
+      "video_id": "L2WL-ydhxQM"
+    },
+    {
+      "posted": "2026-05-29",
+      "topic": "dog facial expression reading",
+      "video_id": "htHa9PAvjlk"
+    },
+    {
+      "posted": "2026-05-29",
+      "topic": "dogs detecting human deception",
+      "video_id": "19M1Td1ugD4"
+    },
+    {
+      "posted": "2026-05-30",
+      "topic": "dog guilty look myth",
+      "video_id": "jZSbp14-_8c"
     }
   ],
   "format_mix": {
@@ -292,11 +317,11 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04195984765347621,
+      "avg_3sec_retention_proxy": 0.04065035778411884,
       "confidence": "low",
-      "last_seen": "2026-05-25",
+      "last_seen": "2026-05-29",
       "pattern": "FetchedTranscriptSnippet(text='What brings you joy [music]', start=0.0, duration=3.6) FetchedTranscriptSnippet(text='when life gets you down?', start=1.56, duration=4.334) FetchedTranscriptSnippet(text='What",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
@@ -316,11 +341,11 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04245671887881286,
+      "avg_3sec_retention_proxy": 0.04149142378352303,
       "confidence": "low",
-      "last_seen": "2026-05-25",
+      "last_seen": "2026-05-29",
       "pattern": "FetchedTranscriptSnippet(text='Would you even know it if your dog was', start=0.0, duration=3.679) FetchedTranscriptSnippet(text='in pain? This is",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
@@ -332,11 +357,11 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04561949196474858,
+      "avg_3sec_retention_proxy": 0.04250979682121517,
       "confidence": "low",
-      "last_seen": "2026-05-25",
+      "last_seen": "2026-05-29",
       "pattern": "FetchedTranscriptSnippet(text='Stop trying to be an alpha. Dominance', start=0.0, duration=3.24) FetchedTranscriptSnippet(text=\"theory in dog training isn't just\",",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
@@ -348,18 +373,138 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04228602092836061,
+      "avg_3sec_retention_proxy": 0.04043282731928994,
       "confidence": "low",
-      "last_seen": "2026-05-25",
+      "last_seen": "2026-05-29",
       "pattern": "FetchedTranscriptSnippet(text='Before him, I had a 100 pound black', start=0.0, duration=4.56) FetchedTranscriptSnippet(text='German Shepherd rescue.', start=2.24, duration=3.599)",
+      "sample_size": 2,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03824384339275849,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Okay.', start=0.0, duration=2.04) FetchedTranscriptSnippet(text='>> people say, \"My dog is my baby.\" That\\'s', start=0.48, duration=3.449) FetchedTranscriptSnippet(text='a",
+      "sample_size": 2,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03166953528399311,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='If your dog is just a little bit', start=5.04, duration=6.76) FetchedTranscriptSnippet(text='different, it might be in",
       "sample_size": 1,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.03874377566174544,
+      "avg_3sec_retention_proxy": 0.043478260869565216,
       "confidence": "low",
-      "last_seen": "2026-05-25",
-      "pattern": "FetchedTranscriptSnippet(text='Okay.', start=0.0, duration=2.04) FetchedTranscriptSnippet(text='>> people say, \"My dog is my baby.\" That\\'s', start=0.48, duration=3.449) FetchedTranscriptSnippet(text='a",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Tell me if you agree or disagree with', start=0.0, duration=3.2) FetchedTranscriptSnippet(text='this. A frightened dog bites",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.040916030534351146,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='We need to stop talking about dog', start=0.0, duration=3.4) FetchedTranscriptSnippet(text=\"anxiety like it's some behavior issue\",",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04757433489827856,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text=\"Here's the real reason your dog is\", start=0.0, duration=3.64) FetchedTranscriptSnippet(text='banned from your apartment building and',",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.0535526776338817,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Breaking news. The American Kennel Club', start=0.08, duration=3.839) FetchedTranscriptSnippet(text='is a deeply problematic organization.', start=1.839, duration=4.48)",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03358992302309307,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='For decades now, the dog training world', start=0.0, duration=4.76) FetchedTranscriptSnippet(text='has repeated the same harmful myth.",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03906581740976645,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='[fact] free dog training is a radical', start=0.0, duration=4.32) FetchedTranscriptSnippet(text='rejection of punitive justice. When a',",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03135593220338983,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Right now, the UK is pushing to', start=0.0, duration=4.4) FetchedTranscriptSnippet(text='completely ban the retail sale of",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03882132834424696,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Memorial Day is a time of profound grief', start=0.0, duration=3.76) FetchedTranscriptSnippet(text='for those who have lost",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03459745649570107,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='There is a national epidemic affecting', start=5.2, duration=4.88) FetchedTranscriptSnippet(text='dogs. More than half of adult dogs",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04391659665470098,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Oh my god, this is the worst part right', start=6.879, duration=4.441) FetchedTranscriptSnippet(text='here.', start=8.32, duration=3.0) FetchedTranscriptSnippet(text='>>",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04741411853529634,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text=\"There he's coming out.\", start=3.12, duration=4.16) FetchedTranscriptSnippet(text='He fart.', start=5.28, duration=4.545) FetchedTranscriptSnippet(text='That was a good fart.',",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.06749539594843462,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text=\"Well, let's talk about allergies, guys.\", start=0.0, duration=3.88) FetchedTranscriptSnippet(text=\"[music] I think that's uh something very\",",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.09719158947213645,
+      "confidence": "low",
+      "last_seen": "2026-05-29",
+      "pattern": "FetchedTranscriptSnippet(text='Uh-oh. No. Oh, that must be Caesar.', start=0.96, duration=5.4) FetchedTranscriptSnippet(text='>> As soon as I open",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.08168050296988433,
+      "confidence": "low",
+      "last_seen": "2026-05-30",
+      "pattern": "FetchedTranscriptSnippet(text=\"What's the matter?\", start=0.0, duration=4.584) FetchedTranscriptSnippet(text='Your eyes itchy?', start=2.16, duration=4.444) FetchedTranscriptSnippet(text='>> [music]', start=4.584, duration=2.02) FetchedTranscriptSnippet(text='>>",
       "sample_size": 1,
       "source": "competitor"
     }
@@ -392,5 +537,5 @@
   "thumbnail_features": [],
   "title_formulas": [],
   "topic_performance": [],
-  "updated_at": "2026-05-28T13:55:07.576305"
+  "updated_at": "2026-05-30T10:43:29.652480"
 }

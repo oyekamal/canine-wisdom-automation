@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script directly repeats the 'dogs detecting human deception' topic already covered, making novelty critically weak; while the micro-expression detail adds specificity, the core claim overlaps significantly with previous content; pacing is acceptable but cannot overcome the major repetition penalty.",
+  "run_at": "2026-05-29T15:00:15.573744",
+  "score": 0.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_14-59-32"
+}

@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Strong hashtag coverage (10 relevant tags) but lacks keyword-rich text content, no CTA to follow/subscribe, and description is hashtag-only without engaging copy that explains the video content.",
+  "run_at": "2026-05-29T09:34:26.282787",
+  "score": 6.5,
+  "threshold": 7.0,
+  "video_id": "2026-05-29_09-29-44"
+}
