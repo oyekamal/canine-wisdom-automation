@@ -1,15 +1,15 @@
 {
   "channel_id": "UCZzFRKsgVMhGTxffpzgTJlQ",
-  "comment_count": 11,
-  "comment_rate": 0.004661016949152543,
+  "comment_count": 21,
+  "comment_rate": 0.00481651376146789,
   "description": "The American pet industry is absolutely terrified of this.\n\nNew polling from the UK shows that 85% of the public views electric shock collars as completely unacceptable. And lawmakers there aren\u2019t just trying to ban the USE of these devices - they are going directly after the profit machine by pushing to ban their retail SALE across the country.\n\nNow, compare that to the United States\u2026 While the rest of the world aligns with modern ethology, our industry relics - like the AKC, and the IACP - are",
   "hook": "FetchedTranscriptSnippet(text='Right now, the UK is pushing to', start=0.0, duration=4.4) FetchedTranscriptSnippet(text='completely ban the retail sale of",
-  "like_count": 74,
-  "like_rate": 0.03135593220338983,
+  "like_count": 121,
+  "like_rate": 0.027752293577981653,
   "publish_dow": "Thu",
   "publish_hour_utc": 19,
   "published_at": "2026-05-28T19:14:28Z",
-  "scraped_at": "2026-05-29T14:57:09.234647",
+  "scraped_at": "2026-06-02T14:35:22.521104",
   "tags": [
     "Dog training",
     "Shock collar",
@@ -29,6 +29,6 @@
   "title": "The Pet Industry is Absolutely Terrified of This",
   "transcript_status": "available",
   "video_id": "PqrB2joxAnw",
-  "view_count": 2360,
-  "views_per_sub": 0.0006327077747989276
+  "view_count": 4360,
+  "views_per_sub": 0.0011689008042895443
 }

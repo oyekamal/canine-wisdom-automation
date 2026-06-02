@@ -1,0 +1,1 @@
+FetchedTranscriptSnippet(text='Are you a lesbian?', start=2.56, duration=3.44) FetchedTranscriptSnippet(text='Oh.', start=6.12, duration=2.2)

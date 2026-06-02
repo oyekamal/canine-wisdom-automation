@@ -1,0 +1,1 @@
+FetchedTranscriptSnippet(text="We're going to have to sell your feet", start=0.0, duration=3.76) FetchedTranscriptSnippet(text='pictures.', start=1.08, duration=2.68)

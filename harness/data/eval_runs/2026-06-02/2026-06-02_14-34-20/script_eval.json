@@ -1,0 +1,9 @@
+{
+  "eval": "script_eval",
+  "passed": false,
+  "reasoning": "This script repeats dog yawning as stress signals (covered 3 times in last 30 days) and lacks novelty; while the stress-yawning correlation has some research basis, the claim that 70% of dog yawns indicate stress is not well-established and oversimplifies a complex behavior; pacing is good but cannot overcome the severe repetition penalty.",
+  "run_at": "2026-06-02T14:36:43.019019",
+  "score": 1.5,
+  "threshold": 7.0,
+  "video_id": "2026-06-02_14-34-20"
+}

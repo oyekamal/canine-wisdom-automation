@@ -9,6 +9,13 @@
     "topic_cluster": "true_scary",
     "width": 1080
   },
+  "pexels_11349390_paranormal.mp4": {
+    "downloaded_at": "2026-06-02T14:41:45.774411",
+    "path": "/home/oye/Documents/free_work/repos/canine-wisdom-automation/horror_footage/pexels_11349390_paranormal.mp4",
+    "query": "foggy graveyard night",
+    "source": "pexels",
+    "topic_cluster": "paranormal"
+  },
   "pexels_15365457_unsolved_mysteries.mp4": {
     "duration_secs": 16.048333,
     "filename": "pexels_15365457_unsolved_mysteries.mp4",

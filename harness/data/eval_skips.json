@@ -125,5 +125,18 @@
     ],
     "timestamp": "2026-05-29T15:02:33.934754",
     "video_url": "https://youtube.com/shorts/19M1Td1ugD4"
+  },
+  {
+    "review_status": "pending",
+    "run_id": "2026-06-02_14-34-20",
+    "skipped_evals": [
+      {
+        "eval": "script_eval",
+        "reason": "score 1.5 below threshold",
+        "score": 1.5
+      }
+    ],
+    "timestamp": "2026-06-02T14:40:00.199725",
+    "video_url": "https://youtube.com/shorts/KqvAhl8FO1M"
   }
 ]

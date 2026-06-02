@@ -1,0 +1,9 @@
+{
+  "eval": "description_eval",
+  "passed": false,
+  "reasoning": "Description lacks any keyword-rich text or CTA while having 10 hashtags; it's hashtag-only with no contextual content, making it poor for SEO and engagement despite adequate hashtag count.",
+  "run_at": "2026-06-02T14:36:46.173595",
+  "score": 4.5,
+  "threshold": 7.0,
+  "video_id": "2026-06-02_14-34-20"
+}

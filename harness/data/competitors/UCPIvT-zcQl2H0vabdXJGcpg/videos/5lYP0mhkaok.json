@@ -1,15 +1,15 @@
 {
   "channel_id": "UCPIvT-zcQl2H0vabdXJGcpg",
-  "comment_count": 0,
-  "comment_rate": 0.0,
+  "comment_count": 23,
+  "comment_rate": 0.001796594282143415,
   "description": "Get ready to laugh until it hurts! In the NEWEST episode of Funniest Pets of the Week. We\u2019ve got a collection of clips that prove our furry friends are the ultimate comedians. Real viral videos you don't want to miss. \n\nFrom clumsy dogs who haven't quite mastered their own paws to cats whose \"helpful\" behavior results in pure chaos, we\u2019re bringing you the absolute best of the internet's most relatable pet moments. You won't want to miss the star of the show: a very ambitious dog vs. a very steep",
-  "hook": "",
-  "like_count": 9,
-  "like_rate": 9.0,
-  "publish_dow": "Thu",
-  "publish_hour_utc": 16,
-  "published_at": "2026-05-28T16:31:01Z",
-  "scraped_at": "2026-05-29T14:56:46.288002",
+  "hook": "FetchedTranscriptSnippet(text='Oh,', start=0.0, duration=2.88) FetchedTranscriptSnippet(text=\"she's going to bite you. SHE'S GOING TO\", start=1.68, duration=2.08) FetchedTranscriptSnippet(text='BITE YOU.',",
+  "like_count": 335,
+  "like_rate": 0.02616778628339322,
+  "publish_dow": "Fri",
+  "publish_hour_utc": 13,
+  "published_at": "2026-05-29T13:00:06Z",
+  "scraped_at": "2026-06-02T14:34:54.751701",
   "tags": [
     "the pet collective",
     "pet collective",
@@ -27,8 +27,8 @@
   ],
   "thumbnail_path": "competitors/UCPIvT-zcQl2H0vabdXJGcpg/thumbnails/5lYP0mhkaok.jpg",
   "title": "Which Is Funnier: The EPIC dog fail or the cat FEET? \ud83d\ude39 Best Pets of the Week 2026!",
-  "transcript_status": "unavailable",
+  "transcript_status": "available",
   "video_id": "5lYP0mhkaok",
-  "view_count": 1,
-  "views_per_sub": 1.0593220338983051e-07
+  "view_count": 12802,
+  "views_per_sub": 0.0013561440677966102
 }

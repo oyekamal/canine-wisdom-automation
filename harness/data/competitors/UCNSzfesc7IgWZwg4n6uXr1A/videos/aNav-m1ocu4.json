@@ -1,20 +1,20 @@
 {
   "channel_id": "UCNSzfesc7IgWZwg4n6uXr1A",
-  "comment_count": 144,
-  "comment_rate": 0.0025009552259543577,
+  "comment_count": 222,
+  "comment_rate": 0.0013065202422359152,
   "description": "",
   "hook": "FetchedTranscriptSnippet(text=\"What's the matter?\", start=0.0, duration=4.584) FetchedTranscriptSnippet(text='Your eyes itchy?', start=2.16, duration=4.444) FetchedTranscriptSnippet(text='>> [music]', start=4.584, duration=2.02) FetchedTranscriptSnippet(text='>>",
-  "like_count": 4703,
-  "like_rate": 0.08168050296988433,
+  "like_count": 8717,
+  "like_rate": 0.051301517799867,
   "publish_dow": "Fri",
   "publish_hour_utc": 17,
   "published_at": "2026-05-29T17:26:01Z",
-  "scraped_at": "2026-05-30T10:06:03.035820",
+  "scraped_at": "2026-06-02T14:35:11.512460",
   "tags": [],
   "thumbnail_path": "competitors/UCNSzfesc7IgWZwg4n6uXr1A/thumbnails/aNav-m1ocu4.jpg",
   "title": "Gotta rub out all the sleepy \ud83e\udd71",
   "transcript_status": "available",
   "video_id": "aNav-m1ocu4",
-  "view_count": 57578,
-  "views_per_sub": 0.009758983050847457
+  "view_count": 169917,
+  "views_per_sub": 0.02879949152542373
 }

@@ -1,0 +1,12 @@
+{
+  "attempts": 0,
+  "code_path": "upload_youtube.py:description",
+  "fix_branch": "harness-auto-fix/inc-20260602-143646-726bfd",
+  "fix_status": "open",
+  "hypothesis": "Description lacks any keyword-rich text or CTA while having 10 hashtags; it's hashtag-only with no contextual content, making it poor for SEO and engagement despite adequate hashtag count.",
+  "id": "inc-20260602-143646-726bfd",
+  "resolved_at": null,
+  "timestamp": "2026-06-02T14:36:46.183562",
+  "trigger": "description_eval",
+  "what_failed": "Score 4.5"
+}

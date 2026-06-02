@@ -1,15 +1,15 @@
 {
   "channel_id": "UCPIvT-zcQl2H0vabdXJGcpg",
-  "comment_count": 3,
-  "comment_rate": 0.0005163511187607573,
+  "comment_count": 7,
+  "comment_rate": 0.0004621682292354417,
   "description": "Tien thought she was just learning her dog\u2019s breed\u2026 until the Embark Vet Dog DNA Breed and Health Test revealed a serious health risk.\n\nShe didn\u2019t realize how much a DNA test could uncover\u2014and wishes she had done it sooner, because the warning was spot on.\n\n\ud83d\udc3e This Paw Pick could change how you care for your dog.\n\ud83d\udc49 Get yours here: https://www.thepetcollective.com/pawpicks/\n\n#Dogs #DogDNA #DogHealth #PetHealth #PetCare #DogParents \n\nWe're the happy place for animal lovers!  You\u2019ll always find real",
-  "hook": "FetchedTranscriptSnippet(text='If your dog is just a little bit', start=5.04, duration=6.76) FetchedTranscriptSnippet(text='different, it might be in",
-  "like_count": 184,
-  "like_rate": 0.03166953528399311,
+  "hook": "FetchedTranscriptSnippet(text='[screaming]', start=2.619, duration=2.02) FetchedTranscriptSnippet(text='>> If your dog is just a little bit', start=5.0, duration=6.32) FetchedTranscriptSnippet(text='different,",
+  "like_count": 448,
+  "like_rate": 0.02957876667106827,
   "publish_dow": "Thu",
   "publish_hour_utc": 15,
   "published_at": "2026-05-28T15:15:05Z",
-  "scraped_at": "2026-05-29T14:56:44.220163",
+  "scraped_at": "2026-06-02T14:35:08.445156",
   "tags": [
     "the pet collective",
     "pet collective",
@@ -29,6 +29,6 @@
   "title": "Paw Picks: Embark Vet Dog DNA Test",
   "transcript_status": "available",
   "video_id": "zZyxZ2XcmRw",
-  "view_count": 5810,
-  "views_per_sub": 0.0006154661016949152
+  "view_count": 15146,
+  "views_per_sub": 0.0016044491525423728
 }

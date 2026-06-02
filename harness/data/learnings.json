@@ -115,6 +115,11 @@
       "posted": "2026-05-30",
       "topic": "dog guilty look myth",
       "video_id": "jZSbp14-_8c"
+    },
+    {
+      "posted": "2026-06-02",
+      "topic": "dog yawning communication",
+      "video_id": "KqvAhl8FO1M"
     }
   ],
   "format_mix": {
@@ -413,27 +418,27 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04757433489827856,
+      "avg_3sec_retention_proxy": 0.045022688684660514,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text=\"Here's the real reason your dog is\", start=0.0, duration=3.64) FetchedTranscriptSnippet(text='banned from your apartment building and',",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.0535526776338817,
+      "avg_3sec_retention_proxy": 0.05152466096459185,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text='Breaking news. The American Kennel Club', start=0.08, duration=3.839) FetchedTranscriptSnippet(text='is a deeply problematic organization.', start=1.839, duration=4.48)",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.03358992302309307,
+      "avg_3sec_retention_proxy": 0.03200877730102022,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text='For decades now, the dog training world', start=0.0, duration=4.76) FetchedTranscriptSnippet(text='has repeated the same harmful myth.",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
@@ -445,11 +450,11 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.03135593220338983,
+      "avg_3sec_retention_proxy": 0.02955411289068574,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text='Right now, the UK is pushing to', start=0.0, duration=4.4) FetchedTranscriptSnippet(text='completely ban the retail sale of",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
@@ -469,19 +474,19 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04391659665470098,
+      "avg_3sec_retention_proxy": 0.039394153386640665,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text='Oh my god, this is the worst part right', start=6.879, duration=4.441) FetchedTranscriptSnippet(text='here.', start=8.32, duration=3.0) FetchedTranscriptSnippet(text='>>",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.04741411853529634,
+      "avg_3sec_retention_proxy": 0.04638155288137543,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text=\"There he's coming out.\", start=3.12, duration=4.16) FetchedTranscriptSnippet(text='He fart.', start=5.28, duration=4.545) FetchedTranscriptSnippet(text='That was a good fart.',",
-      "sample_size": 1,
+      "sample_size": 2,
       "source": "competitor"
     },
     {
@@ -493,18 +498,146 @@
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.09719158947213645,
+      "avg_3sec_retention_proxy": 0.09120843881570498,
       "confidence": "low",
-      "last_seen": "2026-05-29",
+      "last_seen": "2026-06-02",
       "pattern": "FetchedTranscriptSnippet(text='Uh-oh. No. Oh, that must be Caesar.', start=0.96, duration=5.4) FetchedTranscriptSnippet(text='>> As soon as I open",
+      "sample_size": 2,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.06649101038487566,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"What's the matter?\", start=0.0, duration=4.584) FetchedTranscriptSnippet(text='Your eyes itchy?', start=2.16, duration=4.444) FetchedTranscriptSnippet(text='>> [music]', start=4.584, duration=2.02) FetchedTranscriptSnippet(text='>>",
+      "sample_size": 2,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.02616778628339322,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='Oh,', start=0.0, duration=2.88) FetchedTranscriptSnippet(text=\"she's going to [fact] you. SHE'S GOING TO\", start=1.68, duration=2.08) FetchedTranscriptSnippet(text='[fact] YOU.',",
       "sample_size": 1,
       "source": "competitor"
     },
     {
-      "avg_3sec_retention_proxy": 0.08168050296988433,
+      "avg_3sec_retention_proxy": 0.026409344845099034,
       "confidence": "low",
-      "last_seen": "2026-05-30",
-      "pattern": "FetchedTranscriptSnippet(text=\"What's the matter?\", start=0.0, duration=4.584) FetchedTranscriptSnippet(text='Your eyes itchy?', start=2.16, duration=4.444) FetchedTranscriptSnippet(text='>> [music]', start=4.584, duration=2.02) FetchedTranscriptSnippet(text='>>",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"We're going to have to sell your feet\", start=0.0, duration=3.76) FetchedTranscriptSnippet(text='pictures.', start=1.08, duration=2.68)",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.030591051501390503,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"We're going to have to sell your feet\", start=0.0, duration=4.12) FetchedTranscriptSnippet(text='pictures.', start=1.12, duration=3.0) FetchedTranscriptSnippet(text='>> Here",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.024627811213177066,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='Are you a lesbian?', start=2.56, duration=3.44) FetchedTranscriptSnippet(text='Oh.', start=6.12, duration=2.2)",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.029497774952320407,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='[snorts]', start=0.654, duration=3.665) FetchedTranscriptSnippet(text='And', start=1.6, duration=6.04) FetchedTranscriptSnippet(text='hey you', start=4.319, duration=3.321) FetchedTranscriptSnippet(text='baby. Oh my god. [laughter]',",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03984037681538663,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='This one is all about the French little', start=2.159, duration=6.4) FetchedTranscriptSnippet(text='gays or how do you",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.02957876667106827,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='[screaming]', start=2.619, duration=2.02) FetchedTranscriptSnippet(text='>> If your dog is just a little bit', start=5.0, duration=6.32) FetchedTranscriptSnippet(text='different,",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.06592520954223081,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"This video is personal. I've been a dog\", start=0.08, duration=4.32) FetchedTranscriptSnippet(text='trainer now for over 20",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.04954478085962312,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"Tell me if you've heard this a thousand\", start=0.0, duration=4.28) FetchedTranscriptSnippet(text=\"times before. Dogs don't actually\",",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.058877017503978175,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='A brand new study of over 40,000 dogs', start=0.08, duration=4.64) FetchedTranscriptSnippet(text='just completely validated our movement',",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.0640096618357488,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"Let's connect the dots, shall we? Still\", start=0.0, duration=3.76) FetchedTranscriptSnippet(text=\"don't think traditional dog training is\",",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.03048997876397005,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='There is a national epidemic affecting', start=5.2, duration=4.72) FetchedTranscriptSnippet(text='dogs. More than half of adult dogs",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.024337936636880584,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"I'm going to share a little secret. I\", start=0.16, duration=4.08) FetchedTranscriptSnippet(text=\"don't like GPS dog trackers.",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.10985645933014354,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"It's very important when you have a\", start=0.4, duration=6.32) FetchedTranscriptSnippet(text='group of dogs that they wait",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.08104340900039825,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text='How are you able to restrain yourself', start=0.0, duration=4.6) FetchedTranscriptSnippet(text='from being able to help someone",
+      "sample_size": 1,
+      "source": "competitor"
+    },
+    {
+      "avg_3sec_retention_proxy": 0.08320660438844232,
+      "confidence": "low",
+      "last_seen": "2026-06-02",
+      "pattern": "FetchedTranscriptSnippet(text=\"So we're the only species that brings\", start=0.16, duration=5.76) FetchedTranscriptSnippet(text='love as a reward. Humans,', start=2.48,",
       "sample_size": 1,
       "source": "competitor"
     }
@@ -537,5 +670,5 @@
   "thumbnail_features": [],
   "title_formulas": [],
   "topic_performance": [],
-  "updated_at": "2026-05-30T10:43:29.652480"
+  "updated_at": "2026-06-02T14:40:00.235011"
 }

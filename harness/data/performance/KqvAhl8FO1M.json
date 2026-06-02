@@ -1,0 +1,16 @@
+{
+  "eval_scores": {
+    "hook_eval": 8.5,
+    "script_eval": 1.5,
+    "title_eval": 7.5
+  },
+  "format": "short",
+  "hook_pattern_used": "Accusation/secret: YOUR DOG IS HIDING THIS FROM YOU",
+  "snapshots": [],
+  "title": "Your Dog's Yawns Don't Mean What You Think",
+  "title_formula_used": "No data yet",
+  "topic": "dog yawning communication",
+  "topic_cluster": "dog behavior",
+  "uploaded_at": "2026-06-02T14:40:00.215229",
+  "video_id": "KqvAhl8FO1M"
+}
