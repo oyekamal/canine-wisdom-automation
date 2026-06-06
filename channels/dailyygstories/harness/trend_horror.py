@@ -155,15 +155,19 @@ def harvest_all(channel_config) -> list:
     print(f"[trend_horror] Trends: {len(trends)} rising queries")
     all_candidates.extend(trends)
 
-    print("[trend_horror] Fetching Reddit stories...")
-    repo_root = Path(__file__).parents[3]
-    harvest_path = repo_root / "channels" / "horror-narration" / "harness" / "reddit_harvest.py"
-    spec = ilu.spec_from_file_location("reddit_harvest", harvest_path)
-    mod = ilu.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    reddit_stories = mod.harvest_channel(channel_config)
-    print(f"[trend_horror] Reddit: {len(reddit_stories)} stories")
-    all_candidates.extend(reddit_stories)
+    # 3. Reddit via existing PullPush harvester
+    try:
+        print("[trend_horror] Fetching Reddit stories...")
+        repo_root = Path(__file__).parents[3]
+        harvest_path = repo_root / "channels" / "horror-narration" / "harness" / "reddit_harvest.py"
+        spec = ilu.spec_from_file_location("reddit_harvest", harvest_path)
+        mod = ilu.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        reddit_stories = mod.harvest_channel(channel_config)
+        print(f"[trend_horror] Reddit: {len(reddit_stories)} stories")
+        all_candidates.extend(reddit_stories)
+    except Exception as e:
+        print(f"[trend_horror] Reddit fetch failed (non-blocking): {e}")
 
     merged = _merge_and_rank(all_candidates)
     print(f"[trend_horror] Total after merge+dedup: {len(merged)}")
