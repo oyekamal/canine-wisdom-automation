@@ -1,96 +1,90 @@
 #!/usr/bin/env python3
 """
-Canine Wisdom by King — YouTube Shorts Automation Pipeline
-Master runner that orchestrates all four steps.
+Multi-channel YouTube Shorts automation pipeline.
+Runs all active channels sequentially on each invocation.
 """
 
-import os
 import sys
 from datetime import datetime
-from pathlib import Path
-from config import load_config
+from channel_config import load_channel_config
 from utils import init_logger, log, clear_outputs_dir, move_outputs_to_archive
 from generate_script import generate_script
 from generate_audio import generate_audio
 from build_video import build_video
 from upload_youtube import upload_youtube
 
+ACTIVE_CHANNELS = ["canine-wisdom", "horror-narration"]
 
-def main():
-    """Run the complete pipeline from script generation to YouTube upload."""
 
-    # Initialize logger with timestamp (format: YYYY-MM-DD_HH-MM-SS)
+def run_channel_pipeline(slug: str, run_id: str) -> None:
+    """Run the full pipeline for a single channel slug."""
+    log(f"\n{'='*60}")
+    log(f"📺 Starting pipeline for channel: {slug}")
+    log(f"{'='*60}")
+
+    channel_config = load_channel_config(slug)
+
+    clear_outputs_dir()
+
+    # Step 1: Script
+    log("")
+    metadata = generate_script(channel_config=channel_config)
+
+    # Step 2: Audio
+    log("")
+    audio_duration, word_timestamps = generate_audio(channel_config=channel_config)
+
+    # Step 3: Video
+    log("")
+    video_path = build_video(
+        audio_duration,
+        word_timestamps=word_timestamps,
+        script_data=metadata,
+        channel_config=channel_config,
+        channel_slug=slug,
+    )
+
+    # Step 4: Upload
+    log("")
+    try:
+        video_url = upload_youtube(channel_config=channel_config)
+        log("")
+        log(f"🎉 [{slug}] Short is LIVE!")
+        log(f"📺 Watch here: {video_url}")
+    except FileNotFoundError:
+        log(f"⏭️  [{slug}] YouTube upload skipped (credentials not found)")
+        log(f"   Video ready at: outputs/final_video.mp4")
+
+    log("")
+    move_outputs_to_archive(f"{run_id}_{slug}")
+
+
+def main() -> int:
     run_id = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     init_logger(run_id)
 
-    try:
-        # ====================================================================
-        # VALIDATION PHASE
-        # ====================================================================
+    log("🚀 Multi-Channel YouTube Shorts Pipeline")
+    log(f"📋 Active channels: {', '.join(ACTIVE_CHANNELS)}")
 
-        log("🚀 Canine Wisdom — VIRAL SHORTS Pipeline")
-        log("Validating configuration...")
-
-        # Validate configuration (loads environment and paths)
-        config = load_config()
-        log("✅ Configuration valid")
-
-        # Clear outputs from previous run
-        log("Clearing previous outputs...")
-        clear_outputs_dir()
-        log("✅ Outputs directory cleared")
-
-        # ====================================================================
-        # EXECUTION PHASE - Four-Step Pipeline
-        # ====================================================================
-
-        # Step 1: Generate script
-        log("")
-        metadata = generate_script()
-
-        # Step 2: Generate audio
-        log("")
-        audio_duration, word_timestamps = generate_audio()
-
-        # Step 3: Build video
-        log("")
-        video_path = build_video(
-            audio_duration,
-            word_timestamps=word_timestamps,
-            script_data=metadata,
-            channel_slug=os.environ.get("CHANNEL_SLUG", "canine-wisdom"),
-        )
-
-        # Step 4: Upload to YouTube (optional)
-        log("")
+    failed = []
+    for slug in ACTIVE_CHANNELS:
         try:
-            video_url = upload_youtube()
-            log("")
-            log("🎉 Your Short is LIVE! Go check your channel!")
-            log(f"📺 Watch here: {video_url}")
-        except FileNotFoundError:
-            log("⏭️  YouTube upload skipped (client_secrets.json not found)")
-            log("   To enable YouTube upload later, add your OAuth2 credentials")
-            log("")
-            log("✅ Video ready at: outputs/final_video.mp4")
+            run_channel_pipeline(slug, run_id)
+        except KeyboardInterrupt:
+            log("❌ Pipeline interrupted by user")
+            return 1
+        except Exception as e:
+            log(f"❌ [{slug}] Pipeline failed: {str(e)}", level="error")
+            log(f"📋 Check run_logs/ for details")
+            failed.append(slug)
+            continue
 
-        # ====================================================================
-        # ARCHIVAL & CLEANUP PHASE
-        # ====================================================================
-
-        log("")
-        move_outputs_to_archive(run_id)
-
-        return 0
-
-    except KeyboardInterrupt:
-        log("❌ Pipeline interrupted by user")
+    if failed:
+        log(f"\n⚠️  Failed channels: {', '.join(failed)}")
         return 1
 
-    except Exception as e:
-        log(f"❌ Pipeline failed: {str(e)}", level="error")
-        log(f"📋 Check run_logs/ for details")
-        return 1
+    log(f"\n✅ All {len(ACTIVE_CHANNELS)} channels complete!")
+    return 0
 
 
 if __name__ == "__main__":
