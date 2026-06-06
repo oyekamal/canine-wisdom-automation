@@ -351,7 +351,7 @@ def test_generate_audio_uses_channel_voice_id(tmp_path, monkeypatch):
 
     def fake_elevenlabs_call(voice_id, **kwargs):
         captured["voice_id"] = voice_id
-        return b"fakeaudio"
+        return {"audio_base64": "", "alignment": {"characters": [], "character_start_times_seconds": [], "character_end_times_seconds": []}}
 
     with patch("generate_audio.load_config", return_value=mock_config), \
          patch("generate_audio._call_elevenlabs", side_effect=fake_elevenlabs_call):
@@ -360,7 +360,8 @@ def test_generate_audio_uses_channel_voice_id(tmp_path, monkeypatch):
         except Exception:
             pass  # other errors are fine, we just want to check voice_id was passed
 
-    assert captured.get("voice_id") == "HORROR_VOICE_123"
+    assert "voice_id" in captured, "voice_id was never passed to _call_elevenlabs"
+    assert captured["voice_id"] == "HORROR_VOICE_123"
 
 
 if __name__ == "__main__":

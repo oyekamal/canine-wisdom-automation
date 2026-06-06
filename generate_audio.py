@@ -132,7 +132,7 @@ def generate_audio(script: str = None, voice_id: str = None, channel_config=None
     api_key = cfg["elevenlabs_api_key"]
     voice_id = (
         channel_config.voice_id
-        if channel_config is not None
+        if channel_config is not None and channel_config.voice_id
         else (voice_id if voice_id is not None else cfg["elevenlabs_voice_id"])
     )
     outputs_dir = cfg["outputs_dir"]
