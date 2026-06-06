@@ -84,6 +84,25 @@ def get_covered_topics(days: int = 30) -> list:
     ]
 
 
+def get_top_story_types(n: int = 3, channel_learnings_path: "Path" = None) -> list:
+    """
+    Return top n story types by avg_sub_gain_per_1k_views.
+    Reads from channel-specific learnings.json if channel_learnings_path given,
+    otherwise falls back to the global harness learnings.
+    """
+    if channel_learnings_path and channel_learnings_path.exists():
+        data = json.loads(channel_learnings_path.read_text(encoding="utf-8"))
+    else:
+        data = read_learnings()
+    perf = data.get("story_type_performance", {})
+    ranked = sorted(
+        [{"story_type": k, **v} for k, v in perf.items()],
+        key=lambda x: x.get("avg_sub_gain_per_1k_views", 0),
+        reverse=True,
+    )
+    return ranked[:n]
+
+
 def add_covered_topic(topic: str, video_id: str) -> None:
     """Append a topic to covered_topics and persist."""
     data = json.loads(LEARNINGS_PATH.read_text(encoding="utf-8"))
