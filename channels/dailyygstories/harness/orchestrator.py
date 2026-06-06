@@ -68,6 +68,54 @@ def _build_prompt_with_learnings(channel_config, top_story_types: list) -> str:
             .replace("{top_story_types}", story_types_text))
 
 
+def _process_pending_analytics(channel_config, state: dict):
+    """Pull analytics for videos uploaded 48h+ ago and update story_type learnings."""
+    from upload_youtube import get_analytics_service
+    from channels.dailyygstories.harness.learnings_updater import update_story_type_performance
+    from datetime import timedelta
+
+    pending = state.get("pending_analytics", [])
+    still_pending = []
+    cutoff = datetime.now() - timedelta(hours=48)
+
+    for item in pending:
+        try:
+            uploaded = datetime.fromisoformat(item["uploaded_at"])
+        except Exception:
+            continue
+
+        if uploaded > cutoff:
+            still_pending.append(item)
+            continue
+
+        try:
+            analytics = get_analytics_service()
+            resp = analytics.reports().query(
+                ids="channel==MINE",
+                startDate=uploaded.strftime("%Y-%m-%d"),
+                endDate=datetime.now().strftime("%Y-%m-%d"),
+                metrics="views,estimatedMinutesWatched,averageViewDuration,subscribersGained",
+                filters=f"video=={item['video_id']}",
+            ).execute()
+            rows = resp.get("rows", [])
+            headers = resp.get("columnHeaders", [])
+            if rows:
+                col_map = {h["name"]: i for i, h in enumerate(headers)}
+                video_data = {
+                    "views": int(rows[0][col_map["views"]]),
+                    "avg_view_duration_sec": float(rows[0][col_map["averageViewDuration"]]),
+                    "subscribers_gained": int(rows[0][col_map["subscribersGained"]]),
+                }
+                update_story_type_performance(
+                    channel_config.channel_dir, item["story_type"], video_data
+                )
+        except Exception as e:
+            log(f"⚠️  Analytics pull failed for {item['video_id']}: {e}", level="warning")
+            still_pending.append(item)
+
+    state["pending_analytics"] = still_pending
+
+
 def run_dailyygstories_pipeline(channel_config=None, dry_run: bool = False) -> dict:
     if channel_config is None:
         channel_config = load_channel_config("dailyygstories")
@@ -82,6 +130,8 @@ def run_dailyygstories_pipeline(channel_config=None, dry_run: bool = False) -> d
         state = atomic_read(state_path)
     except FileNotFoundError:
         state = {}
+
+    _process_pending_analytics(channel_config, state)
 
     used_ids = set(state.get("used_story_ids", []))
 
@@ -222,6 +272,11 @@ def run_dailyygstories_pipeline(channel_config=None, dry_run: bool = False) -> d
             log(f"🎉 Live: {video_url}")
             video_id = video_url.rstrip("/").split("/")[-1]
             track_video(video_id, {**metadata, "format": target})
+            state.setdefault("pending_analytics", []).append({
+                "video_id": video_id,
+                "story_type": story_type,
+                "uploaded_at": datetime.now().isoformat(),
+            })
         except Exception as e:
             log(f"❌ Upload failed: {e}", level="error")
             move_outputs_to_archive(run_id)
