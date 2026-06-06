@@ -98,13 +98,31 @@ def generate_audio_supertonic(script: str, voice_id: str = None) -> tuple:
     return audio_duration, word_timestamps
 
 
-def generate_audio(script: str = None, voice_id: str = None) -> tuple:
+def _call_elevenlabs(voice_id: str, script: str, api_key: str) -> dict:
+    """Make the ElevenLabs TTS API call and return the JSON response."""
+    url = f"{ELEVENLABS_API_BASE}/v1/text-to-speech/{voice_id}/with-timestamps"
+    headers = {
+        "xi-api-key": api_key,
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "text": script,
+        "model_id": "eleven_turbo_v2",
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.8},
+    }
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
+    response.raise_for_status()
+    return response.json()
+
+
+def generate_audio(script: str = None, voice_id: str = None, channel_config=None) -> tuple:
     """
     Generate voiceover using ElevenLabs with word-level timestamps.
 
     Args:
         script: Script text to convert to audio. If None, loads from outputs/script.txt.
         voice_id: ElevenLabs voice ID to use. If None, loads from config.
+        channel_config: Optional ChannelConfig object. If provided, its voice_id takes priority.
 
     Returns:
         tuple: (audio_duration_seconds: float, word_timestamps: list[dict])
@@ -112,8 +130,11 @@ def generate_audio(script: str = None, voice_id: str = None) -> tuple:
     """
     cfg = load_config()
     api_key = cfg["elevenlabs_api_key"]
-    if voice_id is None:
-        voice_id = cfg["elevenlabs_voice_id"]
+    voice_id = (
+        channel_config.voice_id
+        if channel_config is not None
+        else (voice_id if voice_id is not None else cfg["elevenlabs_voice_id"])
+    )
     outputs_dir = cfg["outputs_dir"]
 
     if script is None:
@@ -134,20 +155,7 @@ def generate_audio(script: str = None, voice_id: str = None) -> tuple:
     log("🎙️ Step 2: Generating voiceover with timestamps...")
 
     def call_elevenlabs():
-        url = f"{ELEVENLABS_API_BASE}/v1/text-to-speech/{voice_id}/with-timestamps"
-        headers = {
-            "xi-api-key": api_key,
-            "Content-Type": "application/json",
-        }
-        payload = {
-            "text": script_text,
-            "model_id": "eleven_turbo_v2",
-            "voice_settings": {"stability": 0.5, "similarity_boost": 0.8},
-        }
-
-        response = requests.post(url, headers=headers, json=payload, timeout=60)
-        response.raise_for_status()
-        return response.json()
+        return _call_elevenlabs(voice_id, script=script_text, api_key=api_key)
 
     try:
         data = retry_with_backoff(call_elevenlabs, max_retries=1, step_name="ElevenLabs API")

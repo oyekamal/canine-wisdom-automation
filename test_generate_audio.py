@@ -329,5 +329,39 @@ class TestGenerateAudio:
         assert "500" in str(exc_info.value)
 
 
+def test_generate_audio_uses_channel_voice_id(tmp_path, monkeypatch):
+    """generate_audio should use channel_config.voice_id when provided."""
+    from unittest.mock import MagicMock, patch
+    from channel_config import ChannelConfig
+
+    fake_cfg = MagicMock(spec=ChannelConfig)
+    fake_cfg.voice_id = "HORROR_VOICE_123"
+
+    # Create a script file so generate_audio reaches the _call_elevenlabs call
+    (tmp_path / "script.txt").write_text("Test script for horror channel.")
+
+    mock_config = {
+        "elevenlabs_api_key": "test_key",
+        "elevenlabs_voice_id": "DEFAULT_VOICE",
+        "outputs_dir": tmp_path,
+        "run_logs_dir": tmp_path,
+    }
+
+    captured = {}
+
+    def fake_elevenlabs_call(voice_id, **kwargs):
+        captured["voice_id"] = voice_id
+        return b"fakeaudio"
+
+    with patch("generate_audio.load_config", return_value=mock_config), \
+         patch("generate_audio._call_elevenlabs", side_effect=fake_elevenlabs_call):
+        try:
+            generate_audio(channel_config=fake_cfg)
+        except Exception:
+            pass  # other errors are fine, we just want to check voice_id was passed
+
+    assert captured.get("voice_id") == "HORROR_VOICE_123"
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
