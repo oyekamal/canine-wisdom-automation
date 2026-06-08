@@ -1,4 +1,47 @@
 {
-  "used_story_ids": [],
-  "recent_runs": []
+  "clip_usage": {
+    "pexels_10871104_true_scary.mp4": "2026-06-06T12:55:57",
+    "pexels_11349390_paranormal.mp4": "2026-06-06T12:55:57",
+    "pexels_12803343_horror_paranormal.mp4": "2026-06-06T17:37:52",
+    "pexels_15365457_unsolved_mysteries.mp4": "2026-06-06T17:32:28",
+    "pexels_19157962_nosleep.mp4": "2026-06-06T17:32:28",
+    "pexels_19436637_short_horror.mp4": "2026-06-06T17:37:52"
+  },
+  "pending_analytics": [
+    {
+      "story_type": "paranormal",
+      "uploaded_at": "2026-06-06T22:45:45.441789",
+      "video_id": "ZlmW-St5fdk"
+    },
+    {
+      "story_type": "paranormal",
+      "uploaded_at": "2026-06-06T23:01:22.014557",
+      "video_id": "bet3YarXImI"
+    }
+  ],
+  "recent_runs": [
+    {
+      "format": "short",
+      "run_id": "2026-06-06_22-56-42",
+      "story_type": "paranormal",
+      "topic_cluster": "paranormal"
+    },
+    {
+      "format": "short",
+      "run_id": "2026-06-06_22-41-40",
+      "story_type": "paranormal",
+      "topic_cluster": "true_crime"
+    },
+    {
+      "format": "short",
+      "run_id": "2026-06-06_18-15-21",
+      "story_type": "paranormal",
+      "topic_cluster": "paranormal"
+    }
+  ],
+  "used_story_ids": [
+    "euitmh",
+    "87wayr",
+    "eb57nx"
+  ]
 }

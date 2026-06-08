@@ -44,12 +44,12 @@ def run_channel_pipeline(slug: str, run_id: str) -> None:
         channel_slug=slug,
     )
 
-    # Step 4: Upload
+    # Step 4: Upload to YouTube
     log("")
     try:
         video_url = upload_youtube(channel_config=channel_config)
         log("")
-        log(f"🎉 [{slug}] Short is LIVE!")
+        log(f"🎉 [{slug}] YouTube Short is LIVE!")
         log(f"📺 Watch here: {video_url}")
     except FileNotFoundError:
         log(f"⏭️  [{slug}] YouTube upload skipped (credentials not found)")

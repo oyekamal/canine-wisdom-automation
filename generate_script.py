@@ -44,7 +44,7 @@ def _build_prompt(channel_config=None) -> str:
             f'- "{t["formula"]}" (CTR: {t["avg_ctr"]:.1%})'
             for t in top_titles
         ) or "- No data yet"
-        covered_text = ", ".join(covered[:10]) or "none"
+        covered_text = ", ".join(covered[:30]) or "none"
     except Exception:
         hooks_text = "- No data yet"
         titles_text = "- No data yet"

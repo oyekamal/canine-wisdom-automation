@@ -74,14 +74,20 @@ def get_top_title_formulas(min_confidence: str = "low", n: int = 3) -> list:
     return sorted(eligible, key=lambda f: f.get("avg_ctr", 0), reverse=True)[:n]
 
 
-def get_covered_topics(days: int = 30) -> list:
-    """Return topic strings posted in the last N days."""
+def get_covered_topics(days: int = 60) -> list:
+    """Return unique topic strings posted in the last N days (deduped, newest-first)."""
     learnings = read_learnings()
     cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
-    return [
-        t["topic"] for t in learnings.get("covered_topics", [])
-        if t.get("posted", "1970-01-01") >= cutoff
-    ]
+    seen: set = set()
+    result: list = []
+    for t in reversed(learnings.get("covered_topics", [])):
+        if t.get("posted", "1970-01-01") < cutoff:
+            continue
+        topic = t["topic"]
+        if topic not in seen:
+            seen.add(topic)
+            result.append(topic)
+    return result
 
 
 def get_top_story_types(n: int = 3, channel_learnings_path: "Path" = None) -> list:
@@ -104,14 +110,17 @@ def get_top_story_types(n: int = 3, channel_learnings_path: "Path" = None) -> li
 
 
 def add_covered_topic(topic: str, video_id: str) -> None:
-    """Append a topic to covered_topics and persist."""
+    """Append a topic to covered_topics (skip if already posted today) and persist."""
     data = json.loads(LEARNINGS_PATH.read_text(encoding="utf-8"))
-    data.setdefault("covered_topics", []).append({
-        "topic": topic,
-        "posted": datetime.now().strftime("%Y-%m-%d"),
-        "video_id": video_id,
-    })
-    _write_learnings(data)
+    today = datetime.now().strftime("%Y-%m-%d")
+    existing = {t["topic"] for t in data.get("covered_topics", []) if t.get("posted") == today}
+    if topic not in existing:
+        data.setdefault("covered_topics", []).append({
+            "topic": topic,
+            "posted": today,
+            "video_id": video_id,
+        })
+        _write_learnings(data)
 
 
 def _extract_hook_template(hook_text: str) -> str:

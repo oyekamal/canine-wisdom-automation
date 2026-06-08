@@ -104,6 +104,23 @@ def run_horror_pipeline(channel_config=None) -> dict:
 
     if script_data is None:
         return {"success": False, "video_url": None, "reason": "all 5 story candidates failed rewrite"}
+
+    # Hard-cap short scripts at 90 words to prevent audio overrun and CTA cutoff
+    if target == "short":
+        words = script_data["script"].split()
+        if len(words) > 90:
+            log(f"⚠️  Script {len(words)} words — trimming to 90w at sentence boundary")
+            import re as _re
+            sentences = _re.split(r'(?<=[.!?])\s+', script_data["script"])
+            trimmed, count = [], 0
+            for s in sentences:
+                w = len(s.split())
+                if count + w > 90:
+                    break
+                trimmed.append(s)
+                count += w
+            script_data["script"] = " ".join(trimmed)
+
     log(f"✍️  Script: {len(script_data['script'].split())} words, mood: {script_data.get('mood', '?')}")
 
     # ── Pick voice based on mood ──────────────────────────────────────────────

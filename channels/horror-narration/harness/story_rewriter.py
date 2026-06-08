@@ -66,13 +66,25 @@ def pick_voice(mood: str, target: str, voices_config: dict) -> str:
 
 
 def _build_rewrite_prompt(story: dict, target: str) -> str:
-    word_target = "60-90 words" if target == "short" else "800-1400 words"
+    if target == "short":
+        word_target = "60-90 words"
+        word_hard_limit = (
+            "HARD LIMIT: The script field MUST be 60-90 words total. "
+            "Count every word before returning. If your draft is over 90 words, cut it. "
+            "Do not exceed 90 words under any circumstances. "
+            "Short format = one hook + one escalation + unresolved ending. That is all. No extra beats."
+        )
+    else:
+        word_target = "800-1400 words"
+        word_hard_limit = "Target 800-1400 words for long format."
+
     angle = _detect_emotional_angle(story)
     angle_text = _ANGLE_GUIDANCE[angle]
 
     return (
         f"Rewrite the following Reddit story as an original horror narration script.\n"
         f"Target format: {target} ({word_target}).\n"
+        f"{word_hard_limit}\n\n"
         f"Source: posted by u/{story['author']} on r/{story['subreddit']}\n"
         f"Original URL: {story['url']}\n\n"
         f"EMOTIONAL BEAT GUIDANCE for this story:\n"

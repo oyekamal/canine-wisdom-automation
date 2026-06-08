@@ -1,0 +1,12 @@
+{
+  "eval_scores": {},
+  "format": "short",
+  "hook_pattern_used": "Delayed-answer hook: name the wrongness (two returned, one didn't) before naming the full situation",
+  "snapshots": [],
+  "title": "She Was Hidden For 16 Months. A TV Viewer Found Her.",
+  "title_formula_used": "[Duration hidden] + [Unlikely rescuer found her]",
+  "topic": "",
+  "topic_cluster": "true_crime",
+  "uploaded_at": "2026-06-06T22:45:45.429772",
+  "video_id": "ZlmW-St5fdk"
+}

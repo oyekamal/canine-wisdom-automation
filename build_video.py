@@ -15,7 +15,7 @@ from caption_engine import build_caption_filter, CaptionStyle, write_word_ass
 from clip_scheduler import get_clips_for_video
 
 MUSIC_DIR = Path(__file__).parent / "assets" / "music"
-MUSIC_VOLUME = 0.45  # background music at 45% of voiceover volume
+MUSIC_VOLUME = 0.12  # background music — low enough that normalized voice sits clearly on top
 
 
 def _pick_music_track(music_dir: Path = None) -> Path | None:
@@ -429,7 +429,7 @@ def build_video(audio_duration: float, clip_path: str = None,
             "-preset", enc_params["preset"],
             "-vf", video_filter,
             "-filter_complex",
-            f"[1:a]volume=1.0[voice];[2:a]volume={MUSIC_VOLUME}[music];[voice][music]amix=inputs=2:duration=first[aout]",
+            f"[1:a]loudnorm=I=-14:TP=-1.5:LRA=11[voice];[2:a]volume={MUSIC_VOLUME}[music];[voice][music]amix=inputs=2:duration=first:normalize=0[aout]",
             "-map", "0:v:0",
             "-map", "[aout]",
             "-c:a", "aac",

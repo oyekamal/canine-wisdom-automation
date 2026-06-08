@@ -124,7 +124,7 @@ TOPIC_SEARCH_MAP = {
     ],
 }
 
-DEFAULT_QUERIES = ["dog portrait", "puppy close up", "cute dog", "dog face"]
+DEFAULT_QUERIES = ["dark foggy forest night", "abandoned building dark", "misty night street", "shadow silhouette darkness"]
 
 
 def _load_api_key() -> str:
